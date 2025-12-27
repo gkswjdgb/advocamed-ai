@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { blogPosts } from '../data/blogPosts';
+import { blogPosts } from '../data/blogData';
 import SEO from '../components/SEO';
 
 const BlogPost: React.FC = () => {
