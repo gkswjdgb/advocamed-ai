@@ -1,22 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Hero } from './components/Hero';
 import { UploadSection } from './components/UploadSection';
 import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
+import { BlogList } from './components/BlogList';
+import { BlogPostView } from './components/BlogPostView';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import ContactUs from './components/ContactUs';
 import SEO from './components/SEO';
-import { AppStep, AnalysisResult } from './types';
+import { AppStep, AnalysisResult, BlogPost } from './types';
+import { blogPosts } from './data/blogPosts';
 
 const App: React.FC = () => {
   const [step, setStep] = useState<AppStep>(AppStep.HERO);
   const [analysisData, setAnalysisData] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const currentYear = new Date().getFullYear();
+
+  // Handle URL Routing on Load & PopState
+  useEffect(() => {
+    const handleLocationChange = () => {
+        const path = window.location.pathname;
+        if (path.startsWith('/blog/')) {
+            const slug = path.split('/blog/')[1];
+            const post = blogPosts.find(p => p.id === slug);
+            if (post) {
+                setSelectedPost(post);
+                setStep(AppStep.BLOG_POST);
+            } else {
+                setStep(AppStep.BLOG);
+            }
+        } else if (path === '/blog') {
+            setStep(AppStep.BLOG);
+        } else if (path === '/contact-us') {
+            setStep(AppStep.CONTACT);
+        } else if (path === '/privacy-policy') {
+            setStep(AppStep.PRIVACY);
+        } else {
+            // Default home
+            setStep(AppStep.HERO);
+        }
+    };
+
+    handleLocationChange();
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
+
+  const navigateTo = (newStep: AppStep, url?: string) => {
+    setStep(newStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Update URL without reload
+    if (url) {
+        window.history.pushState({}, '', url);
+    } else {
+        // Reset to home if no url provided for main steps
+        if (newStep === AppStep.HERO) window.history.pushState({}, '', '/');
+        if (newStep === AppStep.CONTACT) window.history.pushState({}, '', '/contact-us');
+        if (newStep === AppStep.PRIVACY) window.history.pushState({}, '', '/privacy-policy');
+    }
+  };
+
+  const navigateToPost = (post: BlogPost) => {
+      setSelectedPost(post);
+      navigateTo(AppStep.BLOG_POST, `/blog/${post.id}`);
+  };
 
   const handleStart = () => {
     setStep(AppStep.UPLOAD);
+    window.history.pushState({}, '', '/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -31,20 +86,17 @@ const App: React.FC = () => {
     setIsLoading(loading);
   };
 
-  const navigateTo = (newStep: AppStep) => {
-    setStep(newStep);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50 flex flex-col">
         {/* Global SEO Settings for the Main Page */}
-        <SEO 
-          title="Medical Bill Dispute Tool & Charity Care Finder"
-          description="Stop overpaying for medical bills. AdvocaMed uses AI to find billing errors, upcoding, and unbundled charges instantly. Free financial assistance checker included."
-          canonical="/"
-        />
+        {step !== AppStep.BLOG_POST && (
+             <SEO 
+                title={step === AppStep.BLOG ? "Medical Billing Guides & Tips" : "Medical Bill Dispute Tool & Charity Care Finder"}
+                description={step === AppStep.BLOG ? "Expert advice on lowering medical bills, understanding CPT codes, and applying for hospital financial assistance." : "Stop overpaying for medical bills. AdvocaMed uses AI to find billing errors, upcoding, and unbundled charges instantly."}
+                canonical={step === AppStep.BLOG ? "/blog" : "/"}
+            />
+        )}
 
         {/* Navigation */}
         <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -55,8 +107,11 @@ const App: React.FC = () => {
                   Advoca<span className="text-primary">Med</span>.ai
                 </span>
               </div>
-              <div className="flex items-center space-x-4">
-                <button onClick={() => navigateTo(AppStep.CONTACT)} className="text-gray-500 hover:text-gray-900 text-sm font-medium">
+              <div className="flex items-center space-x-6">
+                <button onClick={() => navigateTo(AppStep.BLOG, '/blog')} className={`text-sm font-medium ${step === AppStep.BLOG || step === AppStep.BLOG_POST ? 'text-primary' : 'text-gray-500 hover:text-gray-900'}`}>
+                  Blog
+                </button>
+                <button onClick={() => navigateTo(AppStep.CONTACT)} className={`text-sm font-medium ${step === AppStep.CONTACT ? 'text-primary' : 'text-gray-500 hover:text-gray-900'}`}>
                   Contact Us
                 </button>
               </div>
@@ -89,6 +144,18 @@ const App: React.FC = () => {
             <AnalysisResultView data={analysisData} />
           )}
 
+          {step === AppStep.BLOG && (
+             <BlogList onPostClick={navigateToPost} />
+          )}
+
+          {step === AppStep.BLOG_POST && selectedPost && (
+             <BlogPostView 
+                post={selectedPost} 
+                onBack={() => navigateTo(AppStep.BLOG, '/blog')}
+                onScanNow={handleStart} 
+             />
+          )}
+
           {step === AppStep.PRIVACY && <PrivacyPolicy />}
           {step === AppStep.CONTACT && <ContactUs />}
         </div>
@@ -98,6 +165,9 @@ const App: React.FC = () => {
           <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center justify-center">
               <div className="flex space-x-6 mb-4">
+                <button onClick={() => navigateTo(AppStep.BLOG, '/blog')} className="text-gray-500 hover:text-gray-900 text-sm">
+                  Blog
+                </button>
                 <button onClick={() => navigateTo(AppStep.PRIVACY)} className="text-gray-500 hover:text-gray-900 text-sm">
                   Privacy Policy
                 </button>
