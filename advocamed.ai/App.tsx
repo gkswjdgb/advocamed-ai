@@ -3,6 +3,8 @@ import { Hero } from './components/Hero';
 import { UploadSection } from './components/UploadSection';
 import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import ContactUs from './components/ContactUs';
 import { AppStep, AnalysisResult } from './types';
 
 const App: React.FC = () => {
@@ -27,20 +29,25 @@ const App: React.FC = () => {
     setIsLoading(loading);
   };
 
+  const navigateTo = (newStep: AppStep) => {
+    setStep(newStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Navigation */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
-            <div className="flex items-center cursor-pointer" onClick={() => setStep(AppStep.HERO)}>
+            <div className="flex items-center cursor-pointer" onClick={() => navigateTo(AppStep.HERO)}>
               <span className="text-2xl font-bold text-gray-900 tracking-tight">
                 Advoca<span className="text-primary">Med</span>.ai
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <button onClick={() => document.getElementById('seo-content')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-500 hover:text-gray-900 text-sm font-medium">
-                Resources
+              <button onClick={() => navigateTo(AppStep.CONTACT)} className="text-gray-500 hover:text-gray-900 text-sm font-medium">
+                Contact Us
               </button>
             </div>
           </div>
@@ -71,12 +78,23 @@ const App: React.FC = () => {
         {step === AppStep.RESULTS && analysisData && (
           <AnalysisResultView data={analysisData} />
         )}
+
+        {step === AppStep.PRIVACY && <PrivacyPolicy />}
+        {step === AppStep.CONTACT && <ContactUs />}
       </div>
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-auto">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center">
+            <div className="flex space-x-6 mb-4">
+              <button onClick={() => navigateTo(AppStep.PRIVACY)} className="text-gray-500 hover:text-gray-900 text-sm">
+                Privacy Policy
+              </button>
+              <button onClick={() => navigateTo(AppStep.CONTACT)} className="text-gray-500 hover:text-gray-900 text-sm">
+                Contact Us
+              </button>
+            </div>
             <p className="text-center text-xs text-gray-400">
               &copy; {currentYear} AdvocaMed.ai. All rights reserved. 
             </p>
