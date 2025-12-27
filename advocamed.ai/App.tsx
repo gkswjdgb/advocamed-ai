@@ -9,6 +9,7 @@ import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import CookieBanner from './components/CookieBanner'; // Import CookieBanner
 
 // Pages
 import BlogPage from './pages/BlogPage'; 
@@ -146,6 +147,9 @@ const App: React.FC = () => {
               </div>
             </div>
           </footer>
+
+          {/* Compliance Banner */}
+          <CookieBanner />
 
         </div>
       </Router>
