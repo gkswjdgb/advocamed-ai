@@ -2,35 +2,37 @@ import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { AnalysisResult, UserFinancials } from "../types";
 
 // Support both standard API_KEY and the user's GEMINI_API_KEY configuration
+// Note: In Vite, we use define in vite.config.ts to replace process.env.API_KEY
 const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY || ''; 
 const ai = new GoogleGenAI({ apiKey });
 
 const currentYear = new Date().getFullYear();
 
+// Improved Schema with strict descriptions for benchmarking
 const analysisSchema: Schema = {
   type: Type.OBJECT,
   properties: {
     hospitalName: { type: Type.STRING, description: "Name of the hospital or provider found on the bill." },
     totalCharged: { type: Type.NUMBER, description: "Total amount charged in the bill." },
-    potentialSavings: { type: Type.NUMBER, description: "Estimated potential savings based on errors, overcharges, or charity care." },
-    confidenceScore: { type: Type.NUMBER, description: "AI Confidence score (0-100) based on image clarity, text readability, and code identification certainty." },
-    summary: { type: Type.STRING, description: "Executive summary of findings, including detected error patterns." },
-    dataSourceCitation: { type: Type.STRING, description: "Citation of sources used (e.g., 'IRS 501(r)', 'CMS Medicare Fee Schedule')." },
+    potentialSavings: { type: Type.NUMBER, description: "Total estimated savings (sum of overcharges + potential charity care discounts)." },
+    confidenceScore: { type: Type.NUMBER, description: "Confidence score (0-100) based on OCR clarity and code identification certainty." },
+    summary: { type: Type.STRING, description: "Executive summary of findings. Explicitly mention if 'Price Gouging' (>400% Medicare) or 'Upcoding' is detected." },
+    dataSourceCitation: { type: Type.STRING, description: "Citation of sources used (e.g., 'CMS Physician Fee Schedule 2025', 'IRS 501(r)')." },
     items: {
       type: Type.ARRAY,
       items: {
         type: Type.OBJECT,
         properties: {
-          code: { type: Type.STRING, description: "CPT or ICD code if visible." },
+          code: { type: Type.STRING, description: "The 5-digit CPT code or ICD code. Return 'N/A' if not visible." },
           description: { type: Type.STRING, description: "Description of the service." },
           chargedAmount: { type: Type.NUMBER, description: "Amount charged." },
-          expectedAmount: { type: Type.NUMBER, description: "Estimated Fair Market Value (approx 150-200% of Medicare rate)." },
+          expectedAmount: { type: Type.NUMBER, description: "The estimated 2025 Medicare Allowable Rate for this specific CPT code." },
           flag: { 
             type: Type.STRING, 
             enum: ["overcharged", "error", "ok", "unknown", "upcoding", "unbundling"],
-            description: "Audit status. 'upcoding' for inflated levels, 'unbundling' for separated charges."
+            description: "Audit Flag. 'overcharged' if > 200% of Medicare rate. 'upcoding' if severity mismatch. 'unbundling' if component billed separately."
           },
-          reason: { type: Type.STRING, description: "Technical explanation (e.g., 'CPT 80053 includes 80048 - Unbundling detected')." },
+          reason: { type: Type.STRING, description: "Explanation: e.g., 'Charged $500 vs Medicare $100 (500% Markup)' or 'Upcoding detected'." },
         },
         required: ["description", "chargedAmount", "flag"]
       }
@@ -38,17 +40,17 @@ const analysisSchema: Schema = {
     charityAnalysis: {
       type: Type.OBJECT,
       properties: {
-        likelyEligible: { type: Type.BOOLEAN, description: "True if eligible for FAP." },
-        estimatedDiscount: { type: Type.STRING, description: "Estimated discount (e.g., '100% Write-off')." },
-        reasoning: { type: Type.STRING, description: "Detailed logic based on FPL and typical hospital asset policies." }
+        likelyEligible: { type: Type.BOOLEAN, description: "True if eligible for FAP based on provided financial context or typical 501(r) rules." },
+        estimatedDiscount: { type: Type.STRING, description: "Estimated discount (e.g., '100% Write-off' or '40% Discount')." },
+        reasoning: { type: Type.STRING, description: "Detailed logic based on Federal Poverty Level (FPL) thresholds." }
       },
       nullable: true
     },
     noSurprisesAnalysis: {
       type: Type.OBJECT,
       properties: {
-        possibleViolation: { type: Type.BOOLEAN, description: "True if No Surprises Act violation suspect." },
-        notes: { type: Type.STRING, description: "Analysis of out-of-network charges at in-network facility or GFE discrepancies." }
+        possibleViolation: { type: Type.BOOLEAN, description: "True if out-of-network provider billing at in-network facility detected." },
+        notes: { type: Type.STRING, description: "Explanation of potential No Surprises Act violation." }
       },
       nullable: true
     },
@@ -67,14 +69,34 @@ export const analyzeMedicalBill = async (
   }
 
   const financialContext = financials 
-    ? `Patient's Annual Income: $${financials.annualIncome}, Household Size: ${financials.householdSize}.`
-    : "No financial information provided.";
+    ? `Patient Context: Annual Income $${financials.annualIncome}, Household Size ${financials.householdSize}.`
+    : "Patient Context: No financial information provided (Assume standard 501(r) eligibility checks).";
+
+  // System Instruction: Expert Persona
+  const systemInstruction = `
+    You are an expert Medical Billing Advocate and Certified Professional Coder (CPC) with 20 years of experience auditing US hospital bills.
+    Your goal is to identify billing errors, price gouging, and financial aid eligibility with extreme precision.
+
+    **STRICT AUDIT RULES:**
+    1. **OCR Precision**: Extract text exactly as it appears. Do not hallucinate numbers.
+    2. **CPT Code Analysis**: Identify 5-digit CPT codes. 
+       - Check for **"Unbundling"** (e.g., billing a panel and its components separately).
+       - Check for **"Upcoding"** (e.g., Level 5 ER visit 99285 for a minor issue).
+    3. **Price Benchmarking (CRITICAL)**: 
+       - Compare the charged amount against the **2025 Medicare Allowable Rate**.
+       - **Flag as 'overcharged' (Red Flag)** if charge is > 400% of Medicare rate (Price Gouging).
+       - **Flag as 'overcharged' (Yellow Flag)** if charge is > 200% of Medicare rate (High Markup).
+       - **Flag as 'ok'** if charge is <= 200% of Medicare rate.
+    4. **Charity Care Logic**:
+       - Use typical IRS 501(r) standards: 100% discount for income < 200% FPL; Sliding scale for 200-400% FPL.
+    5. **No Surprises Act**:
+       - Flag out-of-network charges (e.g., Anesthesiology, Pathology) at in-network facilities.
+  `;
 
   // List of models to try in order of preference/speed vs capability
   const modelCandidates = [
-    'gemini-3-flash-preview', // Primary multimodal model
-    'gemini-3-pro-preview',   // Fallback for complex reasoning
-    'gemini-flash-latest'     // Ultimate fallback (stable alias)
+    'gemini-3-flash-preview', // High speed, good reasoning
+    'gemini-3-pro-preview',   // Deep reasoning fallback
   ];
 
   let lastError: Error | null = null;
@@ -94,48 +116,21 @@ export const analyzeMedicalBill = async (
               }
             },
             {
-              text: `You are a senior medical auditor and patient advocate AI. Analyze this medical bill image with high precision.
-              The current year is ${currentYear}.
-
+              text: `Analyze this medical bill image strictly according to your system instructions.
+              
               Context:
               ${financialContext}
+              Current Year: ${currentYear}
               
-              EXECUTE THE FOLLOWING DEEP AUDIT PROTOCOLS:
-
-              1. **Hospital & Policy Identification**: 
-                 - Identify the hospital. 
-                 - Based on IRS 501(r) regulations for non-profits, estimate Financial Assistance Policy (FAP) eligibility.
-                 - Note typical application deadlines (usually 240 days from first bill).
-
-              2. **Code Validation (Fraud & Error Detection)**:
-                 - **Upcoding**: Check if the description matches the severity code (e.g., Level 5 ER visit for minor issue).
-                 - **Unbundling**: Check if lab panels (e.g., BMP 80048) are billed alongside individual components.
-                 - **Fair Price**: Compare charged amounts against typical CMS Medicare rates x 2 (a common 'Fair Market' benchmark). Flag as 'overcharged' if > 300% of Medicare.
-
-              3. **No Surprises Act (NSA) Compliance**:
-                 - Check for out-of-network providers (Anesthesiology, Pathology, Assistant Surgeons) billing at an In-Network facility.
-                 - If detected, flag as potential NSA violation.
-
-              4. **Charity Care Logic**:
-                 - Use ${currentYear} Federal Poverty Guidelines.
-                 - < 200% FPL: Presume 100% discount.
-                 - 200-400% FPL: Presume sliding scale.
-                 
-              5. **Confidence Score**:
-                 - Evaluate how clear the image is and how confident you are in the extracted text and codes. 
-                 - Return a score from 0-100.
-
-              OUTPUT:
-              - Strict JSON matching the schema.
-              - Include a 'dataSourceCitation' field citing specific regulations (e.g., 'CMS Physician Fee Schedule ${currentYear}, IRS Section 501(r)').
-              `
+              Output valid JSON only.`
             }
           ]
         },
         config: {
+          systemInstruction: systemInstruction,
           responseMimeType: "application/json",
           responseSchema: analysisSchema,
-          temperature: 0.0, // Zero temp for maximum analytical rigor
+          temperature: 0.1, // Low temperature for factual auditing
         }
       });
 
@@ -171,7 +166,7 @@ export const generateAppealLetter = async (
       Total Bill: $${analysis.totalCharged}
       
       **Audit Findings to Include:**
-      ${analysis.items.filter(i => i.flag !== 'ok').map(i => `- ${i.code}: ${i.flag.toUpperCase()} - ${i.reason} (Fair Price: $${i.expectedAmount !== undefined ? i.expectedAmount : 'N/A'})`).join('\n')}
+      ${analysis.items.filter(i => i.flag !== 'ok').map(i => `- ${i.code}: ${i.flag.toUpperCase()} - ${i.reason} (Medicare Rate: $${i.expectedAmount})`).join('\n')}
       
       **Legal Context:**
       ${analysis.noSurprisesAnalysis?.possibleViolation ? `- Assert protection under the **No Surprises Act** regarding out-of-network charges.` : ''}
@@ -180,7 +175,7 @@ export const generateAppealLetter = async (
       **Tone & Structure:**
       - Formal, firm, authoritative.
       - Reference the specific laws (No Surprises Act, HIPAA right to itemized bill).
-      - State clear demand: "Recalculate bill to fair market value" or "Process charity care application".
+      - State clear demand: "Recalculate bill to fair market value (approx 150% of Medicare)" or "Process charity care application".
       - Mention intention to file complaint with the State Insurance Commissioner or CFPB if ignored.
       
       Output strictly the body of the letter in Markdown.
