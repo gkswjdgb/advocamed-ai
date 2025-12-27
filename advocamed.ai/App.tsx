@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useSearchParams, useLocation } from 'react-router-dom';
 
 // Components
 import { Hero } from './components/Hero';
@@ -11,7 +11,6 @@ import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 
 // Pages
-// Renamed BlogList to BlogPage to avoid conflicts with components/BlogList
 import BlogPage from './pages/BlogPage'; 
 import BlogPost from './pages/BlogPost';
 import HospitalGuide from './pages/HospitalGuide';
@@ -19,21 +18,29 @@ import ContactUs from './pages/ContactUs';
 
 import { AnalysisResult } from './types';
 
-// 1. Home Component: Handles the Scan/Result state internally
+// 1. Home Component: Handles Scan/Result state via URL Params
 const Home = () => {
-  const [step, setStep] = useState<'HERO' | 'UPLOAD' | 'RESULTS'>('HERO');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const step = searchParams.get('step') === 'UPLOAD' ? 'UPLOAD' : 
+               searchParams.get('step') === 'RESULTS' ? 'RESULTS' : 'HERO';
+
   const [analysisData, setAnalysisData] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleStart = () => {
-    setStep('UPLOAD');
+    setSearchParams({ step: 'UPLOAD' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleAnalysisComplete = (result: AnalysisResult) => {
     setAnalysisData(result);
-    setStep('RESULTS');
+    setSearchParams({ step: 'RESULTS' });
     setIsLoading(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  const handleBack = () => {
+    setSearchParams({}); // Clear params to go back to HERO
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -55,7 +62,11 @@ const Home = () => {
       )}
 
       {step === 'UPLOAD' && !isLoading && (
-        <UploadSection onAnalysisComplete={handleAnalysisComplete} onLoading={setIsLoading} />
+        <UploadSection 
+          onAnalysisComplete={handleAnalysisComplete} 
+          onLoading={setIsLoading} 
+          onBack={handleBack}
+        />
       )}
 
       {isLoading && (
@@ -73,7 +84,7 @@ const Home = () => {
   );
 };
 
-// 2. Main App Structure with Routing
+// 2. Main App Structure
 const App: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
@@ -86,7 +97,8 @@ const App: React.FC = () => {
           <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16">
-                <Link to="/" className="flex items-center cursor-pointer">
+                {/* Logo Link now clears query params implicitly by navigating to strictly "/" */}
+                <Link to="/" className="flex items-center cursor-pointer z-50">
                   <span className="text-2xl font-bold text-gray-900 tracking-tight">
                     Advoca<span className="text-primary">Med</span>.ai
                   </span>
