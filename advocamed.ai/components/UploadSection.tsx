@@ -5,9 +5,10 @@ import { AnalysisResult, UserFinancials } from '../types';
 interface UploadSectionProps {
   onAnalysisComplete: (result: AnalysisResult) => void;
   onLoading: (isLoading: boolean) => void;
+  onBack: () => void; // New prop for back navigation
 }
 
-export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete, onLoading }) => {
+export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete, onLoading, onBack }) => {
   const [error, setError] = useState<string | null>(null);
   const [income, setIncome] = useState<string>('');
   const [householdSize, setHouseholdSize] = useState<string>('1');
@@ -24,7 +25,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
     onLoading(true);
     setError(null);
 
-    // Prepare financials if provided
     let financials: UserFinancials | undefined = undefined;
     if (income) {
         financials = {
@@ -37,7 +37,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64String = reader.result as string;
-        // Remove data URL prefix (e.g., "data:image/jpeg;base64,")
         const base64Data = base64String.split(',')[1];
         
         try {
@@ -57,9 +56,20 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
   }, [onAnalysisComplete, onLoading, income, householdSize]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+    <div className="max-w-3xl mx-auto px-4 py-8 text-center animate-fade-in-up">
       
-      {/* Error Toast/Banner */}
+      {/* Back Button */}
+      <div className="flex justify-start mb-4">
+        <button 
+          onClick={onBack}
+          className="flex items-center text-gray-500 hover:text-gray-900 transition-colors font-medium text-sm"
+        >
+          <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          Back to Home
+        </button>
+      </div>
+
+      {/* Error Toast */}
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between animate-fade-in-down">
             <div className="flex items-center">
@@ -76,9 +86,9 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
         </div>
       )}
 
-      <div className="bg-white rounded-2xl shadow-xl p-10 border border-gray-100">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Analyze Your Medical Bill</h2>
-        <p className="text-gray-500 mb-8">
+      <div className="bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-gray-100">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Analyze Your Medical Bill</h2>
+        <p className="text-gray-500 mb-8 text-sm md:text-base">
           Use your phone to snap a picture or upload an image file.
         </p>
 
@@ -115,9 +125,8 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
             </p>
         </div>
 
-        {/* Dual Actions for Mobile PWA Feel */}
+        {/* Dual Actions for Mobile */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-             {/* 1. Camera Trigger (Direct Scan) */}
             <label className="flex-1 flex flex-col items-center justify-center h-48 border-2 border-primary border-dashed rounded-lg cursor-pointer bg-red-50 hover:bg-red-100 transition-colors group relative overflow-hidden">
                 <div className="flex flex-col items-center justify-center z-10">
                     <div className="p-3 bg-white rounded-full shadow-sm mb-2">
@@ -130,12 +139,11 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
                     type="file" 
                     className="hidden" 
                     accept="image/*"
-                    capture="environment" // Forces rear camera on mobile
+                    capture="environment"
                     onChange={handleFileChange}
                 />
             </label>
 
-             {/* 2. File Upload Trigger */}
             <label className="flex-1 flex flex-col items-center justify-center h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors group">
                 <div className="flex flex-col items-center justify-center">
                      <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
@@ -149,14 +157,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
                     onChange={handleFileChange}
                 />
             </label>
-        </div>
-
-        <div className="mt-8 text-left p-4 rounded-lg flex items-start space-x-3 text-gray-500 text-xs">
-            <svg className="w-5 h-5 flex-shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-            <p>
-                <strong>Privacy Guarantee:</strong> Your data is processed securely via Google's Enterprise Cloud and is never sold. 
-                Analysis is ephemeral and deleted after your session.
-            </p>
         </div>
       </div>
     </div>
