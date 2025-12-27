@@ -10,8 +10,9 @@ import { SEOContent } from './components/SEOContent';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 
-// Pages - Ensure these point to './pages/FileName'
-import BlogList from './pages/BlogList';
+// Pages
+// Renamed BlogList to BlogPage to avoid conflicts with components/BlogList
+import BlogPage from './pages/BlogPage'; 
 import BlogPost from './pages/BlogPost';
 import HospitalGuide from './pages/HospitalGuide';
 import ContactUs from './pages/ContactUs';
@@ -106,7 +107,7 @@ const App: React.FC = () => {
           <div className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog" element={<BlogPage />} />
               <Route path="/blog/:id" element={<BlogPost />} />
               <Route path="/hospital/:slug" element={<HospitalGuide />} />
               <Route path="/contact-us" element={<ContactUs />} />
