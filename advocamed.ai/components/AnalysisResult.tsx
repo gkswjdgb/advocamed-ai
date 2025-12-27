@@ -19,55 +19,44 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
     setFinancials(fin);
   };
 
-  // Helper to determine border color based on flag
-  const getFlagStyle = (flag: string) => {
-    switch (flag) {
-      case 'overcharged': return 'border-red-500 bg-red-50/10';
-      case 'upcoding': return 'border-orange-500 bg-orange-50/10';
-      case 'unbundling': return 'border-purple-500 bg-purple-50/10';
-      case 'error': return 'border-red-600 bg-red-100/10';
-      case 'ok': return 'border-green-500 bg-green-50/10';
-      default: return 'border-gray-200';
+  const getVarianceStyle = (level: string) => {
+    switch (level) {
+      case 'Very High': return 'border-red-500 bg-red-50/20';
+      case 'High': return 'border-yellow-500 bg-yellow-50/20';
+      default: return 'border-green-500 bg-green-50/20';
     }
   };
 
-  const getFlagLabel = (flag: string) => {
-     switch (flag) {
-      case 'overcharged': return '⚠️ Price Gouging';
-      case 'upcoding': return '⚠️ Upcoding';
-      case 'unbundling': return '⚠️ Unbundling';
-      case 'error': return '⚠️ Error';
-      case 'ok': return '✅ Fair Price';
-      default: return 'Unknown';
+  const getVarianceLabel = (level: string) => {
+    switch (level) {
+      case 'Very High': return 'Review Recommended';
+      case 'High': return 'Potential Variance';
+      default: return 'Within Standard';
     }
-  }
+  };
 
-  const getFlagColor = (flag: string) => {
-     switch (flag) {
-      case 'overcharged': return 'text-red-700 bg-red-100';
-      case 'upcoding': return 'text-orange-700 bg-orange-100';
-      case 'unbundling': return 'text-purple-700 bg-purple-100';
-      case 'error': return 'text-red-800 bg-red-200';
-      case 'ok': return 'text-green-700 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
+  const getVarianceColor = (level: string) => {
+    switch (level) {
+      case 'Very High': return 'text-red-700 bg-red-100';
+      case 'High': return 'text-yellow-800 bg-yellow-100';
+      default: return 'text-green-700 bg-green-100';
     }
-  }
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4 animate-fade-in-up">
 
-      {/* 1. Hero Summary Card: Focus on Savings */}
+      {/* 1. Hero Summary Card */}
       <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-10 transition-transform hover:scale-[1.01] duration-300">
         <div className="bg-[#111827] text-white p-8 text-center relative overflow-hidden">
-          {/* Background decoration */}
           <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
           
-          <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Potential Savings Detected</h2>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Estimated Variance</h2>
           <p className="text-5xl md:text-6xl font-extrabold text-[#FF4F4F] drop-shadow-sm">
             {formatMoney(data.potentialSavings || 0)}
           </p>
           <p className="text-gray-400 text-sm mt-3 max-w-lg mx-auto">
-             Based on {data.hospitalName}'s pricing vs. 2025 Medicare Allowable Rates & identified billing errors.
+             Difference between charged amount and national average estimates.
           </p>
         </div>
 
@@ -79,7 +68,7 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
           <div className="py-2">
             <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Charity Eligible</p>
             <p className={`text-2xl font-bold mt-1 ${data.charityAnalysis?.likelyEligible ? 'text-green-600' : 'text-gray-400'}`}>
-              {data.charityAnalysis?.likelyEligible ? 'Yes ✅' : 'Check Below'}
+              {data.charityAnalysis?.likelyEligible ? 'Likely ✅' : 'Check Below'}
             </p>
           </div>
         </div>
@@ -87,9 +76,9 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
 
       {/* 2. Audit Details List */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-gray-900">Line Item Audit</h3>
+        <h3 className="text-2xl font-bold text-gray-900">Items to Review</h3>
         <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full border border-gray-200">
-            Source: {data.dataSourceCitation || 'CMS Fee Schedule 2025'}
+            Source: {data.dataSourceCitation || 'National Averages'}
         </span>
       </div>
       
@@ -97,59 +86,77 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
         {data.items.map((item, index) => (
           <div 
             key={index} 
-            className={`bg-white p-6 rounded-xl border-l-8 shadow-sm hover:shadow-md transition-shadow ${getFlagStyle(item.flag)}`}
+            className={`bg-white p-6 rounded-xl border-l-8 shadow-sm hover:shadow-md transition-shadow ${getVarianceStyle(item.variance_level)}`}
           >
             <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-3">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${getFlagColor(item.flag)}`}>
-                        {getFlagLabel(item.flag)}
+                <div className="flex items-center flex-wrap gap-2 mb-2">
+                    <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${getVarianceColor(item.variance_level)}`}>
+                        {getVarianceLabel(item.variance_level)}
                     </span>
-                    <span className="text-xs text-gray-500 font-mono">
+                    <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-0.5 rounded">
                         CPT: {item.code || 'N/A'}
                     </span>
+                    {/* EXTERNAL VERIFICATION LINK */}
+                    {item.code && item.code !== 'null' && (
+                        <a 
+                          href={`https://www.medicare.gov/procedure-price-lookup/cost/${item.code}`}
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-xs flex items-center text-blue-600 hover:text-blue-800 font-medium underline decoration-blue-300 hover:decoration-blue-800 transition-colors"
+                        >
+                           Verify on Medicare.gov ↗
+                        </a>
+                    )}
                 </div>
                 <h4 className="font-bold text-lg text-gray-900 leading-tight">{item.description}</h4>
               </div>
               
-              <div className="text-left md:text-right min-w-[120px]">
+              <div className="text-left md:text-right min-w-[140px]">
                 <p className="text-xs text-gray-500 uppercase font-semibold">Charged</p>
                 <p className="font-bold text-xl text-gray-900">{formatMoney(item.chargedAmount)}</p>
                 {item.expectedAmount && (
                     <div className="mt-1">
-                        <p className="text-[10px] text-gray-400 uppercase">Medicare Rate</p>
+                        <p className="text-[10px] text-gray-400 uppercase">Est. National Avg</p>
                         <p className="text-sm font-semibold text-green-600">{formatMoney(item.expectedAmount)}</p>
                     </div>
                 )}
               </div>
             </div>
             
-            {/* AI Reasoning */}
-            {item.reason && (
-                <div className="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-start gap-2">
-                    <span className="text-lg">💡</span>
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                        <strong className="text-gray-900">Analysis:</strong> {item.reason}
-                    </p>
-                </div>
-            )}
+            {/* AI Reasoning & Questions */}
+            <div className="mt-4 space-y-3">
+                {item.flag_reason && (
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <p className="text-sm text-gray-700">
+                            <strong className="text-gray-900">Observation:</strong> {item.flag_reason}
+                        </p>
+                    </div>
+                )}
+                {item.suggested_question && (
+                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                        <p className="text-sm text-blue-900">
+                            <strong className="text-blue-800">Ask the Hospital:</strong> "{item.suggested_question}"
+                        </p>
+                    </div>
+                )}
+            </div>
           </div>
         ))}
       </div>
 
       {/* 3. Action Center */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-6">Take Action</h3>
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Next Steps</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          {/* Charity Care Checker */}
           <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
              <div className="mb-4">
                  <h4 className="text-lg font-bold text-gray-900 flex items-center">
                     <span className="bg-green-100 text-green-600 p-2 rounded-lg mr-3">💰</span>
-                    Financial Aid Eligibility
+                    Financial Assistance
                  </h4>
                  <p className="text-sm text-gray-500 mt-1 ml-12">
-                     Check if you qualify for 100% forgiveness under IRS 501(r).
+                     Non-profit hospitals often waive bills for low-income patients (IRS 501r).
                  </p>
              </div>
              <CharityMatcher 
@@ -159,22 +166,21 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
              {charityStatus && (
                  <div className={`mt-4 p-4 rounded-xl border ${charityStatus.isEligible ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`}>
                      <p className={`font-bold ${charityStatus.isEligible ? 'text-green-800' : 'text-gray-700'}`}>
-                         {charityStatus.isEligible ? 'Likely Eligible 🎉' : 'Eligibility Low'}
+                         {charityStatus.isEligible ? 'Criteria Met 🎉' : 'Low Probability'}
                      </p>
                      <p className="text-xs text-gray-600 mt-1">{charityStatus.reasoning}</p>
                  </div>
              )}
           </div>
 
-          {/* Appeal Generator */}
           <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
              <div className="mb-4">
                  <h4 className="text-lg font-bold text-gray-900 flex items-center">
-                    <span className="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">⚖️</span>
-                    Generate Dispute Letter
+                    <span className="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">📧</span>
+                    Request Clarification
                  </h4>
                  <p className="text-sm text-gray-500 mt-1 ml-12">
-                     Create a legally-grounded appeal email citing the exact errors found above.
+                     Generate an email asking for itemized receipts and coding clarification.
                  </p>
              </div>
              <AppealGenerator analysis={data} financials={financials} />
@@ -182,9 +188,10 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
       </div>
       
       {/* Disclaimer */}
-      <div className="mt-12 text-center text-xs text-gray-400 max-w-2xl mx-auto">
-          AdvocaMed.ai provides informational analysis based on standard coding guidelines and 2025 CMS fee schedules. 
-          This is not legal advice. Always verify with the hospital billing department.
+      <div className="mt-12 text-center text-xs text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          <strong>Important Disclaimer:</strong> AdvocaMed.ai is an informational tool, not a law firm or medical provider. 
+          The "Estimated Variance" is based on national datasets and may not reflect your specific insurance plan's negotiated rates. 
+          Always verify CPT codes and prices directly with your provider or insurance carrier.
       </div>
 
     </div>
