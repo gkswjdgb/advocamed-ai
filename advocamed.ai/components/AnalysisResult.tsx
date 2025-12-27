@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AnalysisResult, CharityEligibility, UserFinancials } from '../types';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { CharityMatcher } from './CharityMatcher';
 import { AppealGenerator } from './AppealGenerator';
 
@@ -8,220 +7,186 @@ interface Props {
   data: AnalysisResult;
 }
 
-const COLORS = ['#FF4F4F', '#10B981', '#F59E0B', '#6B7280'];
-
 export const AnalysisResultView: React.FC<Props> = ({ data }) => {
   const [financials, setFinancials] = useState<UserFinancials | undefined>(data.userFinancials);
   const [charityStatus, setCharityStatus] = useState<CharityEligibility | undefined>(undefined);
-  const [feedbackGiven, setFeedbackGiven] = useState(false);
 
-  // Safe defaults for numeric values
-  const totalCharged = data.totalCharged || 0;
-  const potentialSavings = data.potentialSavings || 0;
-  const confidenceScore = data.confidenceScore || 95; // Default fallback
-
-  // Prepare data for Chart
-  const chartData = [
-    { name: 'Potential Savings', value: potentialSavings },
-    { name: 'Fair Market Value', value: Math.max(0, totalCharged - potentialSavings) },
-  ];
+  const formatMoney = (amount: number) =>
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
   const handleCharityCheck = (status: CharityEligibility, fin: UserFinancials) => {
     setCharityStatus(status);
     setFinancials(fin);
   };
 
+  // Helper to determine border color based on flag
+  const getFlagStyle = (flag: string) => {
+    switch (flag) {
+      case 'overcharged': return 'border-red-500 bg-red-50/10';
+      case 'upcoding': return 'border-orange-500 bg-orange-50/10';
+      case 'unbundling': return 'border-purple-500 bg-purple-50/10';
+      case 'error': return 'border-red-600 bg-red-100/10';
+      case 'ok': return 'border-green-500 bg-green-50/10';
+      default: return 'border-gray-200';
+    }
+  };
+
+  const getFlagLabel = (flag: string) => {
+     switch (flag) {
+      case 'overcharged': return '⚠️ Price Gouging';
+      case 'upcoding': return '⚠️ Upcoding';
+      case 'unbundling': return '⚠️ Unbundling';
+      case 'error': return '⚠️ Error';
+      case 'ok': return '✅ Fair Price';
+      default: return 'Unknown';
+    }
+  }
+
+  const getFlagColor = (flag: string) => {
+     switch (flag) {
+      case 'overcharged': return 'text-red-700 bg-red-100';
+      case 'upcoding': return 'text-orange-700 bg-orange-100';
+      case 'unbundling': return 'text-purple-700 bg-purple-100';
+      case 'error': return 'text-red-800 bg-red-200';
+      case 'ok': return 'text-green-700 bg-green-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  }
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      
-      {/* Executive Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-lg border border-gray-100 p-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start mb-4">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">{data.hospitalName || "Provider"} Audit</h2>
-              <p className="text-sm text-gray-500">Analysis Date: {data.analysisDate}</p>
-            </div>
-            <div className="mt-2 sm:mt-0 text-left sm:text-right">
-               <span className="block text-sm text-gray-500 uppercase tracking-wider">Total Billed</span>
-               <span className="block text-3xl font-extrabold text-gray-900">${totalCharged.toLocaleString()}</span>
-            </div>
-          </div>
+    <div className="max-w-4xl mx-auto py-12 px-4 animate-fade-in-up">
+
+      {/* 1. Hero Summary Card: Focus on Savings */}
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-10 transition-transform hover:scale-[1.01] duration-300">
+        <div className="bg-[#111827] text-white p-8 text-center relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
           
-          {/* Main AI Summary */}
-          <div className="p-5 bg-blue-50 rounded-xl border-l-4 border-blue-500 mb-6">
-            <h3 className="font-bold text-blue-900 mb-2 flex items-center">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                Audit Summary
-            </h3>
-            <p className="text-blue-800 leading-relaxed text-sm">{data.summary}</p>
-          </div>
-
-          {/* Legal Protections - No Surprises Act */}
-          {data.noSurprisesAnalysis && data.noSurprisesAnalysis.possibleViolation && (
-              <div className="p-5 bg-red-50 rounded-xl border border-red-200 mb-6 relative overflow-hidden">
-                   <div className="absolute top-0 right-0 p-2 opacity-10">
-                       <svg className="w-24 h-24 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"></path></svg>
-                   </div>
-                   <h3 className="font-bold text-red-800 mb-1 flex items-center z-10 relative">
-                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                       No Surprises Act Warning
-                   </h3>
-                   <p className="text-sm text-red-700 relative z-10">{data.noSurprisesAnalysis.notes}</p>
-              </div>
-          )}
-
-          {/* Detailed Itemized Table */}
-          <h3 className="text-lg font-semibold mb-3 flex justify-between items-center">
-              <span>Itemized Breakdown</span>
-              <span className="text-xs font-normal text-gray-500">Cross-referenced with Medicare Rates</span>
-          </h3>
-          <div className="overflow-x-auto border rounded-lg border-gray-200 mb-6">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Service / Code</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Billed</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Fair Price</th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Flag</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {data.items.map((item, idx) => (
-                  <tr key={idx} className={item.flag !== 'ok' ? 'bg-red-50/30' : ''}>
-                    <td className="px-4 py-4">
-                        <div className="text-sm font-medium text-gray-900">{item.code !== 'N/A' ? item.code : '---'}</div>
-                        <div className="text-sm text-gray-500">{item.description}</div>
-                        {item.reason && (
-                            <div className="text-xs text-red-600 mt-1 font-medium bg-red-50 inline-block px-2 py-0.5 rounded border border-red-100">
-                                {item.reason}
-                            </div>
-                        )}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">
-                        ${(item.chargedAmount || 0).toLocaleString()}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                        {item.expectedAmount !== undefined ? `$${item.expectedAmount.toLocaleString()}` : 'N/A'}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-center">
-                      <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${
-                        item.flag === 'ok' ? 'bg-green-100 text-green-800 border-green-200' : 
-                        item.flag === 'upcoding' ? 'bg-orange-100 text-orange-800 border-orange-200' :
-                        item.flag === 'unbundling' ? 'bg-purple-100 text-purple-800 border-purple-200' :
-                        'bg-red-100 text-red-800 border-red-200'
-                      }`}>
-                        {item.flag.toUpperCase()}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-           {/* Data Citation & Confidence Footer */}
-           <div className="border-t border-gray-100 pt-4 flex flex-col sm:flex-row justify-between items-end gap-4">
-               
-               {/* Confidence Meter */}
-               <div className="w-full sm:w-1/2">
-                   <div className="flex justify-between items-center mb-1">
-                       <span className="text-xs font-semibold text-gray-500">AI Confidence</span>
-                       <span className="text-xs font-bold text-gray-700">{confidenceScore}%</span>
-                   </div>
-                   <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                       <div 
-                         className={`h-2 rounded-full transition-all duration-1000 ${confidenceScore > 80 ? 'bg-green-500' : confidenceScore > 60 ? 'bg-yellow-500' : 'bg-red-500'}`} 
-                         style={{ width: `${confidenceScore}%` }}
-                       ></div>
-                   </div>
-                   <p className="text-[10px] text-gray-400 mt-1">
-                       Based on image clarity & data extraction quality
-                   </p>
-               </div>
-
-               {data.dataSourceCitation && (
-                   <div className="text-xs text-gray-400 italic text-right max-w-xs">
-                       Data Source: {data.dataSourceCitation}
-                   </div>
-               )}
-           </div>
-
+          <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Potential Savings Detected</h2>
+          <p className="text-5xl md:text-6xl font-extrabold text-[#FF4F4F] drop-shadow-sm">
+            {formatMoney(data.potentialSavings || 0)}
+          </p>
+          <p className="text-gray-400 text-sm mt-3 max-w-lg mx-auto">
+             Based on {data.hospitalName}'s pricing vs. 2025 Medicare Allowable Rates & identified billing errors.
+          </p>
         </div>
 
-        {/* Right Column: Stats, Charity & Actions */}
-        <div className="space-y-6">
-          {/* Savings Chart */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Financial Impact</h3>
-            <div className="h-48 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={40}
-                    outerRadius={60}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value: number) => `$${(value || 0).toLocaleString()}`} />
-                  <Legend verticalAlign="bottom" height={36}/>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="text-center mt-4">
-               <div className="text-3xl font-bold text-primary">${potentialSavings.toLocaleString()}</div>
-               <div className="text-sm text-gray-500">Estimated Recoverable</div>
-            </div>
+        <div className="p-6 grid grid-cols-2 gap-4 text-center divide-x divide-gray-100 bg-white">
+          <div className="py-2">
+            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Charged</p>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{formatMoney(data.totalCharged)}</p>
           </div>
-
-          {/* Charity Module */}
-          <CharityMatcher 
-            onCheck={handleCharityCheck} 
-            initialFinancials={data.userFinancials} 
-          />
-          
-          {charityStatus && (
-              <div className={`rounded-xl shadow-lg border p-6 transition-all duration-500 ${charityStatus.isEligible ? 'bg-green-50 border-green-200 transform scale-105' : 'bg-gray-50 border-gray-200'}`}>
-                  <h4 className={`font-bold flex items-center ${charityStatus.isEligible ? 'text-green-800' : 'text-gray-800'}`}>
-                      {charityStatus.isEligible ? <span className="mr-2">🎉</span> : <span className="mr-2">ℹ️</span>}
-                      {charityStatus.isEligible ? 'Likely Eligible' : 'Eligibility Unlikely'}
-                  </h4>
-                  <p className="text-sm mt-2 text-gray-700 leading-relaxed">{charityStatus.reasoning}</p>
-                  {charityStatus.isEligible && (
-                      <div className="mt-3 inline-block bg-white px-3 py-1 rounded-full text-xs font-bold text-green-700 border border-green-200 shadow-sm">
-                          Target Program: {charityStatus.programName}
-                      </div>
-                  )}
-              </div>
-          )}
-
-          {/* Action Module */}
-          <AppealGenerator analysis={data} financials={financials} />
-
-          {/* Feedback Loop for GEO */}
-          {!feedbackGiven && (
-              <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-                  <p className="text-sm text-gray-500 mb-3">Did this audit help uncover errors?</p>
-                  <div className="flex justify-center gap-3">
-                      <button onClick={() => setFeedbackGiven(true)} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors">👍 Yes</button>
-                      <button onClick={() => setFeedbackGiven(true)} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors">👎 No</button>
-                  </div>
-              </div>
-          )}
-          {feedbackGiven && (
-              <div className="mt-8 pt-6 border-t border-gray-200 text-center text-green-600 text-sm font-medium animate-fade-in-up">
-                  Thanks for your feedback! This helps us improve our hospital database.
-              </div>
-          )}
+          <div className="py-2">
+            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Charity Eligible</p>
+            <p className={`text-2xl font-bold mt-1 ${data.charityAnalysis?.likelyEligible ? 'text-green-600' : 'text-gray-400'}`}>
+              {data.charityAnalysis?.likelyEligible ? 'Yes ✅' : 'Check Below'}
+            </p>
+          </div>
         </div>
       </div>
+
+      {/* 2. Audit Details List */}
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-2xl font-bold text-gray-900">Line Item Audit</h3>
+        <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full border border-gray-200">
+            Source: {data.dataSourceCitation || 'CMS Fee Schedule 2025'}
+        </span>
+      </div>
+      
+      <div className="space-y-5 mb-12">
+        {data.items.map((item, index) => (
+          <div 
+            key={index} 
+            className={`bg-white p-6 rounded-xl border-l-8 shadow-sm hover:shadow-md transition-shadow ${getFlagStyle(item.flag)}`}
+          >
+            <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-3">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${getFlagColor(item.flag)}`}>
+                        {getFlagLabel(item.flag)}
+                    </span>
+                    <span className="text-xs text-gray-500 font-mono">
+                        CPT: {item.code || 'N/A'}
+                    </span>
+                </div>
+                <h4 className="font-bold text-lg text-gray-900 leading-tight">{item.description}</h4>
+              </div>
+              
+              <div className="text-left md:text-right min-w-[120px]">
+                <p className="text-xs text-gray-500 uppercase font-semibold">Charged</p>
+                <p className="font-bold text-xl text-gray-900">{formatMoney(item.chargedAmount)}</p>
+                {item.expectedAmount && (
+                    <div className="mt-1">
+                        <p className="text-[10px] text-gray-400 uppercase">Medicare Rate</p>
+                        <p className="text-sm font-semibold text-green-600">{formatMoney(item.expectedAmount)}</p>
+                    </div>
+                )}
+              </div>
+            </div>
+            
+            {/* AI Reasoning */}
+            {item.reason && (
+                <div className="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-start gap-2">
+                    <span className="text-lg">💡</span>
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                        <strong className="text-gray-900">Analysis:</strong> {item.reason}
+                    </p>
+                </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* 3. Action Center */}
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Take Action</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          {/* Charity Care Checker */}
+          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+             <div className="mb-4">
+                 <h4 className="text-lg font-bold text-gray-900 flex items-center">
+                    <span className="bg-green-100 text-green-600 p-2 rounded-lg mr-3">💰</span>
+                    Financial Aid Eligibility
+                 </h4>
+                 <p className="text-sm text-gray-500 mt-1 ml-12">
+                     Check if you qualify for 100% forgiveness under IRS 501(r).
+                 </p>
+             </div>
+             <CharityMatcher 
+                onCheck={handleCharityCheck} 
+                initialFinancials={data.userFinancials} 
+             />
+             {charityStatus && (
+                 <div className={`mt-4 p-4 rounded-xl border ${charityStatus.isEligible ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`}>
+                     <p className={`font-bold ${charityStatus.isEligible ? 'text-green-800' : 'text-gray-700'}`}>
+                         {charityStatus.isEligible ? 'Likely Eligible 🎉' : 'Eligibility Low'}
+                     </p>
+                     <p className="text-xs text-gray-600 mt-1">{charityStatus.reasoning}</p>
+                 </div>
+             )}
+          </div>
+
+          {/* Appeal Generator */}
+          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+             <div className="mb-4">
+                 <h4 className="text-lg font-bold text-gray-900 flex items-center">
+                    <span className="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">⚖️</span>
+                    Generate Dispute Letter
+                 </h4>
+                 <p className="text-sm text-gray-500 mt-1 ml-12">
+                     Create a legally-grounded appeal email citing the exact errors found above.
+                 </p>
+             </div>
+             <AppealGenerator analysis={data} financials={financials} />
+          </div>
+      </div>
+      
+      {/* Disclaimer */}
+      <div className="mt-12 text-center text-xs text-gray-400 max-w-2xl mx-auto">
+          AdvocaMed.ai provides informational analysis based on standard coding guidelines and 2025 CMS fee schedules. 
+          This is not legal advice. Always verify with the hospital billing department.
+      </div>
+
     </div>
   );
 };
