@@ -1,0 +1,7 @@
+{
+  "name": "AdvocaMed.ai",
+  "description": "AI-powered medical bill analysis and patient empowerment platform. Detects billing errors and generates appeal letters.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
