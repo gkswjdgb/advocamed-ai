@@ -56,6 +56,17 @@ export interface BlogPost {
   category: string;
 }
 
+// pSEO Data Interface
+export interface Hospital {
+  slug: string;
+  name: string;
+  city: string;
+  state: string;
+  fpl_cutoff: number; // e.g. 400 means 400% FPL
+  policy_summary: string;
+  financial_aid_url?: string;
+}
+
 export enum AppStep {
   HERO,
   UPLOAD,
