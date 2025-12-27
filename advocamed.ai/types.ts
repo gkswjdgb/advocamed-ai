@@ -3,8 +3,9 @@ export interface BillItem {
   description: string;
   chargedAmount: number;
   expectedAmount?: number;
-  flag: 'overcharged' | 'error' | 'ok' | 'unknown' | 'upcoding' | 'unbundling';
-  reason?: string;
+  variance_level: 'Normal' | 'High' | 'Very High';
+  flag_reason?: string;
+  suggested_question?: string;
 }
 
 export interface CharityAnalysis {
@@ -35,6 +36,7 @@ export interface AnalysisResult {
   noSurprisesAnalysis?: NoSurprisesAnalysis;
   userFinancials?: UserFinancials;
   dataSourceCitation?: string;
+  disclaimer?: string;
 }
 
 export interface CharityEligibility {
