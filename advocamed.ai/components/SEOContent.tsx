@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { hospitals } from '../data/hospitals';
 
 export const SEOContent: React.FC = () => {
     const currentYear = new Date().getFullYear();
@@ -56,6 +58,23 @@ export const SEOContent: React.FC = () => {
                         <p className="text-sm leading-relaxed">
                             Never pay a summary bill that only says "Lab Services" or "Pharmacy". You have the right to request an <strong>itemized statement</strong> (or "superbill") which lists every specific CPT code. This is essential for detecting errors, as summary bills often hide overcharges. AdvocaMed reads these codes to find discrepancies.
                         </p>
+                    </div>
+                </div>
+
+                {/* pSEO Internal Links */}
+                <div className="mt-16 border-t border-gray-100 pt-10">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Popular Hospital Financial Aid Guides</h3>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {hospitals.map((hospital) => (
+                            <Link 
+                                key={hospital.slug} 
+                                to={`/hospital/${hospital.slug}`}
+                                className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors no-underline"
+                            >
+                                {hospital.name} Financial Aid
+                            </Link>
+                        ))}
+                        <span className="px-4 py-2 text-sm text-gray-400">and 5,000+ more...</span>
                     </div>
                 </div>
 
