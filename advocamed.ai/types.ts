@@ -44,6 +44,16 @@ export interface CharityEligibility {
   reasoning: string;
 }
 
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  readingTime: string;
+  category: string;
+}
+
 export enum AppStep {
   HERO,
   UPLOAD,
@@ -51,5 +61,7 @@ export enum AppStep {
   RESULTS,
   APPEAL_GENERATION,
   PRIVACY,
-  CONTACT
+  CONTACT,
+  BLOG,
+  BLOG_POST
 }
