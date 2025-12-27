@@ -9,11 +9,10 @@ interface BlogPostViewProps {
 }
 
 export const BlogPostView: React.FC<BlogPostViewProps> = ({ post, onBack, onScanNow }) => {
-  // Handle in-content button clicks (like the "Scan Bill Now" CTA in the html)
+  // Handle in-content button clicks
   useEffect(() => {
     const handleScroll = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        // Check if the clicked element has the specific onclick attribute from the raw HTML content
         if (target.getAttribute('onclick')?.includes('window.scrollTo')) {
             e.preventDefault();
             onScanNow();
