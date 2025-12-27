@@ -1,7 +1,8 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { AnalysisResult, UserFinancials } from "../types";
 
-const apiKey = process.env.API_KEY || ''; 
+// Support both standard API_KEY and the user's GEMINI_API_KEY configuration
+const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY || ''; 
 const ai = new GoogleGenAI({ apiKey });
 
 const currentYear = new Date().getFullYear();
@@ -61,6 +62,10 @@ export const analyzeMedicalBill = async (
   mimeType: string,
   financials?: UserFinancials
 ): Promise<AnalysisResult> => {
+  if (!apiKey) {
+      throw new Error("API Key is missing. Please configure GEMINI_API_KEY in your environment variables.");
+  }
+
   const financialContext = financials 
     ? `Patient's Annual Income: $${financials.annualIncome}, Household Size: ${financials.householdSize}.`
     : "No financial information provided.";
