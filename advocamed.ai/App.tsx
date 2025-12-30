@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter as Router, Routes, Route, Link, useSearchParams, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useSearchParams } from 'react-router-dom';
 
 // Components
 import { Hero } from './components/Hero';
@@ -15,7 +16,7 @@ import CookieBanner from './components/CookieBanner';
 import BlogPage from './pages/BlogPage'; 
 import BlogPost from './pages/BlogPost';
 import HospitalGuide from './pages/HospitalGuide';
-import HospitalDirectory from './pages/HospitalDirectory'; // Import new page
+import HospitalDirectory from './pages/HospitalDirectory';
 import ContactUs from './pages/ContactUs';
 
 import { AnalysisResult } from './types';
@@ -92,7 +93,7 @@ const App: React.FC = () => {
 
   return (
     <HelmetProvider>
-      <Router>
+      <BrowserRouter>
         <div className="min-h-screen bg-gray-50 flex flex-col">
           
           {/* Navigation */}
@@ -166,7 +167,7 @@ const App: React.FC = () => {
           <CookieBanner />
 
         </div>
-      </Router>
+      </BrowserRouter>
     </HelmetProvider>
   );
 };
