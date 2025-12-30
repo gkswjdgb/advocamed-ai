@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from "@google/genai";
 
 export default async function handler(req, res) {
@@ -5,14 +6,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Server Configuration Error: API Key missing' });
-  }
-
+  // Use the API key directly from process.env as per guidelines.
   try {
     const { analysis, financials } = req.body;
-    const ai = new GoogleGenAI({ apiKey });
+    // Always use the specified initialization format.
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     const prompt = `
       Write a polite but firm "Request for Clarification" email to a hospital billing department.
@@ -38,6 +36,7 @@ export default async function handler(req, res) {
       contents: prompt
     });
 
+    // Extract text directly from response.text property.
     res.status(200).json({ text: response.text });
 
   } catch (error) {
