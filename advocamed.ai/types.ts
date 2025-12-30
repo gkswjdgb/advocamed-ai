@@ -56,17 +56,18 @@ export interface BlogPost {
   category: string;
 }
 
-// pSEO Data Interface - Updated for scalability
+// pSEO Data Interface - Updated for fact-based transparency
 export interface Hospital {
   id: string;
   slug: string;
   name: string;
   city: string;
   state: string;
-  fpl_limit: number; // The % FPL for 100% discount
-  deadline_days: number; // Days to apply from bill date
+  fpl_limit: number; 
+  deadline_days: number;
   policy_summary?: string;
   financial_aid_url?: string;
+  policy_note?: string; // Tracks the source/certainty of the data
 }
 
 export enum AppStep {
