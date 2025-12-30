@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
@@ -6,11 +7,10 @@ import { hospitals } from '../data/hospitals';
 const HospitalGuide: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   
-  // 1. Try to find specific hospital data
+  // 1. Find specific hospital data
   const hospitalData = hospitals.find(h => h.slug === slug);
 
-  // 2. Fallback Logic (Programmatic Generation)
-  // Even if we don't have the data in hospitals.ts, we generate a valid page.
+  // 2. Fallback Logic
   const hospitalName = hospitalData 
     ? hospitalData.name 
     : slug 
@@ -18,7 +18,8 @@ const HospitalGuide: React.FC = () => {
       : 'Hospital';
 
   const currentYear = new Date().getFullYear();
-  const fplThreshold = hospitalData ? hospitalData.fpl_cutoff : 400; // Default to 400% if unknown
+  const fplThreshold = hospitalData ? hospitalData.fpl_limit : 400;
+  const deadline = hospitalData ? hospitalData.deadline_days : 240;
 
   return (
     <>
@@ -40,12 +41,12 @@ const HospitalGuide: React.FC = () => {
                 </h1>
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                     {hospitalData 
-                        ? `According to their policy, ${hospitalName} offers financial assistance for households earning up to ${hospitalData.fpl_cutoff}% of the Federal Poverty Level.`
-                        : `Under federal law (IRS 501r), non-profit hospitals like ${hospitalName} must provide financial assistance to eligible patients. Our AI analyzes your bill to find hidden discounts.`
+                        ? `According to their policy, ${hospitalName} offers financial assistance for households earning up to ${hospitalData.fpl_limit}% of the Federal Poverty Level.`
+                        : `Under federal law (IRS 501r), non-profit hospitals like ${hospitalName} must provide financial assistance to eligible patients.`
                     }
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Link to="/" className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-primary hover:bg-primaryHover shadow-lg hover:shadow-xl transition-all">
+                    <Link to="/?step=UPLOAD" className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-primary hover:bg-primaryHover shadow-lg hover:shadow-xl transition-all">
                         Scan My {hospitalName} Bill
                     </Link>
                     {hospitalData?.financial_aid_url && (
@@ -60,49 +61,45 @@ const HospitalGuide: React.FC = () => {
         {/* Content Section */}
         <div className="max-w-3xl mx-auto px-4 py-12 prose prose-lg prose-indigo text-gray-600">
             
-            {/* Dynamic Policy Section */}
             <h2 className="text-gray-900">{hospitalName} Financial Assistance Policy</h2>
             <p>
                 As a healthcare provider in the US, <strong>{hospitalName}</strong> maintains a Financial Assistance Policy (FAP). 
-                {hospitalData 
-                  ? ` Specifically, they provide: ${hospitalData.policy_summary}`
-                  : ` Eligibility is typically based on the Federal Poverty Guidelines (FPL).`
-                }
+                {hospitalData?.policy_summary ? ` Specifically: ${hospitalData.policy_summary}` : ' This policy is mandated by IRS section 501(r).'}
             </p>
             
             <div className="bg-green-50 p-6 rounded-xl border border-green-100 not-prose my-8 shadow-sm">
-                <h3 className="font-bold text-green-900 text-lg mb-3"> likely Eligibility Criteria ({currentYear})</h3>
+                <h3 className="font-bold text-green-900 text-lg mb-3">Charity Eligibility Criteria ({currentYear})</h3>
                 <ul className="space-y-3 text-sm text-green-800">
                     <li className="flex items-center">
                         <span className="bg-green-200 text-green-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs">1</span> 
-                        <strong>Full Write-off (Free Care):</strong> Income &lt; 200% FPL
+                        <strong>Full Write-off (Free Care):</strong> Income up to {fplThreshold}% FPL
                     </li>
                     <li className="flex items-center">
                         <span className="bg-green-200 text-green-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs">2</span> 
-                        <strong>Partial Discount:</strong> Income 200% - {fplThreshold}% FPL
+                        <strong>Application Deadline:</strong> {deadline} days from the first billing statement.
                     </li>
                     <li className="flex items-center">
                         <span className="bg-green-200 text-green-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs">3</span> 
-                        <strong>Catastrophic Relief:</strong> If the bill exceeds 10-25% of annual income.
+                        <strong>Asset Check:</strong> Some hospitals may check liquid assets, but many ignore retirement accounts.
                     </li>
                 </ul>
             </div>
 
             <h2 className="text-gray-900">How to Dispute a Bill from {hospitalName}</h2>
             <p>
-                Errors in medical billing are common. Before paying the full amount to {hospitalName}, take these steps:
+                Before paying the full amount to {hospitalName}, take these steps:
             </p>
             <ul>
-                <li><strong>Request an Itemized Statement:</strong> Do not pay based on a summary. Ask {hospitalName}'s billing department for a full itemized list with CPT codes.</li>
-                <li><strong>Check Service Levels:</strong> Ensure you weren't "upcoded" (e.g., charged for a Level 5 emergency for a minor visit).</li>
-                <li><strong>Verify In-Network Status:</strong> Under the No Surprises Act, out-of-network clinicians at {hospitalName} (like anesthesiologists) cannot balance bill you for emergency services.</li>
+                <li><strong>Ask for CPT Codes:</strong> Request an itemized statement listing all procedural codes.</li>
+                <li><strong>Analyze Upcoding:</strong> Check if simple services were billed as complex ones.</li>
+                <li><strong>No Surprises Act:</strong> Verify you weren't billed for out-of-network services at this facility.</li>
             </ul>
 
             <div className="mt-12 pt-8 border-t border-gray-200 text-center not-prose">
                 <div className="bg-secondary rounded-2xl p-8 text-white shadow-xl">
                     <h3 className="text-2xl font-bold mb-2">Let AI Audit Your {hospitalName} Bill</h3>
                     <p className="text-gray-400 mb-6">We check for coding errors and 501(r) eligibility automatically.</p>
-                    <Link to="/" className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primaryHover transition-colors w-full sm:w-auto">
+                    <Link to="/?step=UPLOAD" className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primaryHover transition-colors w-full sm:w-auto">
                         Start Free Analysis
                     </Link>
                 </div>
