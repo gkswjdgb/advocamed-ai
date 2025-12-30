@@ -2,12 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// 1. Data Source (Manually synced with data/hospitals.ts for pSEO strategy)
-const hospitals = [
-  { slug: "texas-health-resources", updated: "2025-12-27" },
-  { slug: "cleveland-clinic", updated: "2025-12-27" },
-  { slug: "kaiser-permanente", updated: "2025-12-27" }
-];
+// Setup paths in ES Module environment
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 1. Read the external data store
+const jsonPath = path.resolve(__dirname, '../data/hospitals.json');
+const rawData = fs.readFileSync(jsonPath, 'utf8');
+const hospitals = JSON.parse(rawData);
 
 const DOMAIN = 'https://www.advocamed.com';
 
@@ -15,7 +17,7 @@ const DOMAIN = 'https://www.advocamed.com';
 const staticPages = [
   '',
   '/blog',
-  '/hospitals', // Added Directory
+  '/hospitals',
   '/contact-us',
   '/privacy-policy',
   '/blog/how-to-apply-charity-care-2025',
@@ -24,6 +26,8 @@ const staticPages = [
 ];
 
 const generateSitemap = () => {
+  console.log(`🔍 Generating sitemap for ${hospitals.length} hospitals...`);
+
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${staticPages
@@ -39,15 +43,13 @@ const generateSitemap = () => {
     .map(hospital => `
     <url>
       <loc>${DOMAIN}/hospital/${hospital.slug}</loc>
-      <lastmod>${hospital.updated}</lastmod>
+      <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.6</priority>
     </url>
   `).join('')}
 </urlset>`;
 
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
   const publicPath = path.resolve(__dirname, '../public/sitemap.xml');
 
   const dir = path.dirname(publicPath);
@@ -56,8 +58,7 @@ const generateSitemap = () => {
   }
 
   fs.writeFileSync(publicPath, sitemap);
-  console.log(`✅ Sitemap generated successfully at ${publicPath}`);
-  console.log(`📊 Total pages: ${staticPages.length + hospitals.length}`);
+  console.log(`✅ Sitemap updated! Total URLs: ${staticPages.length + hospitals.length}`);
 };
 
 generateSitemap();
