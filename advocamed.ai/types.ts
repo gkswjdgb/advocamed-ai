@@ -56,14 +56,16 @@ export interface BlogPost {
   category: string;
 }
 
-// pSEO Data Interface
+// pSEO Data Interface - Updated for scalability
 export interface Hospital {
+  id: string;
   slug: string;
   name: string;
   city: string;
   state: string;
-  fpl_cutoff: number; // e.g. 400 means 400% FPL
-  policy_summary: string;
+  fpl_limit: number; // The % FPL for 100% discount
+  deadline_days: number; // Days to apply from bill date
+  policy_summary?: string;
   financial_aid_url?: string;
 }
 
