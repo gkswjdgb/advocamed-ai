@@ -1,0 +1,46 @@
+[
+  {
+    "id": "tx-1",
+    "slug": "texas-health-resources",
+    "name": "Texas Health Resources",
+    "city": "Arlington",
+    "state": "TX",
+    "fpl_limit": 200,
+    "deadline_days": 240,
+    "policy_summary": "Offers 100% charity care for patients earning up to 200% of the FPL.",
+    "financial_aid_url": "https://www.texashealth.org/Financial-Assistance"
+  },
+  {
+    "id": "oh-1",
+    "slug": "cleveland-clinic",
+    "name": "Cleveland Clinic",
+    "city": "Cleveland",
+    "state": "OH",
+    "fpl_limit": 250,
+    "deadline_days": 240,
+    "policy_summary": "One of the most generous in the US, providing free care up to 250% FPL.",
+    "financial_aid_url": "https://my.clevelandclinic.org/patients/billing-finance/financial-assistance"
+  },
+  {
+    "id": "ca-1",
+    "slug": "kaiser-permanente",
+    "name": "Kaiser Permanente",
+    "city": "Oakland",
+    "state": "CA",
+    "fpl_limit": 350,
+    "deadline_days": 240,
+    "policy_summary": "Covers low-income patients up to 350% FPL in most regions.",
+    "financial_aid_url": "https://about.kaiserpermanente.org/commitments-and-impact/healthy-communities/medical-financial-assistance-program"
+  },
+  {
+    "id": "ny-1",
+    "slug": "nyu-langone-health",
+    "name": "NYU Langone Health",
+    "city": "New York",
+    "state": "NY",
+    "fpl_limit": 400,
+    "deadline_days": 240,
+    "policy_summary": "Extensive financial assistance for patients in the NYC area.",
+    "financial_aid_url": "https://nyulangone.org/patient-care/billing-insurance/financial-assistance"
+  }
+]
