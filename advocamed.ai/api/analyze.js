@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 
 export default async function handler(req, res) {
@@ -5,14 +6,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Server Configuration Error: API Key missing' });
-  }
-
+  // Use the API key directly from process.env as per guidelines.
   try {
     const { base64Image, mimeType, financials } = req.body;
-    const ai = new GoogleGenAI({ apiKey });
+    // Always use the specified initialization format.
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const currentYear = new Date().getFullYear();
 
     const financialContext = financials 
@@ -87,45 +85,29 @@ export default async function handler(req, res) {
       required: ["totalCharged", "items", "summary", "confidenceScore"]
     };
 
-    const modelCandidates = ['gemini-3-flash-preview', 'gemini-3-pro-preview', 'gemini-2.0-flash-exp'];
-    
-    let lastError = null;
-    let result = null;
-
-    // Retry logic across models
-    for (const modelName of modelCandidates) {
-      try {
-        const response = await ai.models.generateContent({
-          model: modelName,
-          contents: {
-            parts: [
-              { inlineData: { mimeType, data: base64Image } },
-              { text: `Analyze this bill. Context: ${financialContext}. Year: ${currentYear}. Output JSON.` }
-            ]
-          },
-          config: {
-            systemInstruction,
-            responseMimeType: "application/json",
-            responseSchema: analysisSchema,
-            temperature: 0.1
-          }
-        });
-
-        if (response.text) {
-          result = JSON.parse(response.text);
-          if (financials) result.userFinancials = financials;
-          break; // Success, exit loop
-        }
-      } catch (error) {
-        console.warn(`Model ${modelName} failed:`, error.message);
-        lastError = error;
+    // Use gemini-3-flash-preview for fast and efficient analysis.
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: {
+        parts: [
+          { inlineData: { mimeType, data: base64Image } },
+          { text: `Analyze this bill. Context: ${financialContext}. Year: ${currentYear}. Output JSON.` }
+        ]
+      },
+      config: {
+        systemInstruction,
+        responseMimeType: "application/json",
+        responseSchema: analysisSchema,
+        temperature: 0.1
       }
-    }
+    });
 
-    if (result) {
+    if (response.text) {
+      const result = JSON.parse(response.text);
+      if (financials) result.userFinancials = financials;
       res.status(200).json(result);
     } else {
-      throw lastError || new Error("Analysis failed across all models.");
+      throw new Error("Empty response from AI");
     }
 
   } catch (error) {
