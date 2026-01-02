@@ -22,13 +22,14 @@ export default function CookieBanner() {
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900 bg-opacity-95 text-white p-4 z-[100] border-t border-gray-700 animate-fade-in-up">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="text-sm text-gray-300 text-center sm:text-left">
-          <p>
-            🍪 <strong>Privacy & Cookies:</strong> We use cookies to analyze traffic and show personalized ads. 
+          <p className="font-bold text-white mb-1">
+            🍪 Privacy & Data Rights
           </p>
-          <p className="mt-1 text-xs text-gray-400">
-            Residents of CA, CO, CT, VA, UT, OR, TX, MT, DE, IA, NE, NH, NJ, IN, KY, MN, TN, MD, and RI have specific rights regarding the "sale" or "sharing" of data.
+          <p className="text-xs text-gray-400 leading-relaxed">
+            We use cookies to analyze traffic and show personalized ads. 
+            Residents of <strong>CA, CO, CT, VA, UT, OR, TX, MT, DE, IA, NE, NH, NJ, TN, MN, MD, IN, KY, and RI</strong> have specific rights regarding the "sale" or "sharing" of data.
             <br />
-            See our <Link to="/privacy-policy" className="underline text-white hover:text-primary">Privacy Policy</Link> for opt-out details.
+            We honor Global Privacy Control (GPC) signals. See our <Link to="/privacy-policy" className="underline text-white hover:text-primary">Privacy Policy</Link> for details.
           </p>
         </div>
         <div className="flex gap-4 shrink-0">
