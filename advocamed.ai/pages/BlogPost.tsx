@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { blogPosts } from '../data/blogData';
 import SEO from '../components/SEO';
+import { Helmet } from 'react-helmet-async';
 
 const BlogPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,6 +32,32 @@ const BlogPost: React.FC = () => {
     );
   }
 
+  // GEO/SEO: Advanced Schema for Articles
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.excerpt,
+    "image": "https://www.advocamed.com/og-image.png", // Ensure this exists or use a dynamic one
+    "author": {
+      "@type": "Organization",
+      "name": "AdvocaMed AI Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AdvocaMed",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.advocamed.com/favicon.svg"
+      }
+    },
+    "datePublished": post.date,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.advocamed.com/blog/${post.id}`
+    }
+  };
+
   return (
     <div className="bg-white">
       <SEO 
@@ -38,6 +65,12 @@ const BlogPost: React.FC = () => {
         description={post.excerpt}
         canonical={`/blog/${post.id}`} 
       />
+      {/* Inject Article Schema */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+      </Helmet>
       
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Link 
