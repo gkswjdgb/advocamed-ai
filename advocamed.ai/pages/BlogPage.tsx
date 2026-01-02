@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { blogPosts } from '../data/blogData';
+import { blogPosts } from '../data/blogPosts';
 import SEO from '../components/SEO';
 
 const BlogPage: React.FC = () => {
