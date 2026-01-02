@@ -20,12 +20,18 @@ const HospitalGuide: React.FC = () => {
   const fplThreshold = hospitalData ? hospitalData.fpl_limit : 200;
   const deadline = hospitalData ? hospitalData.deadline_days : 240;
   const policySource = hospitalData?.policy_note || "Standard Federal Guidelines (IRS 501r)";
+  const city = hospitalData?.city || "US";
+  const state = hospitalData?.state || "";
+
+  // Dynamic SEO Title & Description with targeted keywords
+  const seoTitle = `${hospitalName} Charity Care & Financial Assistance | ${city} Application Guide`;
+  const seoDescription = `Apply for charity care at ${hospitalName} in ${city}${state ? `, ${state}` : ''}. Learn how to get medical bill forgiveness, check ${currentYear} income limits (${fplThreshold}% FPL), and find the financial aid application.`;
 
   return (
     <>
       <SEO 
-        title={`${hospitalName} Financial Assistance & Billing Dispute Guide (${currentYear})`}
-        description={`Learn how to apply for charity care at ${hospitalName} in ${hospitalData?.city || ''}. Income limit: ${fplThreshold}% FPL. Verified policy: ${policySource}.`}
+        title={seoTitle}
+        description={seoDescription}
         canonical={`/hospital/${slug}`}
       />
       
@@ -40,7 +46,7 @@ const HospitalGuide: React.FC = () => {
                     Financial Aid at <span className="text-primary">{hospitalName}</span>
                 </h1>
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                    {hospitalData?.city}, {hospitalData?.state} • Non-profit status compliance guide for {currentYear}.
+                    {city}, {state} • Non-profit status compliance guide for {currentYear}.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -93,7 +99,7 @@ const HospitalGuide: React.FC = () => {
                 Under IRS Section 501(r), {hospitalName} is required to offer financial assistance if you are underinsured or low-income.
             </p>
             <ol>
-                <li><strong>Request an Itemized Bill:</strong> Ask the billing office at {hospitalData?.city} for a list with CPT codes.</li>
+                <li><strong>Request an Itemized Bill:</strong> Ask the billing office at {city} for a list with CPT codes.</li>
                 <li><strong>Verify Coding Accuracy:</strong> Check for duplicate charges or "upcoding" where simple services are billed as complex.</li>
                 <li><strong>Submit a FAP Application:</strong> Download the Financial Assistance Policy (FAP) and apply before the {deadline}-day deadline.</li>
             </ol>
