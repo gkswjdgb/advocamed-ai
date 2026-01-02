@@ -21,8 +21,8 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
               <span className="block">Medical Billing,</span>
               <span className="block text-primary">Simplified & Fair.</span>
             </h1>
-            <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              Don't fight the system alone. AdvocaMed uses AI to analyze your hospital bills, find billing errors, and automatically generate appeal letters to save you money.
+            <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl leading-relaxed">
+              Don't fight the system alone. AdvocaMed uses AI to detect billing errors and identifies if you qualify for <strong className="text-gray-700">bill forgiveness</strong> under <strong className="text-gray-700">IRS 501(r) Charity Care</strong> (financial assistance based on income).
             </p>
             <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
               <div className="flex flex-col sm:flex-row gap-4">
