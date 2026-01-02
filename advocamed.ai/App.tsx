@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Routes, Route, Link, useSearchParams } from 'react-router-dom';
@@ -11,7 +10,7 @@ import { SEOContent } from './components/SEOContent';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import CookieBanner from './components/CookieBanner';
-import ScrollToTop from './components/ScrollToTop'; // Fixed import
+import ScrollToTop from './components/ScrollToTop';
 
 // Pages
 import BlogPage from './pages/BlogPage'; 
@@ -19,8 +18,10 @@ import BlogPost from './pages/BlogPost';
 import HospitalGuide from './pages/HospitalGuide';
 import HospitalDirectory from './pages/HospitalDirectory';
 import ContactUs from './pages/ContactUs';
+import NotFound from './pages/NotFound'; // New 404 Page
 
 import { AnalysisResult } from './types';
+import { hospitals } from './data/hospitals'; // Import for Footer Links
 
 // 1. Home Component: Handles Scan/Result state via URL Params
 const Home = () => {
@@ -33,7 +34,6 @@ const Home = () => {
 
   const handleStart = () => {
     setSearchParams({ step: 'UPLOAD' });
-    // Scroll handled by ScrollToTop, but for in-page state changes, we might want smooth scroll
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -94,11 +94,14 @@ const Home = () => {
 // 2. Main App Structure
 const App: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  
+  // Pick top 6 hospitals for SEO footer links to help crawlers find deep content
+  const featuredHospitals = hospitals.slice(0, 6);
 
   return (
     <HelmetProvider>
       <BrowserRouter>
-        <ScrollToTop /> {/* Critical Fix: Ensures page starts at top on nav */}
+        <ScrollToTop />
         <div className="min-h-screen bg-gray-50 flex flex-col">
           
           {/* Navigation */}
@@ -135,28 +138,58 @@ const App: React.FC = () => {
               <Route path="/hospital/:slug" element={<HospitalGuide />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              {/* Catch-all 404 Route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
 
           {/* Footer */}
           <footer className="bg-white border-t border-gray-200 mt-auto">
             <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 border-b border-gray-100 pb-8">
-                <div className="text-center md:text-left">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-gray-100 pb-8">
+                <div className="col-span-1 md:col-span-1">
                   <span className="text-xl font-bold text-gray-900 tracking-tight">
                     Advoca<span className="text-primary">Med</span>.ai
                   </span>
-                  <p className="text-xs text-gray-400 mt-2">Empowering patients through AI-driven medical bill analysis.</p>
+                  <p className="text-xs text-gray-400 mt-4 leading-relaxed">
+                    AI-powered medical bill analysis and patient empowerment platform. We help you fight billing errors and apply for charity care under IRS 501(r).
+                  </p>
                 </div>
-                <div className="flex justify-center space-x-6">
-                  <Link to="/hospitals" className="text-gray-500 hover:text-gray-900 text-sm font-semibold p-2">Directory</Link>
-                  <Link to="/blog" className="text-gray-500 hover:text-gray-900 text-sm font-semibold p-2">Guides</Link>
-                  <Link to="/contact-us" className="text-gray-500 hover:text-gray-900 text-sm font-semibold p-2">Contact</Link>
+                
+                {/* Sitemap Links */}
+                <div>
+                    <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Platform</h3>
+                    <ul className="space-y-2">
+                        <li><Link to="/hospitals" className="text-gray-500 hover:text-primary text-sm">Hospital Directory</Link></li>
+                        <li><Link to="/blog" className="text-gray-500 hover:text-primary text-sm">Dispute Guides</Link></li>
+                        <li><Link to="/?step=UPLOAD" className="text-gray-500 hover:text-primary text-sm">Free Bill Scan</Link></li>
+                    </ul>
                 </div>
-                <div className="flex justify-center md:justify-end space-x-4">
-                  <Link to="/privacy-policy" className="text-gray-400 hover:text-gray-600 text-xs p-2">Privacy</Link>
+
+                {/* Dynamic SEO Links (Internal Linking) */}
+                <div>
+                    <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Popular Policies</h3>
+                    <ul className="space-y-2">
+                        {featuredHospitals.map(h => (
+                            <li key={h.id}>
+                                <Link to={`/hospital/${h.slug}`} className="text-gray-500 hover:text-primary text-sm truncate block">
+                                    {h.name} Financial Aid
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Support</h3>
+                    <ul className="space-y-2">
+                        <li><Link to="/contact-us" className="text-gray-500 hover:text-primary text-sm">Contact Us</Link></li>
+                        <li><Link to="/privacy-policy" className="text-gray-500 hover:text-primary text-sm">Privacy Policy</Link></li>
+                        <li><a href="/sitemap.xml" className="text-gray-500 hover:text-primary text-sm">XML Sitemap</a></li>
+                    </ul>
                 </div>
               </div>
+              
               <div className="flex flex-col items-center justify-center">
                 <p className="text-center text-xs text-gray-400">
                   &copy; {currentYear} AdvocaMed.ai. All rights reserved. 
