@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const SaveForLater: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Simple check for mobile devices to provide honest instructions
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+  }, []);
 
   const handleBookmark = () => {
-    // Show instruction because modern browsers block programmatic bookmarking
     setShowTooltip(true);
     setTimeout(() => setShowTooltip(false), 5000);
   };
@@ -20,7 +25,7 @@ export const SaveForLater: React.FC = () => {
         <div>
           <h4 className="font-bold text-gray-900 text-sm">Don't have a bill right now?</h4>
           <p className="text-xs text-gray-600 mt-1">
-            Medical emergencies happen unexpectedly. Bookmark this tool now to save thousands later.
+            Medical emergencies happen unexpectedly. Save this tool now to protect your wallet later.
           </p>
         </div>
       </div>
@@ -28,15 +33,19 @@ export const SaveForLater: React.FC = () => {
       <div className="relative">
         <button 
           onClick={handleBookmark}
-          className="whitespace-nowrap px-4 py-2 bg-white border border-blue-200 text-blue-700 text-xs font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-sm flex items-center gap-2"
+          className="whitespace-nowrap px-4 py-2 bg-white border border-blue-200 text-blue-700 text-xs font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-sm flex items-center gap-2 active:scale-95 transform"
         >
           <span>⭐ Bookmark for Later</span>
         </button>
 
-        {/* Tooltip for Instruction */}
+        {/* Tooltip for Instruction - Conditional logic for honesty */}
         {showTooltip && (
-          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-gray-900 text-white text-xs rounded-lg py-2 px-3 shadow-xl z-50 text-center">
-            <p>Press <span className="font-bold text-yellow-400">Ctrl + D</span> (or Cmd + D) to save.</p>
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-56 bg-gray-900 text-white text-xs rounded-lg py-2 px-3 shadow-xl z-50 text-center">
+            {isMobile ? (
+               <p>Tap your browser menu <span className="text-gray-400">(⋮ or share)</span> and select <span className="font-bold text-yellow-400">"Add to Bookmarks"</span> or "Add to Home Screen".</p>
+            ) : (
+               <p>Press <span className="font-bold text-yellow-400">Ctrl + D</span> (or Cmd + D on Mac) to save instantly.</p>
+            )}
             <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-gray-900"></div>
           </div>
         )}
