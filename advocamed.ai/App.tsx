@@ -18,7 +18,7 @@ import BlogPost from './pages/BlogPost';
 import HospitalGuide from './pages/HospitalGuide';
 import HospitalDirectory from './pages/HospitalDirectory';
 import ContactUs from './pages/ContactUs';
-import NotFound from './pages/NotFound'; // New 404 Page
+import NotFound from './pages/NotFound';
 
 import { AnalysisResult } from './types';
 import { hospitals } from './data/hospitals'; // Import for Footer Links
