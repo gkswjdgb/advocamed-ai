@@ -11,6 +11,7 @@ import { SEOContent } from './components/SEOContent';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import CookieBanner from './components/CookieBanner';
+import ScrollToTop from './components/ScrollToTop'; // Fixed import
 
 // Pages
 import BlogPage from './pages/BlogPage'; 
@@ -32,6 +33,7 @@ const Home = () => {
 
   const handleStart = () => {
     setSearchParams({ step: 'UPLOAD' });
+    // Scroll handled by ScrollToTop, but for in-page state changes, we might want smooth scroll
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -73,10 +75,12 @@ const Home = () => {
       )}
 
       {isLoading && (
-        <div className="flex flex-col items-center justify-center h-[60vh]">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-4"></div>
-          <h2 className="text-xl font-bold text-gray-800">Analyzing Bill Structure...</h2>
-          <p className="text-gray-500 mt-2">Cross-referencing CPT codes with Medicare standards.</p>
+        <div className="flex flex-col items-center justify-center h-[60vh] animate-fade-in-up">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-6"></div>
+          <h2 className="text-2xl font-bold text-gray-800">Analyzing Bill Structure...</h2>
+          <p className="text-gray-500 mt-2 text-center max-w-md px-4">
+            Our AI is cross-referencing CPT codes with Medicare standards and checking charity care eligibility.
+          </p>
         </div>
       )}
 
@@ -94,25 +98,26 @@ const App: React.FC = () => {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop /> {/* Critical Fix: Ensures page starts at top on nav */}
         <div className="min-h-screen bg-gray-50 flex flex-col">
           
           {/* Navigation */}
-          <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+          <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16">
-                <Link to="/" className="flex items-center cursor-pointer z-50">
+                <Link to="/" className="flex items-center cursor-pointer z-50 active:scale-95 transition-transform">
                   <span className="text-2xl font-bold text-gray-900 tracking-tight">
                     Advoca<span className="text-primary">Med</span>.ai
                   </span>
                 </Link>
-                <div className="flex items-center space-x-6">
-                  <Link to="/hospitals" className="text-sm font-medium text-gray-500 hover:text-gray-900">
+                <div className="flex items-center space-x-4 md:space-x-8">
+                  <Link to="/hospitals" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
                     Hospitals
                   </Link>
-                  <Link to="/blog" className="text-sm font-medium text-gray-500 hover:text-gray-900">
+                  <Link to="/blog" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
                     Blog
                   </Link>
-                  <Link to="/contact-us" className="text-sm font-medium text-gray-500 hover:text-gray-900">
+                  <Link to="/contact-us" className="hidden md:block text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
                     Contact
                   </Link>
                 </div>
@@ -144,12 +149,12 @@ const App: React.FC = () => {
                   <p className="text-xs text-gray-400 mt-2">Empowering patients through AI-driven medical bill analysis.</p>
                 </div>
                 <div className="flex justify-center space-x-6">
-                  <Link to="/hospitals" className="text-gray-500 hover:text-gray-900 text-sm font-semibold">Directory</Link>
-                  <Link to="/blog" className="text-gray-500 hover:text-gray-900 text-sm font-semibold">Guides</Link>
-                  <Link to="/contact-us" className="text-gray-500 hover:text-gray-900 text-sm font-semibold">Contact</Link>
+                  <Link to="/hospitals" className="text-gray-500 hover:text-gray-900 text-sm font-semibold p-2">Directory</Link>
+                  <Link to="/blog" className="text-gray-500 hover:text-gray-900 text-sm font-semibold p-2">Guides</Link>
+                  <Link to="/contact-us" className="text-gray-500 hover:text-gray-900 text-sm font-semibold p-2">Contact</Link>
                 </div>
                 <div className="flex justify-center md:justify-end space-x-4">
-                  <Link to="/privacy-policy" className="text-gray-400 hover:text-gray-600 text-xs">Privacy</Link>
+                  <Link to="/privacy-policy" className="text-gray-400 hover:text-gray-600 text-xs p-2">Privacy</Link>
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center">
