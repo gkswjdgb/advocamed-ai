@@ -5,20 +5,21 @@ import { AnalysisResult, UserFinancials } from '../types';
 interface UploadSectionProps {
   onAnalysisComplete: (result: AnalysisResult) => void;
   onLoading: (isLoading: boolean) => void;
-  onBack: () => void; // New prop for back navigation
+  onBack: () => void;
 }
 
 export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete, onLoading, onBack }) => {
   const [error, setError] = useState<string | null>(null);
   const [income, setIncome] = useState<string>('');
   const [householdSize, setHouseholdSize] = useState<string>('1');
+  const [showTips, setShowTips] = useState<boolean>(false);
 
   const handleFileChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setError('Please upload an image file (JPEG, PNG).');
+      setError('Please upload an image file (JPEG, PNG). PDF support coming soon.');
       return;
     }
 
@@ -44,7 +45,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
             onAnalysisComplete(result);
         } catch (apiError: any) {
             console.error(apiError);
-            setError(apiError.message || "Failed to call the Gemini API. Please try again.");
+            setError(apiError.message || "Failed to analyze. Please try a clearer photo.");
             onLoading(false);
         }
       };
@@ -58,7 +59,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 text-center animate-fade-in-up">
       
-      {/* Back Button - Expanded touch target */}
       <div className="flex justify-start mb-6">
         <button 
           onClick={onBack}
@@ -69,7 +69,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
         </button>
       </div>
 
-      {/* Error Toast */}
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between animate-fade-in-down">
             <div className="flex items-center text-left">
@@ -88,15 +87,44 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
 
       <div className="bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-gray-100">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Analyze Your Medical Bill</h2>
-        <p className="text-gray-500 mb-8 text-sm md:text-base">
-          Upload a clear photo of your bill. Sensitive info is not stored.
+        <p className="text-gray-500 mb-6 text-sm md:text-base">
+          Our AI reads CPT codes to find errors. <strong className="text-gray-700">We do not store your data.</strong>
         </p>
 
-        {/* Financial Context Inputs */}
+        {/* Improved Tips Accordion */}
+        <div className="mb-8">
+            <button 
+                onClick={() => setShowTips(!showTips)}
+                className="text-primary text-sm font-bold flex items-center justify-center mx-auto hover:underline"
+            >
+                {showTips ? 'Hide Scanning Tips' : '📸 3 Tips for Best Results'}
+            </button>
+            
+            {showTips && (
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left animate-fade-in-down">
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        <span className="text-lg">💡</span>
+                        <p className="text-xs text-gray-600 mt-1 font-semibold">Good Lighting</p>
+                        <p className="text-[10px] text-gray-500">Avoid shadows or glare covering the numbers.</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        <span className="text-lg">📄</span>
+                        <p className="text-xs text-gray-600 mt-1 font-semibold">Flatten the Bill</p>
+                        <p className="text-[10px] text-gray-500">Unfold completely so text lines are straight.</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        <span className="text-lg">🔍</span>
+                        <p className="text-xs text-gray-600 mt-1 font-semibold">Itemized Bill</p>
+                        <p className="text-[10px] text-gray-500">Summary bills don't work. Use the detailed one.</p>
+                    </div>
+                </div>
+            )}
+        </div>
+
         <div className="bg-blue-50 p-6 rounded-xl mb-8 text-left border border-blue-100">
             <h3 className="text-md font-semibold text-blue-900 mb-3 flex items-center">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Optional: Charity Care Check
+                Charity Care Calculator (Optional)
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -105,7 +133,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
                         type="number" 
                         value={income}
                         onChange={(e) => setIncome(e.target.value)}
-                        className="w-full p-2.5 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white transition-shadow"
+                        className="w-full p-2.5 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white transition-shadow placeholder-blue-300"
                         placeholder="e.g. 45000"
                     />
                 </div>
@@ -116,16 +144,12 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
                         onChange={(e) => setHouseholdSize(e.target.value)}
                         className="w-full p-2.5 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white transition-shadow"
                     >
-                        {[1,2,3,4,5,6,7,8].map(n => <option key={n} value={n}>{n}</option>)}
+                        {[1,2,3,4,5,6,7,8].map(n => <option key={n} value={n}>{n} People</option>)}
                     </select>
                 </div>
             </div>
-            <p className="text-xs text-blue-600 mt-2">
-                We use this to check for mandatory IRS 501(r) discounts.
-            </p>
         </div>
 
-        {/* Dual Actions for Mobile - Improved styling */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <label className="flex-1 flex flex-col items-center justify-center h-40 sm:h-48 border-2 border-primary border-dashed rounded-xl cursor-pointer bg-red-50/50 hover:bg-red-50 transition-all active:scale-95 group relative overflow-hidden">
                 <div className="flex flex-col items-center justify-center z-10">
@@ -147,8 +171,8 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
             <label className="flex-1 flex flex-col items-center justify-center h-40 sm:h-48 border-2 border-gray-200 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all active:scale-95 group">
                 <div className="flex flex-col items-center justify-center">
                      <svg className="w-8 h-8 text-gray-400 mb-2 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                    <p className="text-sm font-semibold text-gray-600">Upload File</p>
-                    <p className="text-xs text-gray-400">Select from Gallery</p>
+                    <p className="text-sm font-semibold text-gray-600">Upload Image</p>
+                    <p className="text-xs text-gray-400">JPEG or PNG</p>
                 </div>
                 <input 
                     type="file" 
