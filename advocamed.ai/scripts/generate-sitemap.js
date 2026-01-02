@@ -1,3 +1,4 @@
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,7 +14,7 @@ const hospitals = JSON.parse(rawData);
 
 const DOMAIN = 'https://www.advocamed.com';
 
-// 2. Static Pages
+// 2. Static Pages & Blog Posts
 const staticPages = [
   '',
   '/blog',
@@ -22,7 +23,10 @@ const staticPages = [
   '/privacy-policy',
   '/blog/how-to-apply-charity-care-2025',
   '/blog/understanding-cpt-codes',
-  '/blog/no-surprises-act-guide'
+  '/blog/no-surprises-act-guide',
+  '/blog/medical-bill-negotiation-scripts',
+  '/blog/itemized-bill-secret-weapon',
+  '/blog/medical-debt-statute-limitations'
 ];
 
 const generateSitemap = () => {
