@@ -1,22 +1,81 @@
 import React from 'react';
+import SEO from './SEO';
 
 export default function PrivacyPolicy() {
   return (
-    <div className="max-w-4xl mx-auto p-8 text-gray-800 pt-24 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
-      <p className="mb-4">Last Updated: December 27, 2025</p>
-      
-      <h2 className="text-xl font-semibold mt-6 mb-2">1. Information We Collect</h2>
-      <p className="mb-4">AdvocaMed uses AI (Gemini 1.5 Flash) to analyze medical bills. We do not store your medical records or uploaded images on our servers. Analysis is performed in real-time and discarded immediately after.</p>
-      
-      <h2 className="text-xl font-semibold mt-6 mb-2">2. Google AdSense & Cookies</h2>
-      <p className="mb-4">We use Google AdSense to serve ads. Google uses cookies to serve ads based on your prior visits to our website or other websites.</p>
-      
-      <h2 className="text-xl font-semibold mt-6 mb-2">3. Google Analytics</h2>
-      <p className="mb-4">We use Google Analytics (G-NLMH7ERZZ3) to analyze traffic. This helps us improve our service for patients across the US.</p>
+    <>
+      <SEO 
+        title="Privacy Policy & US State Rights"
+        description="Privacy Policy for AdvocaMed.ai, including compliance with US State Privacy Laws (CCPA, CPA, VCDPA, and others)."
+        canonical="/privacy-policy"
+      />
+      <div className="max-w-4xl mx-auto p-8 text-gray-800 pt-24 min-h-screen animate-fade-in-up">
+        <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
+        <p className="mb-4 text-sm text-gray-500">Last Updated: December 28, 2025</p>
+        
+        <div className="prose prose-indigo max-w-none text-gray-700">
+          <p>
+            At AdvocaMed.ai, we prioritize your privacy. This policy outlines how we handle data, use cookies, and comply with evolving US State regulations.
+          </p>
 
-      <h2 className="text-xl font-semibold mt-6 mb-2">4. AI Analysis</h2>
-      <p className="mb-4">Your data is processed via Google Gemini API. By using this tool, you agree to our processing of documents for the purpose of identifying billing errors.</p>
-    </div>
+          <h2 className="text-xl font-bold mt-8 mb-4">1. Information We Collect & AI Processing</h2>
+          <p>
+            AdvocaMed uses <strong>Google Gemini AI</strong> to analyze medical bills. 
+            <ul>
+              <li><strong>No Persistent Storage:</strong> Images uploaded for analysis are processed in real-time and are not permanently stored on our servers.</li>
+              <li><strong>Data Usage:</strong> By using this tool, you agree to the processing of your documents solely for identifying billing errors.</li>
+            </ul>
+          </p>
+          
+          <h2 className="text-xl font-bold mt-8 mb-4">2. Google AdSense & Cookies</h2>
+          <p>
+            We use Google AdSense to serve advertisements. Google uses cookies to serve ads based on your prior visits to our website or other websites.
+            You may opt-out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noreferrer">Google Ads Settings</a>.
+          </p>
+          
+          <h2 className="text-xl font-bold mt-8 mb-4">3. Analytics</h2>
+          <p>
+            We use Google Analytics (G-NLMH7ERZZ3) to analyze traffic and improve our service. This data is aggregated and anonymized.
+          </p>
+
+          <hr className="my-8 border-gray-200" />
+
+          <h2 className="text-xl font-bold mt-8 mb-4">4. US State Privacy Rights (Comprehensive)</h2>
+          <p>
+            In compliance with US State Privacy Laws, we provide specific rights to residents of the following states.
+          </p>
+
+          <h3 className="font-bold mt-4">Effective 2025 & 2026 Regulations</h3>
+          <p>
+            We adhere to the regulations set forth by:
+          </p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li><strong>Delaware & Oregon (Effective Nov 17, 2025):</strong> We honor Global Privacy Control (GPC) signals. If a GPC signal is detected, we will automatically limit data processing (Restricted Data Processing mode).</li>
+            <li><strong>Tennessee & Minnesota (Effective July 1, 2025)</strong></li>
+            <li><strong>Maryland (Effective Oct 1, 2025)</strong></li>
+            <li><strong>Indiana, Kentucky, Rhode Island (Effective Jan 1, 2026):</strong> We are compliant with the consumer data protection acts of these states regarding data transparency.</li>
+          </ul>
+
+          <h3 className="font-bold mt-4">Your Rights</h3>
+          <p>Depending on your state of residence, you may have the right to:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li><strong>Opt-out</strong> of the sale or sharing of personal data for targeted advertising.</li>
+            <li><strong>Access</strong> the personal data we hold about you.</li>
+            <li><strong>Delete</strong> your personal data.</li>
+            <li><strong>Correct</strong> inaccuracies in your personal data.</li>
+          </ul>
+
+          <h2 className="text-xl font-bold mt-8 mb-4">5. Global Privacy Control (GPC)</h2>
+          <p>
+            AdvocaMed.ai recognizes the Global Privacy Control (GPC) signal. If your browser broadcasts a GPC signal, we treat this as a request to opt-out of the sale and sharing of personal information for targeted advertising automatically.
+          </p>
+
+          <h2 className="text-xl font-bold mt-8 mb-4">6. Contact Us</h2>
+          <p>
+            If you wish to exercise your privacy rights, please contact us via our <a href="/contact-us">Contact Page</a>.
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
