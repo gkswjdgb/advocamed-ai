@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { Helmet } from 'react-helmet-async'; // Import Helmet for JSON-LD injection
 import { hospitals } from '../data/hospitals';
 
 const HospitalGuide: React.FC = () => {
@@ -25,9 +26,30 @@ const HospitalGuide: React.FC = () => {
   const locationString = state ? `${city}, ${state}` : city;
 
   // Dynamic SEO Title & Description with targeted keywords
-  // Keywords: Hospital Name, City, Charity Care, Financial Assistance, Income Limits
   const seoTitle = `${hospitalName} Charity Care Application | ${locationString} Financial Aid`;
   const seoDescription = `Apply for charity care at ${hospitalName} in ${locationString}. Learn how to get medical bill forgiveness, check ${currentYear} income limits (${fplThreshold}% FPL), and find the financial aid application.`;
+
+  // 3. Breadcrumb Structured Data (New SEO Feature)
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.advocamed.com"
+    },{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Hospital Directory",
+      "item": "https://www.advocamed.com/hospitals"
+    },{
+      "@type": "ListItem",
+      "position": 3,
+      "name": hospitalName,
+      "item": `https://www.advocamed.com/hospital/${slug}`
+    }]
+  };
 
   return (
     <>
@@ -36,8 +58,25 @@ const HospitalGuide: React.FC = () => {
         description={seoDescription}
         canonical={`/hospital/${slug}`}
       />
+      {/* Inject Structured Data */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+      </Helmet>
       
       <div className="bg-white min-h-screen animate-fade-in-up">
+        {/* Breadcrumb Visual Navigation */}
+        <div className="bg-gray-50 border-b border-gray-100 py-3 px-4">
+            <div className="max-w-4xl mx-auto text-xs text-gray-500 flex items-center">
+                <Link to="/" className="hover:text-primary">Home</Link>
+                <span className="mx-2">/</span>
+                <Link to="/hospitals" className="hover:text-primary">Hospitals</Link>
+                <span className="mx-2">/</span>
+                <span className="text-gray-900 font-medium">{hospitalName}</span>
+            </div>
+        </div>
+
         {/* Header Section */}
         <div className="bg-gradient-to-b from-blue-50 to-white py-16 border-b border-gray-100">
             <div className="max-w-4xl mx-auto px-4 text-center">
