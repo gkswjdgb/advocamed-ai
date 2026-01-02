@@ -1,4 +1,5 @@
 import React from 'react';
+import { SaveForLater } from './SaveForLater';
 
 interface HeroProps {
   onStart: () => void;
@@ -43,6 +44,10 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
                 <span className="font-semibold text-gray-500">100% Private.</span> No data stored. Free to use.
               </p>
             </div>
+            
+            {/* Retention Strategy: Save for Later */}
+            <SaveForLater />
+
           </div>
 
           {/* Right Column: Visual Mockup */}
