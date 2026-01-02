@@ -9,7 +9,7 @@ const HospitalGuide: React.FC = () => {
   // 1. Find specific hospital data
   const hospitalData = hospitals.find(h => h.slug === slug);
 
-  // 2. Fallback Logic
+  // 2. Fallback Logic for Hospital Name
   const hospitalName = hospitalData 
     ? hospitalData.name 
     : slug 
@@ -24,6 +24,7 @@ const HospitalGuide: React.FC = () => {
   const state = hospitalData?.state || "";
 
   // Dynamic SEO Title & Description with targeted keywords
+  // Keywords: Hospital Name, City, Charity Care, Financial Assistance, Income Limits
   const seoTitle = `${hospitalName} Charity Care & Financial Assistance | ${city} Application Guide`;
   const seoDescription = `Apply for charity care at ${hospitalName} in ${city}${state ? `, ${state}` : ''}. Learn how to get medical bill forgiveness, check ${currentYear} income limits (${fplThreshold}% FPL), and find the financial aid application.`;
 
