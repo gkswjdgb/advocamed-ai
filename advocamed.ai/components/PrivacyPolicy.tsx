@@ -15,17 +15,17 @@ export default function PrivacyPolicy() {
         
         <div className="prose prose-indigo max-w-none text-gray-700">
           <p>
-            At AdvocaMed.ai, we prioritize your privacy. This policy outlines how we handle data, use cookies, and comply with evolving US State regulations.
+            At AdvocaMed.ai, we prioritize your privacy. This policy outlines how we handle data, use cookies, and comply with evolving US State regulations regarding data transparency and consumer rights.
           </p>
 
           <h2 className="text-xl font-bold mt-8 mb-4">1. Information We Collect & AI Processing</h2>
           <p>
             AdvocaMed uses <strong>Google Gemini AI</strong> to analyze medical bills. 
-            <ul>
-              <li><strong>No Persistent Storage:</strong> Images uploaded for analysis are processed in real-time and are not permanently stored on our servers.</li>
-              <li><strong>Data Usage:</strong> By using this tool, you agree to the processing of your documents solely for identifying billing errors.</li>
-            </ul>
           </p>
+          <ul className="list-disc pl-5">
+            <li><strong>No Persistent Storage:</strong> Images uploaded for analysis are processed in real-time and are not permanently stored on our servers.</li>
+            <li><strong>Data Usage:</strong> By using this tool, you agree to the processing of your documents solely for identifying billing errors.</li>
+          </ul>
           
           <h2 className="text-xl font-bold mt-8 mb-4">2. Google AdSense & Cookies</h2>
           <p>
@@ -40,34 +40,33 @@ export default function PrivacyPolicy() {
 
           <hr className="my-8 border-gray-200" />
 
-          <h2 className="text-xl font-bold mt-8 mb-4">4. US State Privacy Rights (Comprehensive)</h2>
+          <h2 className="text-xl font-bold mt-8 mb-4">4. Compliance with US State Privacy Laws</h2>
           <p>
-            In compliance with US State Privacy Laws, we provide specific rights to residents of the following states.
+            In accordance with recent legislative updates (2025-2026), we recognize and support the privacy rights of residents in the following states:
           </p>
 
-          <h3 className="font-bold mt-4">Effective 2025 & 2026 Regulations</h3>
-          <p>
-            We adhere to the regulations set forth by:
-          </p>
-          <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Delaware & Oregon (Effective Nov 17, 2025):</strong> We honor Global Privacy Control (GPC) signals. If a GPC signal is detected, we will automatically limit data processing (Restricted Data Processing mode).</li>
-            <li><strong>Tennessee & Minnesota (Effective July 1, 2025)</strong></li>
-            <li><strong>Maryland (Effective Oct 1, 2025)</strong></li>
-            <li><strong>Indiana, Kentucky, Rhode Island (Effective Jan 1, 2026):</strong> We are compliant with the consumer data protection acts of these states regarding data transparency.</li>
-          </ul>
+          <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 my-4 text-sm">
+            <h4 className="font-bold text-gray-900 mb-2">Effective Dates & Provisions:</h4>
+            <ul className="list-disc pl-5 space-y-2">
+                <li><strong>Delaware & Oregon (Effective Nov 17, 2025):</strong> We honor Global Privacy Control (GPC) signals. If a GPC signal is detected, we engage Restricted Data Processing (RDP) mode automatically to limit data use.</li>
+                <li><strong>Tennessee & Minnesota (Effective July 1, 2025):</strong> We comply with the Consumer Data Protection Acts of these states.</li>
+                <li><strong>Maryland (Effective Oct 1, 2025):</strong> Compliance with the Maryland Online Data Privacy Act.</li>
+                <li><strong>Indiana, Kentucky, Rhode Island (Effective Jan 1, 2026):</strong> We are fully compliant with the data transparency and consumer control regulations mandated by these states.</li>
+            </ul>
+          </div>
 
           <h3 className="font-bold mt-4">Your Rights</h3>
-          <p>Depending on your state of residence, you may have the right to:</p>
+          <p>Residents of these states, along with CA (CCPA), CO, CT, VA, UT, MT, TX, NJ, IA, NE, and NH, have the right to:</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Opt-out</strong> of the sale or sharing of personal data for targeted advertising.</li>
+            <li><strong>Opt-out</strong> of the "sale" or "sharing" of personal data for targeted advertising.</li>
             <li><strong>Access</strong> the personal data we hold about you.</li>
             <li><strong>Delete</strong> your personal data.</li>
             <li><strong>Correct</strong> inaccuracies in your personal data.</li>
           </ul>
 
-          <h2 className="text-xl font-bold mt-8 mb-4">5. Global Privacy Control (GPC)</h2>
+          <h2 className="text-xl font-bold mt-8 mb-4">5. Global Privacy Control (GPC) Signal</h2>
           <p>
-            AdvocaMed.ai recognizes the Global Privacy Control (GPC) signal. If your browser broadcasts a GPC signal, we treat this as a request to opt-out of the sale and sharing of personal information for targeted advertising automatically.
+            AdvocaMed.ai recognizes the <strong>Global Privacy Control (GPC)</strong> signal. If your browser broadcasts a GPC signal, we treat this as a valid request to opt-out of the sale and sharing of personal information for targeted advertising. No further action is required on your part.
           </p>
 
           <h2 className="text-xl font-bold mt-8 mb-4">6. Contact Us</h2>
