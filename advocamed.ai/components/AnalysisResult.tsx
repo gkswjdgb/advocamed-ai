@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { AnalysisResult, CharityEligibility, UserFinancials } from '../types';
+import React, { useState, useEffect } from 'react';
+import { AnalysisResult, CharityEligibility, UserFinancials, Hospital } from '../types';
 import { CharityMatcher } from './CharityMatcher';
 import { AppealGenerator } from './AppealGenerator';
+import { hospitals } from '../data/hospitals'; // Import the database
 
 interface Props {
   data: AnalysisResult;
@@ -10,6 +11,19 @@ interface Props {
 export const AnalysisResultView: React.FC<Props> = ({ data }) => {
   const [financials, setFinancials] = useState<UserFinancials | undefined>(data.userFinancials);
   const [charityStatus, setCharityStatus] = useState<CharityEligibility | undefined>(undefined);
+  const [matchedHospital, setMatchedHospital] = useState<Hospital | undefined>(undefined);
+
+  // Cross-reference AI-detected name with our Database
+  useEffect(() => {
+    if (data.hospitalName) {
+      const normalizedQuery = data.hospitalName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const found = hospitals.find(h => 
+        h.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalizedQuery) ||
+        normalizedQuery.includes(h.name.toLowerCase().replace(/[^a-z0-9]/g, ''))
+      );
+      setMatchedHospital(found);
+    }
+  }, [data.hospitalName]);
 
   const formatMoney = (amount: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
@@ -72,6 +86,20 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
             </p>
           </div>
         </div>
+        
+        {/* Database Match Notification */}
+        {matchedHospital && (
+          <div className="bg-blue-50 px-6 py-3 border-t border-blue-100 flex items-center justify-center gap-2">
+             <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+             </span>
+             <p className="text-sm text-blue-800">
+                <strong>Verified Policy Found:</strong> We matched <span className="font-bold">{matchedHospital.name}</span> in our database.
+                <span className="hidden sm:inline"> Income Limit: {matchedHospital.fpl_limit}% FPL.</span>
+             </p>
+          </div>
+        )}
       </div>
 
       {/* 2. Audit Details List */}
@@ -155,9 +183,15 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
                     <span className="bg-green-100 text-green-600 p-2 rounded-lg mr-3">💰</span>
                     Financial Assistance
                  </h4>
-                 <p className="text-sm text-gray-500 mt-1 ml-12">
-                     Non-profit hospitals often waive bills for low-income patients (IRS 501r).
-                 </p>
+                 {matchedHospital ? (
+                     <p className="text-sm text-green-700 mt-1 bg-green-50 p-2 rounded">
+                        <strong>Verified Match:</strong> {matchedHospital.name} offers assistance up to <strong>{matchedHospital.fpl_limit}% FPL</strong>. Apply within {matchedHospital.deadline_days} days.
+                     </p>
+                 ) : (
+                     <p className="text-sm text-gray-500 mt-1 ml-12">
+                         Non-profit hospitals often waive bills for low-income patients (IRS 501r).
+                     </p>
+                 )}
              </div>
              <CharityMatcher 
                 onCheck={handleCharityCheck} 
