@@ -2,12 +2,52 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { hospitals } from '../data/hospitals';
+import { Helmet } from 'react-helmet-async';
 
 export const SEOContent: React.FC = () => {
     const currentYear = new Date().getFullYear();
 
+    // GEO Strategy: Feed specific Q&A to AI engines
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does AdvocaMed find billing errors?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AdvocaMed uses AI to cross-reference your bill's CPT codes against national Medicare guidelines and identifying upcoding (charging for a higher level of service) or unbundling errors automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I negotiate a hospital bill after insurance pays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Even after insurance, you can negotiate your 'patient responsibility' portion. Hospitals often accept 20-40% less if you offer a one-time lump sum payment."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the income limit for hospital charity care?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Under IRS 501(r), most non-profit hospitals must provide free care to patients earning under 200% of the Federal Poverty Level (approx. $30,000 for an individual in 2025)."
+          }
+        }
+      ]
+    };
+
     return (
         <section id="seo-content" className="bg-white py-16 border-t border-gray-100">
+            {/* Inject FAQ Schema for SEO/GEO */}
+            <Helmet>
+                <script type="application/ld+json">
+                    {JSON.stringify(faqSchema)}
+                </script>
+            </Helmet>
+
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-lg prose-red text-gray-600">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
@@ -59,6 +99,19 @@ export const SEOContent: React.FC = () => {
                         <p className="text-sm leading-relaxed">
                             Never pay a summary bill that only says "Lab Services" or "Pharmacy". You have the right to request an <strong>itemized statement</strong> (or "superbill") which lists every specific CPT code. This is essential for detecting errors, as summary bills often hide overcharges. AdvocaMed reads these codes to find discrepancies.
                         </p>
+                    </div>
+                </div>
+
+                {/* FAQ Section Display (Visible to User) */}
+                <div className="mt-16 bg-gray-50 rounded-2xl p-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h3>
+                    <div className="space-y-6">
+                        {faqSchema.mainEntity.map((faq, idx) => (
+                            <div key={idx} className="bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
+                                <h4 className="font-bold text-gray-900 text-lg mb-2">{faq.name}</h4>
+                                <p className="text-gray-600 text-sm">{faq.acceptedAnswer.text}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
