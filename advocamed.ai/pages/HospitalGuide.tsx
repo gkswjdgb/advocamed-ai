@@ -26,8 +26,11 @@ const HospitalGuide: React.FC = () => {
   const locationString = state ? `${city}, ${state}` : city;
 
   // Dynamic SEO Title & Description with targeted keywords
-  const seoTitle = `${hospitalName} Charity Care Application | ${locationString} Financial Aid`;
-  const seoDescription = `Apply for charity care at ${hospitalName} in ${locationString}. Learn how to get medical bill forgiveness, check ${currentYear} income limits (${fplThreshold}% FPL), and find the financial aid application.`;
+  // Requirement: Title includes Name, City, State, 'Charity Care Application'
+  const seoTitle = `${hospitalName} Charity Care Application | ${locationString} Financial Assistance`;
+  
+  // Requirement: Description mentions 'financial assistance', 'income limits', 'bill forgiveness'
+  const seoDescription = `Apply for financial assistance at ${hospitalName} in ${locationString}. Learn about medical bill forgiveness options, check ${currentYear} income limits (${fplThreshold}% FPL), and find the charity care application.`;
 
   // 3. Breadcrumb Structured Data (New SEO Feature)
   const breadcrumbSchema = {
