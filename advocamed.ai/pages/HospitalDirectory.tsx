@@ -19,7 +19,7 @@ const HospitalDirectory: React.FC = () => {
     );
   }, [searchQuery]);
 
-  // 2. Pagination / Limit logic to prevent browser freeze
+  // 2. Pagination / Limit logic
   const displayedHospitals = filteredHospitals.slice(0, limit);
   const hasMore = displayedHospitals.length < filteredHospitals.length;
 
@@ -52,7 +52,7 @@ const HospitalDirectory: React.FC = () => {
                 </div>
                 <input
                     type="text"
-                    className="block w-full pl-12 pr-4 py-4 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/20 sm:text-sm shadow-sm transition-all"
+                    className="block w-full pl-12 pr-12 py-4 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/20 sm:text-sm shadow-sm transition-all"
                     placeholder="Search by Hospital Name, City, or State..."
                     value={searchQuery}
                     onChange={(e) => {
@@ -60,6 +60,18 @@ const HospitalDirectory: React.FC = () => {
                         setLimit(50); // Reset limit on new search
                     }}
                 />
+                {searchQuery && (
+                    <button 
+                        onClick={() => {
+                            setSearchQuery('');
+                            setLimit(50);
+                        }}
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600"
+                        aria-label="Clear search"
+                    >
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                )}
             </div>
           </div>
 
@@ -68,14 +80,6 @@ const HospitalDirectory: React.FC = () => {
             <span className="text-sm text-gray-500">
                 Found <strong>{filteredHospitals.length}</strong> hospitals
             </span>
-            {searchQuery && (
-                 <button 
-                    onClick={() => setSearchQuery('')}
-                    className="text-sm text-primary hover:text-red-700 underline"
-                 >
-                    Clear Search
-                 </button>
-            )}
           </div>
 
           {/* List Grid */}
@@ -85,28 +89,36 @@ const HospitalDirectory: React.FC = () => {
                     <Link 
                       key={hospital.id} 
                       to={`/hospital/${hospital.slug}`}
-                      className="group bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex justify-between items-center"
+                      className="group bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex justify-between items-center active:scale-[0.99]"
                     >
-                      <div>
-                        <h3 className="font-bold text-gray-900 group-hover:text-primary transition-colors">
+                      <div className="overflow-hidden">
+                        <h3 className="font-bold text-gray-900 group-hover:text-primary transition-colors truncate">
                             {hospital.name}
                         </h3>
                         <div className="flex items-center mt-1 text-sm text-gray-500">
-                             <span className="bg-gray-100 px-2 py-0.5 rounded text-xs font-semibold text-gray-600 mr-2">{hospital.state}</span>
-                             <span>{hospital.city}</span>
+                             <span className="bg-gray-100 px-2 py-0.5 rounded text-xs font-semibold text-gray-600 mr-2 flex-shrink-0">{hospital.state}</span>
+                             <span className="truncate">{hospital.city}</span>
                         </div>
                       </div>
-                      <div className="hidden sm:block text-right">
-                         <span className="text-xs text-green-600 font-bold bg-green-50 px-2 py-1 rounded-full">
-                            {hospital.fpl_limit ? `Up to ${hospital.fpl_limit}% FPL` : 'Check Policy'}
+                      <div className="hidden sm:block text-right flex-shrink-0 pl-2">
+                         <span className={`text-xs font-bold px-2 py-1 rounded-full ${hospital.fpl_limit ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
+                            {hospital.fpl_limit ? `Up to ${hospital.fpl_limit}% FPL` : 'Verify Policy'}
                          </span>
                       </div>
                     </Link>
                  ))
              ) : (
-                 <div className="col-span-full py-20 text-center bg-white rounded-xl border border-dashed border-gray-300">
-                     <p className="text-gray-500 text-lg">No hospitals found matching "{searchQuery}"</p>
-                     <p className="text-gray-400 text-sm mt-2">Try searching for just the city or state name.</p>
+                 <div className="col-span-full py-16 text-center bg-white rounded-xl border border-dashed border-gray-300">
+                     <p className="text-gray-600 text-lg font-medium">Hospital not in our current directory?</p>
+                     <p className="text-gray-500 text-sm mt-2 mb-6 max-w-md mx-auto">
+                        We are adding new hospitals daily. Even if it's not listed here, our AI can still analyze your bill and find errors.
+                     </p>
+                     <Link 
+                        to="/?step=UPLOAD"
+                        className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primaryHover"
+                     >
+                        Scan Bill Instead
+                     </Link>
                  </div>
              )}
           </div>
@@ -116,21 +128,21 @@ const HospitalDirectory: React.FC = () => {
               <div className="mt-10 text-center">
                   <button 
                     onClick={handleShowMore}
-                    className="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                    className="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
                   >
                       Show More Hospitals ({filteredHospitals.length - displayedHospitals.length} remaining)
                   </button>
               </div>
           )}
 
-          <div className="mt-16 bg-secondary text-white rounded-2xl p-10 text-center shadow-xl">
+          <div className="mt-16 bg-secondary text-white rounded-2xl p-8 md:p-12 text-center shadow-xl">
             <h3 className="text-2xl font-bold mb-4">Don't see your hospital?</h3>
             <p className="text-gray-300 mb-8 max-w-lg mx-auto">
               Our AI works with ANY hospital bill in the US, regardless of our directory listing.
             </p>
             <Link 
               to="/?step=UPLOAD" 
-              className="inline-block bg-primary hover:bg-primaryHover text-white px-8 py-4 rounded-xl font-bold transition-transform hover:scale-105"
+              className="inline-block bg-primary hover:bg-primaryHover text-white px-8 py-4 rounded-xl font-bold transition-transform hover:scale-105 shadow-lg"
             >
               Scan Any Bill Now
             </Link>
