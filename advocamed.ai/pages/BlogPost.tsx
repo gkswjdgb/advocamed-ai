@@ -1,7 +1,6 @@
-
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { blogPosts } from '../data/blogData';
+import { blogPosts } from '../data/blogPosts';
 import SEO from '../components/SEO';
 import { Helmet } from 'react-helmet-async';
 
