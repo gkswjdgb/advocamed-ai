@@ -3,8 +3,8 @@ import { BlogPost } from '../types';
 export const blogPosts: BlogPost[] = [
   {
     id: "how-to-dispute-medical-bill-errors",
-    title: "How to Dispute a Medical Bill in 5 Easy Steps (and Win)",
-    excerpt: "Found an error on your hospital bill? Don't panic. Follow this step-by-step guide to dispute charges, write a successful appeal letter, and correct your medical record.",
+    title: "How to Dispute Medical Bills in 5 Easy Steps (and Win)",
+    excerpt: "Learn how to dispute medical bills and catch common medical bill errors. This step-by-step guide covers requesting an itemized bill, writing an appeal, and escalating to the CFPB.",
     date: "2026-01-15",
     readingTime: "7 min read",
     category: "Actionable Guides",
@@ -47,9 +47,9 @@ export const blogPosts: BlogPost[] = [
         If the hospital refuses to correct the error, call your insurance company's "Member Services" number. Tell them: "My provider is billing me for services that were not performed. This may be billing fraud." Insurance companies hate overpaying as much as you do.
       </p>
 
-      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Step 5: File a Consumer Complaint</h2>
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Step 5: File a Consumer Complaint (CFPB)</h2>
       <p class="mb-4 text-gray-700">
-        If all else fails, file a complaint with your state's Attorney General or the <a href="https://www.consumerfinance.gov/" target="_blank" class="text-blue-600 underline">CFPB</a>. This often forces hospitals to respond quickly.
+        If all else fails, file a complaint with the <strong>Consumer Financial Protection Bureau (CFPB)</strong> or your state's Attorney General. This often forces hospitals to respond quickly to avoid regulatory scrutiny.
       </p>
     `
   },
