@@ -56,7 +56,7 @@ export interface BlogPost {
   category: string;
 }
 
-// pSEO Data Interface - Updated for fact-based transparency
+// pSEO Data Interface - Updated for contact/utility features
 export interface Hospital {
   id: string;
   slug: string;
@@ -67,7 +67,9 @@ export interface Hospital {
   deadline_days: number;
   policy_summary?: string;
   financial_aid_url?: string;
-  policy_note?: string; // Tracks the source/certainty of the data
+  application_url?: string; // Direct link to PDF or Form
+  phone?: string; // Billing department phone
+  policy_note?: string; 
 }
 
 export enum AppStep {
