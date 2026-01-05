@@ -56,7 +56,7 @@ export interface BlogPost {
   category: string;
 }
 
-// pSEO Data Interface - Updated for contact/utility features
+// pSEO Data Interface - Updated to remove phone for accuracy
 export interface Hospital {
   id: string;
   slug: string;
@@ -68,7 +68,6 @@ export interface Hospital {
   policy_summary?: string;
   financial_aid_url?: string;
   application_url?: string; // Direct link to PDF or Form
-  phone?: string; // Billing department phone
   policy_note?: string; 
 }
 
