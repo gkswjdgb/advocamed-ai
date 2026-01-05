@@ -9,17 +9,21 @@ const BlogPost: React.FC = () => {
   const navigate = useNavigate();
   const post = blogPosts.find(p => p.id === id);
 
-  // Handle in-content button clicks to direct to home for scanning
+  // Handle in-content action clicks to direct to home for scanning
   useEffect(() => {
-    const handleScroll = (e: MouseEvent) => {
+    const handleClick = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        if (target.getAttribute('onclick')?.includes('window.scrollTo')) {
+        const action = target.getAttribute('data-action');
+        
+        if (action === 'scan') {
             e.preventDefault();
-            navigate('/');
+            // Clear URL and navigate home with the upload step
+            navigate('/?step=UPLOAD');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
-    document.addEventListener('click', handleScroll);
-    return () => document.removeEventListener('click', handleScroll);
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, [navigate]);
 
   if (!post) {
@@ -31,13 +35,12 @@ const BlogPost: React.FC = () => {
     );
   }
 
-  // GEO/SEO: Advanced Schema for Articles
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.title,
     "description": post.excerpt,
-    "image": "https://www.advocamed.com/og-image.png", // Ensure this exists or use a dynamic one
+    "image": "https://www.advocamed.com/og-image.png",
     "author": {
       "@type": "Organization",
       "name": "AdvocaMed AI Team"
@@ -64,7 +67,6 @@ const BlogPost: React.FC = () => {
         description={post.excerpt}
         canonical={`/blog/${post.id}`} 
       />
-      {/* Inject Article Schema */}
       <Helmet>
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
@@ -91,7 +93,6 @@ const BlogPost: React.FC = () => {
              <time className="text-gray-400 text-sm block">{post.date} • {post.readingTime}</time>
           </div>
 
-          {/* Render the HTML content safely */}
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
           
           <div className="mt-12 pt-8 border-t border-gray-200">
@@ -101,7 +102,7 @@ const BlogPost: React.FC = () => {
                     <p className="text-sm text-gray-600">Scan it now to find errors or apply for aid.</p>
                 </div>
                 <button 
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/?step=UPLOAD')}
                     className="bg-primary hover:bg-primaryHover text-white px-6 py-3 rounded-lg font-bold transition-colors shadow-sm whitespace-nowrap"
                 >
                     Start Free Analysis
