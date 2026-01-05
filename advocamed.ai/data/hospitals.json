@@ -7,7 +7,6 @@
     "state": "TX",
     "fpl_limit": 200,
     "deadline_days": 240,
-    "phone": "800-890-6034",
     "application_url": "https://www.texashealth.org/Financial-Assistance",
     "policy_note": "Texas Health Financial Assistance Policy",
     "financial_aid_url": "https://www.texashealth.org/Financial-Assistance"
@@ -20,7 +19,6 @@
     "state": "OH",
     "fpl_limit": 250,
     "deadline_days": 240,
-    "phone": "866-621-6385",
     "application_url": "https://my.clevelandclinic.org/content/dam/clevelandclinic/patients/billing-finance/financial-assistance/financial-assistance-application.pdf",
     "policy_note": "Cleveland Clinic System Policy",
     "financial_aid_url": "https://my.clevelandclinic.org/patients/billing-finance/financial-assistance"
@@ -33,7 +31,6 @@
     "state": "CA",
     "fpl_limit": 400,
     "deadline_days": 240,
-    "phone": "800-390-3507",
     "application_url": "https://about.kaiserpermanente.org/content/dam/kp/mykp/documents/forms/financial-assistance-application.pdf",
     "policy_note": "Kaiser Permanente MFAP",
     "financial_aid_url": "https://about.kaiserpermanente.org/commitments-and-impact/healthy-communities/medical-financial-assistance-program"
