@@ -7,10 +7,14 @@ import { Hero } from './components/Hero';
 import { UploadSection } from './components/UploadSection';
 import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
+import { Newsletter } from './components/Newsletter';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import CookieBanner from './components/CookieBanner';
 import ScrollToTop from './components/ScrollToTop';
+
+// Data
+import { demoAnalysisResult } from './data/demoData';
 
 // Pages
 import BlogPage from './pages/BlogPage'; 
@@ -34,6 +38,12 @@ const Home = () => {
 
   const handleStart = () => {
     setSearchParams({ step: 'UPLOAD' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDemo = () => {
+    setAnalysisData(demoAnalysisResult);
+    setSearchParams({ step: 'RESULTS' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -61,7 +71,8 @@ const Home = () => {
       
       {step === 'HERO' && (
         <>
-          <Hero onStart={handleStart} />
+          <Hero onStart={handleStart} onDemo={handleDemo} />
+          <Newsletter />
           <SEOContent />
         </>
       )}
@@ -95,7 +106,7 @@ const Home = () => {
 const App: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
-  // Pick top 6 hospitals for SEO footer links to help crawlers find deep content
+  // Pick top 6 hospitals for SEO footer links
   const featuredHospitals = hospitals.slice(0, 6);
 
   return (
@@ -138,7 +149,6 @@ const App: React.FC = () => {
               <Route path="/hospital/:slug" element={<HospitalGuide />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              {/* Catch-all 404 Route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
@@ -156,7 +166,6 @@ const App: React.FC = () => {
                   </p>
                 </div>
                 
-                {/* Sitemap Links */}
                 <div>
                     <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Platform</h3>
                     <ul className="space-y-2">
@@ -166,7 +175,6 @@ const App: React.FC = () => {
                     </ul>
                 </div>
 
-                {/* Dynamic SEO Links (Internal Linking) */}
                 <div>
                     <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Popular Policies</h3>
                     <ul className="space-y-2">
@@ -194,16 +202,11 @@ const App: React.FC = () => {
                 <p className="text-center text-xs text-gray-400">
                   &copy; {currentYear} AdvocaMed.ai. All rights reserved. 
                 </p>
-                <p className="text-center text-xs text-gray-400 mt-2 max-w-2xl mx-auto leading-relaxed">
-                  <strong>DISCLAIMER:</strong> This tool is for informational purposes only. 
-                  The AI-generated analysis does not constitute legal or medical advice.
-                </p>
               </div>
             </div>
           </footer>
 
           <CookieBanner />
-
         </div>
       </BrowserRouter>
     </HelmetProvider>
