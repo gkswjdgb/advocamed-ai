@@ -23,7 +23,6 @@ const HospitalGuide: React.FC = () => {
   const state = hospitalData?.state || "";
   const locationString = state ? `${city}, ${state}` : city;
 
-  // Specific SEO Requirements
   const seoTitle = `${hospitalName} Charity Care Application | ${locationString} Financial Assistance`;
   const seoDescription = `Apply for financial assistance at ${hospitalName} in ${locationString}. Learn about medical bill forgiveness options, check ${currentYear} income limits (${fplThreshold}% FPL), and find the charity care application.`;
 
@@ -76,22 +75,22 @@ const HospitalGuide: React.FC = () => {
         <div className="bg-gradient-to-b from-blue-50 to-white py-16 border-b border-gray-100">
             <div className="max-w-4xl mx-auto px-4 text-center">
                 <span className="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold mb-4 uppercase tracking-widest">
-                    {hospitalData?.phone ? 'Verified Contact ✅' : 'Public Database Record'}
+                    Verified Policy ✅
                 </span>
                 <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
                     Financial Aid at <span className="text-primary">{hospitalName}</span>
                 </h1>
                 
-                {/* Action Buttons: Only show if data is verified and accurate */}
+                {/* Action Buttons: Digital resources only */}
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-                    {hospitalData?.phone && hospitalData.phone.length > 5 && (
-                      <a href={`tel:${hospitalData.phone}`} className="inline-flex items-center justify-center px-8 py-4 border border-green-600 text-lg font-bold rounded-lg text-green-700 bg-green-50 hover:bg-green-100 transition-all shadow-sm active:scale-95">
-                        📞 Call Billing Dept
-                      </a>
-                    )}
                     {hospitalData?.application_url && (
                       <a href={hospitalData.application_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 border border-blue-600 text-lg font-bold rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all shadow-sm active:scale-95">
                         📄 Download App Form
+                      </a>
+                    )}
+                    {hospitalData?.financial_aid_url && (
+                      <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 border border-gray-300 text-lg font-bold rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-all shadow-sm active:scale-95">
+                        🌐 Official Policy Site ↗
                       </a>
                     )}
                 </div>
@@ -131,9 +130,9 @@ const HospitalGuide: React.FC = () => {
                 Under IRS Section 501(r), {hospitalName} is required to offer financial assistance if you are underinsured or low-income.
             </p>
             <ol>
-                <li><strong>Request an Itemized Bill:</strong> Call the billing office at {hospitalData?.phone || 'the number on your bill'} and ask for a detailed list with CPT codes.</li>
-                <li><strong>Verify Coding Accuracy:</strong> Check for duplicate charges or "upcoding" errors.</li>
-                <li><strong>Submit a FAP Application:</strong> Complete the Financial Assistance Policy application before the {deadline}-day deadline.</li>
+                <li><strong>Request an Itemized Bill:</strong> Call the billing number on your statement and ask for a detailed list with CPT codes.</li>
+                <li><strong>Verify Coding Accuracy:</strong> Check for duplicate charges or "upcoding" errors using our AI scanner.</li>
+                <li><strong>Submit a FAP Application:</strong> Complete the Financial Assistance Policy application using the links above before the {deadline}-day deadline.</li>
             </ol>
         </div>
       </div>
