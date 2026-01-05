@@ -75,29 +75,25 @@ const HospitalGuide: React.FC = () => {
         <div className="bg-gradient-to-b from-blue-50 to-white py-16 border-b border-gray-100">
             <div className="max-w-4xl mx-auto px-4 text-center">
                 <span className="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold mb-4 uppercase tracking-widest">
-                    Verified Policy ✅
+                    Official Guide ✅
                 </span>
                 <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
                     Financial Aid at <span className="text-primary">{hospitalName}</span>
                 </h1>
                 
-                {/* Action Buttons: Digital resources only */}
+                {/* Action Buttons: Unified Official Site Button */}
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-                    {hospitalData?.application_url && (
-                      <a href={hospitalData.application_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 border border-blue-600 text-lg font-bold rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all shadow-sm active:scale-95">
-                        📄 Download App Form
-                      </a>
-                    )}
                     {hospitalData?.financial_aid_url && (
-                      <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 border border-gray-300 text-lg font-bold rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-all shadow-sm active:scale-95">
-                        🌐 Official Policy Site ↗
+                      <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-10 py-5 bg-blue-600 text-white text-lg font-bold rounded-xl hover:bg-blue-700 transition-all shadow-xl active:scale-95 group">
+                        🌐 Visit Official Policy Site
+                        <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                       </a>
                     )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Link to="/?step=UPLOAD" className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-primary hover:bg-primaryHover shadow-lg hover:shadow-xl transition-all">
-                        Scan My {hospitalName} Bill
+                    <Link to="/?step=UPLOAD" className="inline-flex items-center justify-center px-8 py-4 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-all shadow-sm">
+                        Analyze My {hospitalName} Bill with AI
                     </Link>
                 </div>
             </div>
@@ -125,15 +121,33 @@ const HospitalGuide: React.FC = () => {
                 </div>
             </div>
 
-            <h2 className="text-gray-900">3 Steps to Lower Your {hospitalName} Bill</h2>
+            <h2 className="text-gray-900">How to Lower Your {hospitalName} Bill</h2>
             <p>
-                Under IRS Section 501(r), {hospitalName} is required to offer financial assistance if you are underinsured or low-income.
+                As a non-profit facility, {hospitalName} is required under federal law (IRS Section 501(r)) to provide financial assistance to patients who meet income guidelines.
             </p>
-            <ol>
-                <li><strong>Request an Itemized Bill:</strong> Call the billing number on your statement and ask for a detailed list with CPT codes.</li>
-                <li><strong>Verify Coding Accuracy:</strong> Check for duplicate charges or "upcoding" errors using our AI scanner.</li>
-                <li><strong>Submit a FAP Application:</strong> Complete the Financial Assistance Policy application using the links above before the {deadline}-day deadline.</li>
-            </ol>
+            <div className="space-y-6 mt-8">
+                <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</div>
+                    <div>
+                        <h4 className="font-bold text-gray-900 mb-1">Visit the Official Website</h4>
+                        <p className="text-sm">Click the button above to go directly to {hospitalName}'s financial assistance page. There, you will find the latest version of their application form and instructions.</p>
+                    </div>
+                </div>
+                <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">2</div>
+                    <div>
+                        <h4 className="font-bold text-gray-900 mb-1">Request an Itemized Bill</h4>
+                        <p className="text-sm">Contact the billing department and ask for an itemized statement with CPT codes. Summary bills often hide errors that can be disputed.</p>
+                    </div>
+                </div>
+                <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">3</div>
+                    <div>
+                        <h4 className="font-bold text-gray-900 mb-1">Submit Your Application</h4>
+                        <p className="text-sm">Gather your tax returns and pay stubs. Submit your completed application within the {deadline}-day window to ensure your case is reviewed before any collections activity.</p>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </>
