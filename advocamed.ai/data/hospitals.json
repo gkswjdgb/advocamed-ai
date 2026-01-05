@@ -7,6 +7,8 @@
     "state": "TX",
     "fpl_limit": 200,
     "deadline_days": 240,
+    "phone": "800-890-6034",
+    "application_url": "https://www.texashealth.org/Financial-Assistance",
     "policy_note": "Texas Health Financial Assistance Policy",
     "financial_aid_url": "https://www.texashealth.org/Financial-Assistance"
   },
@@ -18,6 +20,8 @@
     "state": "OH",
     "fpl_limit": 250,
     "deadline_days": 240,
+    "phone": "866-621-6385",
+    "application_url": "https://my.clevelandclinic.org/content/dam/clevelandclinic/patients/billing-finance/financial-assistance/financial-assistance-application.pdf",
     "policy_note": "Cleveland Clinic System Policy",
     "financial_aid_url": "https://my.clevelandclinic.org/patients/billing-finance/financial-assistance"
   },
@@ -29,172 +33,9 @@
     "state": "CA",
     "fpl_limit": 400,
     "deadline_days": 240,
+    "phone": "800-390-3507",
+    "application_url": "https://about.kaiserpermanente.org/content/dam/kp/mykp/documents/forms/financial-assistance-application.pdf",
     "policy_note": "Kaiser Permanente MFAP",
     "financial_aid_url": "https://about.kaiserpermanente.org/commitments-and-impact/healthy-communities/medical-financial-assistance-program"
-  },
-  {
-    "id": "ny-1",
-    "slug": "nyu-langone-health",
-    "name": "NYU Langone Health",
-    "city": "New York",
-    "state": "NY",
-    "fpl_limit": 400,
-    "deadline_days": 240,
-    "policy_note": "NYU Langone Financial Aid",
-    "financial_aid_url": "https://nyulangone.org/patient-care/billing-insurance/financial-assistance"
-  },
-  {
-    "id": "mn-1",
-    "slug": "mayo-clinic",
-    "name": "Mayo Clinic",
-    "city": "Rochester",
-    "state": "MN",
-    "fpl_limit": 400,
-    "deadline_days": 240,
-    "policy_note": "Mayo Clinic Charity Care",
-    "financial_aid_url": "https://www.mayoclinic.org/patient-visitor-guide/billing-insurance/financial-assistance"
-  },
-  {
-    "id": "ma-1",
-    "slug": "massachusetts-general-hospital",
-    "name": "Massachusetts General Hospital",
-    "city": "Boston",
-    "state": "MA",
-    "fpl_limit": 300,
-    "deadline_days": 240,
-    "policy_note": "Mass General Brigham Policy",
-    "financial_aid_url": "https://www.massgeneral.org/patient-care/financial-assistance"
-  },
-  {
-    "id": "md-1",
-    "slug": "johns-hopkins-hospital",
-    "name": "Johns Hopkins Hospital",
-    "city": "Baltimore",
-    "state": "MD",
-    "fpl_limit": 200,
-    "deadline_days": 240,
-    "policy_note": "Johns Hopkins Medicine Policy",
-    "financial_aid_url": "https://www.hopkinsmedicine.org/patient_care/pay_bill/financial_assistance.html"
-  },
-  {
-    "id": "ca-2",
-    "slug": "cedars-sinai-medical-center",
-    "name": "Cedars-Sinai Medical Center",
-    "city": "Los Angeles",
-    "state": "CA",
-    "fpl_limit": 400,
-    "deadline_days": 365,
-    "policy_note": "Cedars-Sinai Financial Assistance",
-    "financial_aid_url": "https://www.cedars-sinai.org/billing-insurance/financial-assistance.html"
-  },
-  {
-    "id": "ca-3",
-    "slug": "stanford-health-care",
-    "name": "Stanford Health Care",
-    "city": "Palo Alto",
-    "state": "CA",
-    "fpl_limit": 400,
-    "deadline_days": 240,
-    "policy_note": "Stanford Health Care Policy",
-    "financial_aid_url": "https://stanfordhealthcare.org/for-patients-visitors/financial-assistance.html"
-  },
-  {
-    "id": "mo-1",
-    "slug": "ascension-health",
-    "name": "Ascension Health",
-    "city": "St. Louis",
-    "state": "MO",
-    "fpl_limit": 250,
-    "deadline_days": 240,
-    "policy_note": "Ascension National Policy",
-    "financial_aid_url": "https://healthcare.ascension.org/financial-assistance"
-  },
-  {
-    "id": "tn-1",
-    "slug": "hca-healthcare",
-    "name": "HCA Healthcare",
-    "city": "Nashville",
-    "state": "TN",
-    "fpl_limit": 200,
-    "deadline_days": 240,
-    "policy_note": "HCA Charity Care Policy",
-    "financial_aid_url": "https://hcahealthcare.com/about/financial-assistance.dot"
-  },
-  {
-    "id": "il-1",
-    "slug": "commonspirit-health",
-    "name": "CommonSpirit Health",
-    "city": "Chicago",
-    "state": "IL",
-    "fpl_limit": 400,
-    "deadline_days": 240,
-    "policy_note": "CommonSpirit Financial Assistance",
-    "financial_aid_url": "https://www.commonspirit.org/what-we-do/financial-assistance"
-  },
-  {
-    "id": "mi-1",
-    "slug": "trinity-health",
-    "name": "Trinity Health",
-    "city": "Livonia",
-    "state": "MI",
-    "fpl_limit": 300,
-    "deadline_days": 240,
-    "policy_note": "Trinity Health Policy",
-    "financial_aid_url": "https://www.trinity-health.org/patient-resources/billing-and-financial-assistance/"
-  },
-  {
-    "id": "wa-1",
-    "slug": "providence-health",
-    "name": "Providence Health & Services",
-    "city": "Renton",
-    "state": "WA",
-    "fpl_limit": 400,
-    "deadline_days": 240,
-    "policy_note": "Providence Financial Assistance",
-    "financial_aid_url": "https://www.providence.org/obp/financial-assistance"
-  },
-  {
-    "id": "pa-1",
-    "slug": "upmc-presbyterian",
-    "name": "UPMC Presbyterian",
-    "city": "Pittsburgh",
-    "state": "PA",
-    "fpl_limit": 300,
-    "deadline_days": 240,
-    "policy_note": "UPMC Financial Assistance",
-    "financial_aid_url": "https://www.upmc.com/patients-visitors/paying-bill/financial-assistance"
-  },
-  {
-    "id": "ny-2",
-    "slug": "mount-sinai-hospital",
-    "name": "Mount Sinai Hospital",
-    "city": "New York",
-    "state": "NY",
-    "fpl_limit": 300,
-    "deadline_days": 240,
-    "policy_note": "Mount Sinai FAP",
-    "financial_aid_url": "https://www.mountsinai.org/about/financial-assistance"
-  },
-  {
-    "id": "il-2",
-    "slug": "northwestern-memorial-hospital",
-    "name": "Northwestern Memorial Hospital",
-    "city": "Chicago",
-    "state": "IL",
-    "fpl_limit": 300,
-    "deadline_days": 240,
-    "policy_note": "Northwestern Medicine Policy",
-    "financial_aid_url": "https://www.nm.org/patients-and-visitors/billing-and-insurance/financial-assistance"
-  },
-  {
-    "id": "ca-4",
-    "slug": "ucla-medical-center",
-    "name": "UCLA Medical Center",
-    "city": "Los Angeles",
-    "state": "CA",
-    "fpl_limit": 400,
-    "deadline_days": 240,
-    "policy_note": "UCLA Health Financial Aid",
-    "financial_aid_url": "https://www.uclahealth.org/patient-resources/billing-insurance/financial-assistance"
   }
 ]
