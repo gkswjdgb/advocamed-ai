@@ -56,7 +56,7 @@ export interface BlogPost {
   category: string;
 }
 
-// pSEO Data Interface - Updated to remove phone for accuracy
+// pSEO Data Interface
 export interface Hospital {
   id: string;
   slug: string;
