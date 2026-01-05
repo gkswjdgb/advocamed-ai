@@ -7,7 +7,6 @@ import { Hero } from './components/Hero';
 import { UploadSection } from './components/UploadSection';
 import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
-import { Newsletter } from './components/Newsletter';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import CookieBanner from './components/CookieBanner';
@@ -71,7 +70,6 @@ const Home = () => {
       {step === 'HERO' && (
         <>
           <Hero onStart={handleStart} onDemo={handleDemo} />
-          <Newsletter />
           <SEOContent />
         </>
       )}
@@ -186,7 +184,6 @@ const App: React.FC = () => {
                     <ul className="space-y-2">
                         <li><Link to="/contact-us" className="text-gray-500 hover:text-primary text-sm">Contact Us</Link></li>
                         <li><Link to="/privacy-policy" className="text-gray-500 hover:text-primary text-sm">Privacy Policy</Link></li>
-                        {/* Removed visible XML Sitemap link for cleaner UX */}
                     </ul>
                 </div>
               </div>
