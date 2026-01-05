@@ -90,7 +90,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onDemo }) => {
                                     <div className="flex-shrink-0 h-8 w-8 rounded-full bg-white flex items-center justify-center text-green-500 shadow-sm">✓</div>
                                     <div className="ml-3">
                                         <p className="text-sm font-medium text-gray-900">Charity Eligible</p>
-                                        <p className="text-xs text-gray-500">Income < 200% FPL</p>
+                                        <p className="text-xs text-gray-500">Income &lt; 200% FPL</p>
                                     </div>
                                 </div>
                                 <span className="text-xs font-bold text-green-600">Apply</span>
