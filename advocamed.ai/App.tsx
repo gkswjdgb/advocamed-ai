@@ -25,9 +25,8 @@ import ContactUs from './pages/ContactUs';
 import NotFound from './pages/NotFound';
 
 import { AnalysisResult } from './types';
-import { hospitals } from './data/hospitals'; // Import for Footer Links
+import { hospitals } from './data/hospitals';
 
-// 1. Home Component: Handles Scan/Result state via URL Params
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = searchParams.get('step') === 'UPLOAD' ? 'UPLOAD' : 
@@ -55,7 +54,7 @@ const Home = () => {
   };
   
   const handleBack = () => {
-    setSearchParams({}); // Clear params to go back to HERO
+    setSearchParams({});
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -102,11 +101,8 @@ const Home = () => {
   );
 };
 
-// 2. Main App Structure
 const App: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  
-  // Pick top 6 hospitals for SEO footer links
   const featuredHospitals = hospitals.slice(0, 6);
 
   return (
@@ -115,7 +111,6 @@ const App: React.FC = () => {
         <ScrollToTop />
         <div className="min-h-screen bg-gray-50 flex flex-col">
           
-          {/* Navigation */}
           <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16">
@@ -139,7 +134,6 @@ const App: React.FC = () => {
             </div>
           </nav>
 
-          {/* Main Routes */}
           <div className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -153,7 +147,6 @@ const App: React.FC = () => {
             </Routes>
           </div>
 
-          {/* Footer */}
           <footer className="bg-white border-t border-gray-200 mt-auto">
             <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-gray-100 pb-8">
@@ -162,7 +155,7 @@ const App: React.FC = () => {
                     Advoca<span className="text-primary">Med</span>.ai
                   </span>
                   <p className="text-xs text-gray-400 mt-4 leading-relaxed">
-                    AI-powered medical bill analysis and patient empowerment platform. We help you fight billing errors and apply for charity care under IRS 501(r).
+                    AI-powered medical bill analysis platform. We help you fight billing errors and apply for charity care under IRS 501(r).
                   </p>
                 </div>
                 
@@ -193,7 +186,7 @@ const App: React.FC = () => {
                     <ul className="space-y-2">
                         <li><Link to="/contact-us" className="text-gray-500 hover:text-primary text-sm">Contact Us</Link></li>
                         <li><Link to="/privacy-policy" className="text-gray-500 hover:text-primary text-sm">Privacy Policy</Link></li>
-                        <li><a href="/sitemap.xml" className="text-gray-500 hover:text-primary text-sm">XML Sitemap</a></li>
+                        {/* Removed visible XML Sitemap link for cleaner UX */}
                     </ul>
                 </div>
               </div>
