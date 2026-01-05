@@ -13,13 +13,16 @@ const BlogPost: React.FC = () => {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        const action = target.getAttribute('data-action');
+        const actionBtn = target.closest('[data-action]');
         
-        if (action === 'scan') {
-            e.preventDefault();
-            // Clear URL and navigate home with the upload step
-            navigate('/?step=UPLOAD');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (actionBtn) {
+            const action = actionBtn.getAttribute('data-action');
+            if (action === 'scan') {
+                e.preventDefault();
+                // Clear URL and navigate home with the upload step
+                navigate('/?step=UPLOAD');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
     };
     document.addEventListener('click', handleClick);
