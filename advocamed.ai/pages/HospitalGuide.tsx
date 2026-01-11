@@ -9,18 +9,42 @@ const HospitalGuide: React.FC = () => {
   
   const hospitalData = hospitals.find(h => h.slug === slug);
 
-  const hospitalName = hospitalData 
-    ? hospitalData.name 
-    : slug 
-      ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-      : 'Hospital';
+  // QA FIX: Handle case where hospital is not found in the JSON database
+  if (!hospitalData) {
+    return (
+      <>
+         <SEO 
+            title="Hospital Not Found | AdvocaMed" 
+            description="The requested hospital financial aid policy could not be found."
+         />
+         <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center bg-gray-50 py-16">
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 max-w-md">
+                <span className="text-4xl mb-4 block">🏥</span>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">Hospital Not Found</h1>
+                <p className="text-gray-500 mb-6 text-sm">
+                    We couldn't find a policy for <strong>"{slug}"</strong> in our directory yet. 
+                    However, you can still analyze your bill using our AI tool.
+                </p>
+                <div className="flex flex-col gap-3">
+                    <Link to="/?step=UPLOAD" className="w-full bg-primary hover:bg-primaryHover text-white font-bold py-3 rounded-xl transition-colors">
+                        Scan Bill Instead
+                    </Link>
+                    <Link to="/hospitals" className="w-full bg-gray-100 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-200 transition-colors">
+                        Browse Directory
+                    </Link>
+                </div>
+            </div>
+         </div>
+      </>
+    );
+  }
 
+  // If found, proceed with normal rendering
+  const hospitalName = hospitalData.name;
   const currentYear = new Date().getFullYear();
-  const fplThreshold = hospitalData ? hospitalData.fpl_limit : 200;
-  const deadline = hospitalData ? hospitalData.deadline_days : 240;
-  const policySource = hospitalData?.policy_note || "Standard Federal Guidelines (IRS 501r)";
-  const city = hospitalData?.city || "US";
-  const state = hospitalData?.state || "";
+  const fplThreshold = hospitalData.fpl_limit;
+  const deadline = hospitalData.deadline_days;
+  const policySource = hospitalData.policy_note || "Standard Federal Guidelines (IRS 501r)";
   
   // SEO STRATEGY: Target "Eligibility", "Income Limit", "Bill Forgiveness" - No fake PDF/Phone promises
   const seoTitle = `${hospitalName} Financial Assistance & Charity Care Eligibility (${currentYear})`;
