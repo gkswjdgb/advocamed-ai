@@ -15,12 +15,15 @@ const hospitals = JSON.parse(rawData);
 const DOMAIN = 'https://www.advocamed.com';
 
 // 2. Static Pages & Blog Posts
+// QA Fix: Added missing blog posts to ensure full indexing
 const staticPages = [
   '',
   '/blog',
   '/hospitals',
   '/contact-us',
   '/privacy-policy',
+  '/blog/how-to-dispute-medical-bill-errors',
+  '/blog/explanation-of-benefits-guide',
   '/blog/how-to-apply-charity-care-2025',
   '/blog/understanding-cpt-codes',
   '/blog/no-surprises-act-guide',
