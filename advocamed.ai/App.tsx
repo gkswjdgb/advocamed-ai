@@ -124,7 +124,7 @@ const App: React.FC = () => {
                   <Link to="/blog" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
                     Blog
                   </Link>
-                  <Link to="/contact-us" className="hidden md:block text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
+                  <Link to="/contact-us" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
                     Contact
                   </Link>
                 </div>
