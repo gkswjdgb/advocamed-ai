@@ -38,7 +38,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onDemo }) => {
                     onClick={onDemo}
                     className="w-full sm:flex-1 flex items-center justify-center px-8 py-4 border-2 border-gray-200 text-lg font-bold rounded-xl text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 shadow-sm"
                 >
-                    <span className="mr-2">👀</span> See Sample Result
+                    <span className="mr-2">👀</span> See a Sample Analysis
                 </button>
               </div>
               <p className="mt-4 text-xs text-center sm:text-left text-gray-400">
