@@ -41,9 +41,17 @@ const Home = () => {
   };
 
   const handleDemo = () => {
-    setAnalysisData(demoAnalysisResult);
-    setSearchParams({ step: 'RESULTS' });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsLoading(true);
+    // Switch to upload view to show loading state if desired, or just show loading overlay
+    // Here we show loading immediately
+    
+    // Simulate a 1.5 second analysis delay for realism
+    setTimeout(() => {
+        setAnalysisData(demoAnalysisResult);
+        setSearchParams({ step: 'RESULTS' });
+        setIsLoading(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 1500);
   };
 
   const handleAnalysisComplete = (result: AnalysisResult) => {
@@ -68,11 +76,22 @@ const Home = () => {
         />
       )}
       
-      {step === 'HERO' && (
+      {step === 'HERO' && !isLoading && (
         <>
           <Hero onStart={handleStart} onDemo={handleDemo} />
           <SEOContent />
         </>
+      )}
+
+      {/* Show loading state explicitly if we are in Hero but loading (for demo) */}
+      {(step === 'HERO' && isLoading) && (
+        <div className="flex flex-col items-center justify-center h-[60vh] animate-fade-in-up">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-6"></div>
+          <h2 className="text-2xl font-bold text-gray-800">Analyzing Demo Bill...</h2>
+          <p className="text-gray-500 mt-2 text-center max-w-md px-4">
+            Simulating AI audit for NYU Langone Health...
+          </p>
+        </div>
       )}
 
       {step === 'UPLOAD' && !isLoading && (
@@ -83,7 +102,7 @@ const Home = () => {
         />
       )}
 
-      {isLoading && (
+      {(step === 'UPLOAD' && isLoading) && (
         <div className="flex flex-col items-center justify-center h-[60vh] animate-fade-in-up">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-6"></div>
           <h2 className="text-2xl font-bold text-gray-800">Analyzing Bill Structure...</h2>
