@@ -47,9 +47,12 @@ const HospitalGuide: React.FC = () => {
   const policySource = hospitalData.policy_note || "Standard Federal Guidelines (IRS 501r)";
   const state = hospitalData.state || "your state";
   
-  // SEO STRATEGY: Target "Eligibility", "Income Limit", "Bill Forgiveness"
-  const seoTitle = `${hospitalName} Financial Assistance & Charity Care (${currentYear})`;
-  const seoDescription = `Apply for bill forgiveness at ${hospitalName}. 2025 Income limits (${fplThreshold}% FPL), application deadline, and negotiation guide for patients in ${state}.`;
+  // SEO STRATEGY: High-CTR Titles using "Forgiveness" and "100% Free" keywords
+  // Old: `${hospitalName} Financial Assistance & Charity Care (${currentYear})`
+  const seoTitle = `Get 100% Bill Forgiveness at ${hospitalName}: ${currentYear} Income Limits`;
+  
+  // SEO Description: Action-oriented hook
+  const seoDescription = `Don't pay your ${hospitalName} bill yet. If you earn less than ${fplThreshold}% of the poverty line, you likely qualify for $0 bills. Check your eligibility instantly.`;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -120,7 +123,7 @@ const HospitalGuide: React.FC = () => {
             </div>
         </div>
 
-        <div className="bg-gradient-to-b from-blue-50 to-white py-16 border-b border-gray-100">
+        <div className="bg-gradient-to-b from-blue-50 to-white py-12 md:py-16 border-b border-gray-100">
             <div className="max-w-4xl mx-auto px-4 text-center">
                 <span className="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold mb-4 uppercase tracking-widest">
                     Verified {currentYear} Policy Data 🛡️
@@ -131,18 +134,18 @@ const HospitalGuide: React.FC = () => {
                 </h1>
                 
                 <p className="max-w-2xl mx-auto text-gray-500 mb-8 text-lg">
-                    Comprehensive guide to lowering your bill at {hospitalName}. Learn about income limits, application deadlines, and your rights as a patient in {state}.
+                    Do not ignore your bill. Learn how to apply for <strong>100% forgiveness</strong> if your income is under the {fplThreshold}% FPL limit at {hospitalName}.
                 </p>
 
-                {/* Action Buttons: Link to Official Site Only */}
+                {/* Action Buttons: Stacked on Mobile for better CTR */}
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
                     {hospitalData?.financial_aid_url && (
-                      <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-base font-bold rounded-xl hover:bg-blue-700 transition-all shadow-xl active:scale-95 group">
+                      <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-base font-bold rounded-xl hover:bg-blue-700 transition-all shadow-xl active:scale-95 group w-full sm:w-auto">
                         Apply on Official Site
                         <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                       </a>
                     )}
-                     <Link to="/?step=UPLOAD" className="inline-flex items-center justify-center px-8 py-4 border border-gray-300 text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-all shadow-sm">
+                     <Link to="/?step=UPLOAD" className="inline-flex items-center justify-center px-8 py-4 border border-gray-300 text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-all shadow-sm w-full sm:w-auto">
                         Analyze My Bill with AI
                     </Link>
                 </div>
@@ -154,7 +157,7 @@ const HospitalGuide: React.FC = () => {
             {/* 1. Quick Stats Grid */}
             <div className="bg-white border-2 border-gray-100 rounded-2xl overflow-hidden shadow-sm mb-12">
                 <div className="bg-gray-50 px-6 py-3 border-b border-gray-100 flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-500 uppercase tracking-tighter">Policy Details</span>
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-tighter">Policy Snapshot</span>
                     <span className="text-xs text-primary font-mono truncate ml-4">{policySource}</span>
                 </div>
                 <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -166,7 +169,7 @@ const HospitalGuide: React.FC = () => {
                         </p>
                     </div>
                     <div>
-                        <p className="text-xs text-gray-400 uppercase font-bold mb-1">Retroactive Period</p>
+                        <p className="text-xs text-gray-400 uppercase font-bold mb-1">Application Deadline</p>
                         <p className="text-3xl font-black text-gray-900">{deadline} Days</p>
                         <p className="text-sm text-gray-600 mt-2">
                             You have up to {deadline} days from the first billing statement to apply. Collections must pause during the application process.
@@ -234,7 +237,7 @@ const HospitalGuide: React.FC = () => {
                 <div className="mt-12 bg-gray-900 text-white p-8 rounded-2xl text-center not-prose">
                     <h3 className="text-xl font-bold mb-2">Need help analyzing your {hospitalName} bill?</h3>
                     <p className="mb-6 text-gray-300 text-sm">Use our AI to find errors and generate an appeal letter in seconds.</p>
-                    <Link to="/?step=UPLOAD" className="inline-block bg-primary hover:bg-primaryHover text-white px-8 py-3 rounded-lg font-bold transition-colors">
+                    <Link to="/?step=UPLOAD" className="inline-block bg-primary hover:bg-primaryHover text-white px-8 py-3 rounded-lg font-bold transition-colors w-full sm:w-auto">
                         Start Free Analysis
                     </Link>
                 </div>
