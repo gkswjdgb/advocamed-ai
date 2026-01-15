@@ -19,6 +19,7 @@ const DOMAIN = 'https://www.advocamed.com';
 const staticPages = [
   '',
   '/blog',
+  '/about', // NEW: Added About page
   '/hospitals',
   '/contact-us',
   '/privacy-policy',
