@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { hospitals } from '../data/hospitals';
@@ -35,6 +34,14 @@ export const SEOContent: React.FC = () => {
             "@type": "Answer",
             "text": "Under IRS 501(r), most non-profit hospitals must provide free care to patients earning under 200% of the Federal Poverty Level (approx. $30,000 for an individual in 2025)."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool HIPAA compliant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AdvocaMed is designed with privacy first. We do not store your medical bills on our servers. The analysis is performed instantly, and the data is discarded immediately after processing."
+          }
         }
       ]
     };
@@ -51,10 +58,10 @@ export const SEOContent: React.FC = () => {
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-lg prose-red text-gray-600">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                        Understanding Your Medical Bill Rights
+                        Complete Guide to Medical Bill Advocacy
                     </h2>
                     <p className="mt-4 text-lg text-gray-500">
-                        Knowledge is power. Learn how the US healthcare billing system works and how to protect your wallet.
+                        The US healthcare system is complex. AdvocaMed empowers you with the data you need to fight back against unfair charges.
                     </p>
                 </div>
 
@@ -62,14 +69,24 @@ export const SEOContent: React.FC = () => {
                     {/* Article 1 */}
                     <div>
                         <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            What is the No Surprises Act?
+                            The "Chargemaster" Problem
                         </h3>
                         <p className="text-sm leading-relaxed">
-                            Effective from 2022, the <strong>No Surprises Act</strong> protects patients from receiving surprise medical bills from out-of-network providers at in-network facilities. If you received emergency care, you generally cannot be billed more than your in-network cost-sharing amount. AdvocaMed checks your bill for these violations automatically.
+                            Hospitals have a list of prices for every procedure called a "Chargemaster". These prices are often 3-5 times higher than what Medicare or insurance companies actually pay. If you are uninsured or out-of-network, you are often billed these inflated rates. AdvocaMed helps you identify the "Fair Market Price" so you can negotiate a realistic settlement.
                         </p>
                     </div>
 
                     {/* Article 2 */}
+                    <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-3">
+                            Federal Protections: No Surprises Act
+                        </h3>
+                        <p className="text-sm leading-relaxed">
+                            Effective from 2022, the <strong>No Surprises Act</strong> protects patients from receiving surprise medical bills from out-of-network providers at in-network facilities. If you go to an in-network hospital for surgery, the anesthesiologist cannot secretly bill you at an out-of-network rate. Our tool scans for these potential violations.
+                        </p>
+                    </div>
+
+                    {/* Article 3 */}
                     <div>
                         <h3 className="text-xl font-bold text-gray-900 mb-3">
                             How Charity Care (IRS 501r) Works
@@ -79,35 +96,27 @@ export const SEOContent: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Article 3 */}
-                    <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            Common Medical Billing Errors in {currentYear}
-                        </h3>
-                        <ul className="list-disc pl-5 text-sm space-y-2">
-                            <li><strong>Upcoding:</strong> Being billed for a more expensive service than what was performed.</li>
-                            <li><strong>Unbundling:</strong> Separating charges that should be billed together under one code to increase cost.</li>
-                            <li><strong>Duplicate Billing:</strong> Being charged twice for the same medication or procedure.</li>
-                        </ul>
-                    </div>
-
                     {/* Article 4 */}
                     <div>
                         <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            Why You Need an Itemized Bill
+                            Common Medical Billing Errors
                         </h3>
-                        <p className="text-sm leading-relaxed">
-                            Never pay a summary bill that only says "Lab Services" or "Pharmacy". You have the right to request an <strong>itemized statement</strong> (or "superbill") which lists every specific CPT code. This is essential for detecting errors, as summary bills often hide overcharges. AdvocaMed reads these codes to find discrepancies.
-                        </p>
+                        <ul className="list-disc pl-5 text-sm space-y-2">
+                            <li><strong>Upcoding:</strong> Being billed for a more expensive service than what was performed (e.g., Level 5 ER visit for a sore throat).</li>
+                            <li><strong>Unbundling:</strong> Separating charges that should be billed together under one code (e.g., surgical tray) to increase cost.</li>
+                            <li><strong>Duplicate Billing:</strong> Being charged twice for the same medication or procedure due to clerical error.</li>
+                        </ul>
                     </div>
                 </div>
 
+                <hr className="my-12 border-gray-200" />
+
                 {/* FAQ Section Display (Visible to User) */}
-                <div className="mt-16 bg-gray-50 rounded-2xl p-8">
+                <div className="bg-gray-50 rounded-2xl p-8">
                     <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h3>
                     <div className="space-y-6">
                         {faqSchema.mainEntity.map((faq, idx) => (
-                            <div key={idx} className="bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
+                            <div key={idx} className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
                                 <h4 className="font-bold text-gray-900 text-lg mb-2">{faq.name}</h4>
                                 <p className="text-gray-600 text-sm">{faq.acceptedAnswer.text}</p>
                             </div>
@@ -115,31 +124,34 @@ export const SEOContent: React.FC = () => {
                     </div>
                 </div>
 
-                {/* pSEO Internal Links */}
-                <div className="mt-16 border-t border-gray-100 pt-10">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Popular Hospital Financial Aid Guides</h3>
-                    <div className="flex flex-wrap justify-center gap-4">
-                        {hospitals.map((hospital) => (
+                {/* pSEO Internal Links - Condensed for cleaner UI */}
+                <div className="mt-16 pt-10">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Find Financial Aid by Hospital</h3>
+                    <p className="text-center text-sm text-gray-500 mb-6">Browse our directory of 5,000+ US hospitals to find specific charity care policies.</p>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {hospitals.slice(0, 15).map((hospital) => (
                             <Link 
                                 key={hospital.slug} 
                                 to={`/hospital/${hospital.slug}`}
-                                className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors no-underline"
+                                className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors no-underline"
                             >
-                                {hospital.name} Financial Aid
+                                {hospital.name}
                             </Link>
                         ))}
-                        <span className="px-4 py-2 text-sm text-gray-400">and 5,000+ more...</span>
+                        <Link to="/hospitals" className="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-200 no-underline">
+                            View All Hospitals &rarr;
+                        </Link>
                     </div>
                 </div>
 
-                <div className="mt-16 bg-gray-50 rounded-xl p-8 text-center">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to lower your medical expenses?</h3>
-                    <p className="mb-6">
-                        Our AI analyzes thousands of billing codes and hospital policies instantly.
+                <div className="mt-16 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 text-center text-white not-prose">
+                    <h3 className="text-2xl font-bold mb-4">Start Your Savings Journey</h3>
+                    <p className="mb-6 text-gray-300">
+                        Don't let medical debt ruin your financial future. Use our free AI auditor today.
                     </p>
                     <button 
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-secondary hover:bg-gray-800"
+                        className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-900 bg-white hover:bg-gray-100"
                     >
                         Start Free Analysis
                     </button>
