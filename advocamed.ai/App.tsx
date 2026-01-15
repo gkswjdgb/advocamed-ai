@@ -11,6 +11,7 @@ import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import CookieBanner from './components/CookieBanner';
 import ScrollToTop from './components/ScrollToTop';
+import AboutUs from './pages/AboutUs'; // New Import
 
 // Data
 import { demoAnalysisResult } from './data/demoData';
@@ -124,6 +125,9 @@ const App: React.FC = () => {
                   <Link to="/blog" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
                     Blog
                   </Link>
+                  <Link to="/about" className="hidden md:block text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
+                    About
+                  </Link>
                   <Link to="/contact-us" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors py-2">
                     Contact
                   </Link>
@@ -139,6 +143,7 @@ const App: React.FC = () => {
               <Route path="/blog/:id" element={<BlogPost />} />
               <Route path="/hospitals" element={<HospitalDirectory />} />
               <Route path="/hospital/:slug" element={<HospitalGuide />} />
+              <Route path="/about" element={<AboutUs />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
@@ -182,6 +187,7 @@ const App: React.FC = () => {
                 <div>
                     <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Support</h3>
                     <ul className="space-y-2">
+                        <li><Link to="/about" className="text-gray-500 hover:text-primary text-sm">About Us</Link></li>
                         <li><Link to="/contact-us" className="text-gray-500 hover:text-primary text-sm">Contact Us</Link></li>
                         <li><Link to="/privacy-policy" className="text-gray-500 hover:text-primary text-sm">Privacy Policy</Link></li>
                     </ul>
