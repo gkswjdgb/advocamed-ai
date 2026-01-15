@@ -160,7 +160,7 @@
     "name": "Emory Healthcare",
     "city": "Atlanta",
     "state": "GA",
-    "fpl_limit": 250,
+    "fpl_limit": 200,
     "deadline_days": 240,
     "policy_note": "Emory Healthcare Financial Assistance",
     "financial_aid_url": "https://www.emoryhealthcare.org/patients-visitors/billing-insurance/financial-assistance"
@@ -204,9 +204,9 @@
     "name": "Vanderbilt University Medical Center",
     "city": "Nashville",
     "state": "TN",
-    "fpl_limit": 250,
+    "fpl_limit": 300,
     "deadline_days": 240,
-    "policy_note": "VUMC Financial Assistance",
+    "policy_note": "Vanderbilt Financial Assistance (Up to 300% FPL)",
     "financial_aid_url": "https://www.vanderbilthealth.com/patient-and-visitor-info/financial-assistance"
   },
   {
@@ -292,9 +292,9 @@
     "name": "Children's Hospital of Philadelphia",
     "city": "Philadelphia",
     "state": "PA",
-    "fpl_limit": 300,
+    "fpl_limit": 400,
     "deadline_days": 240,
-    "policy_note": "CHOP Financial Assistance",
+    "policy_note": "CHOP Family Health Coverage (Generous)",
     "financial_aid_url": "https://www.chop.edu/billing-and-insurance/financial-assistance"
   },
   {
@@ -336,9 +336,9 @@
     "name": "OSU Wexner Medical Center",
     "city": "Columbus",
     "state": "OH",
-    "fpl_limit": 250,
+    "fpl_limit": 300,
     "deadline_days": 240,
-    "policy_note": "Ohio State Health Financial Assistance",
+    "policy_note": "Ohio State Health Financial Assistance (HCAP)",
     "financial_aid_url": "https://wexnermedical.osu.edu/patient-and-visitor-guide/billing-insurance/financial-assistance"
   },
   {
