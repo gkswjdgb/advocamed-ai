@@ -1,46 +1,59 @@
 import { AnalysisResult } from "../types";
 
 export const demoAnalysisResult: AnalysisResult = {
-  hospitalName: "General Memorial Medical Center (Sample)",
-  totalCharged: 12450.00,
-  potentialSavings: 4200.00,
-  confidenceScore: 98,
-  summary: "Our AI detected significant price variances in surgical supplies and potential unbundling of laboratory charges. This bill is highly eligible for negotiation.",
+  hospitalName: "NYU Langone Health",
+  totalCharged: 55000.00,
+  potentialSavings: 42350.00,
+  confidenceScore: 99,
+  summary: "High-severity coding (Level 5) detected for a minor condition. Excessive charges found for CT Scan and Pharmacy items compared to Medicare benchmarks.",
   analysisDate: new Date().toLocaleDateString(),
-  dataSourceCitation: "Medicare National Average Benchmarks (2025)",
-  disclaimer: "Demo sample for illustration purposes only. Estimates vary by insurer.",
+  dataSourceCitation: "CMS Physician Fee Schedule (2025)",
+  disclaimer: "Demo analysis based on national averages. Actual plan rates may vary.",
   items: [
     {
       code: "99285",
-      description: "Emergency Dept Visit (Level 5)",
-      chargedAmount: 1200.00,
-      expectedAmount: 450.00,
-      variance_level: "High",
-      flag_reason: "Charge is 2.6x the national average for a Level 5 ER visit.",
-      suggested_question: "Can you provide the physician's note justifying a Level 5 complexity for this visit?"
+      description: "Emergency Room Visit (Level 5)",
+      chargedAmount: 5500.00,
+      expectedAmount: 650.00,
+      variance_level: "Very High",
+      flag_reason: "Severity level 5 is for life-threatening conditions. Your records typically suggest a minor injury (Level 3).",
+      suggested_question: "Can you provide the physician's note justifying a Level 5 complexity (99285) for this visit?"
     },
     {
-      code: "80053",
-      description: "Comprehensive Metabolic Panel",
-      chargedAmount: 350.00,
-      expectedAmount: 45.00,
+      code: "70450",
+      description: "CT Scan - Head or Brain",
+      chargedAmount: 3200.00,
+      expectedAmount: 180.00,
       variance_level: "Very High",
-      flag_reason: "This common lab test is billed at 7.7x the standard Medicare rate.",
-      suggested_question: "Why is this lab charge significantly higher than the hospital's public cash price?"
+      flag_reason: "This charge is 17x higher than the Medicare rate. Average commercial price in NY is approx $400.",
+      suggested_question: "I am requesting an adjustment to the fair market cash price for CPT 70450."
     },
     {
-      code: "93000",
-      description: "Electrocardiogram (ECG)",
-      chargedAmount: 280.00,
-      expectedAmount: 35.00,
+      code: "N/A",
+      description: "Tylenol (Acetaminophen) 500mg",
+      chargedAmount: 85.00,
+      expectedAmount: 0.05,
       variance_level: "Very High",
-      flag_reason: "Routine diagnostic tests should not exceed 300% of national average.",
-      suggested_question: "I would like to request a discount on this item based on fair market pricing."
+      flag_reason: "Extreme markup on over-the-counter medication.",
+      suggested_question: "Please remove this incidental charge as it should be included in the room rate."
+    },
+    {
+      code: "96360",
+      description: "IV Infusion, Hydration",
+      chargedAmount: 450.00,
+      expectedAmount: 420.00,
+      variance_level: "Normal",
+      flag_reason: "Charge is within the expected range for a hospital setting.",
+      suggested_question: ""
     }
   ],
   charityAnalysis: {
     likelyEligible: true,
-    estimatedDiscount: "100% (Full Charity Care)",
-    reasoning: "Based on a household income of $45k and size of 4, this patient is under 200% FPL, meeting federal charity care guidelines."
+    estimatedDiscount: "100% (Full Forgiveness)",
+    reasoning: "Based on a household income of $45k and size of 4, you are under 200% FPL. NYU Langone typically waives 100% of bills for this bracket."
+  },
+  userFinancials: {
+    annualIncome: 45000,
+    householdSize: 4
   }
 };
