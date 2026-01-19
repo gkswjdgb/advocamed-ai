@@ -52,16 +52,31 @@ export const BlogPostView: React.FC<BlogPostViewProps> = ({ post, onBack, onScan
 
           {/* Render the HTML content safely */}
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
+
+          {/* E-E-A-T Trust Signal: Author Box */}
+          <div className="mt-12 not-prose">
+              <div className="bg-gray-50 p-5 rounded-xl border border-gray-100 flex items-start sm:items-center gap-4">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl shadow-sm border border-gray-200 shrink-0">
+                      👨‍⚕️
+                  </div>
+                  <div>
+                      <p className="font-bold text-gray-900 text-sm">Reviewed by the AdvocaMed Team</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                          Our guides are updated weekly based on the latest 2025 CMS regulations, IRS 501(r) guidelines, and consumer protection laws (No Surprises Act).
+                      </p>
+                  </div>
+              </div>
+          </div>
           
-          <div className="mt-12 pt-8 border-t border-gray-200">
-             <div className="bg-gray-50 p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="mt-8 pt-8 border-t border-gray-200">
+             <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
                 <div>
-                    <h3 className="font-bold text-gray-900">Have a bill like this?</h3>
-                    <p className="text-sm text-gray-600">Scan it now to find errors or apply for aid.</p>
+                    <h3 className="font-bold text-white text-lg">Have a bill like this?</h3>
+                    <p className="text-sm text-gray-300">Scan it now to find errors or apply for aid.</p>
                 </div>
                 <button 
                     onClick={onScanNow}
-                    className="bg-primary hover:bg-primaryHover text-white px-6 py-3 rounded-lg font-bold transition-colors shadow-sm whitespace-nowrap"
+                    className="bg-primary hover:bg-primaryHover text-white px-6 py-3 rounded-lg font-bold transition-colors shadow-lg whitespace-nowrap"
                 >
                     Start Free Analysis
                 </button>
