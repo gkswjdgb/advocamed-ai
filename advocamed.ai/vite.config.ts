@@ -1,15 +1,22 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Standard ESM path resolution
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './'),
+    },
+  },
   build: {
-    outDir: 'dist', // Explicitly state output directory
+    outDir: 'dist',
   },
-  define: {
-    // We add || '' to prevent the build from crashing if these are undefined
-    'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
-    'process.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY || ''),
-  },
+  // SECURITY FIX: Removed 'define' block to prevent leaking API_KEY to the browser.
 });
