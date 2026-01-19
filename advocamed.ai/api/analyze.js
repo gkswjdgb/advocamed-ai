@@ -144,7 +144,6 @@ export default async function handler(req, res) {
   } catch (error) {
     // SECURITY: Log Sanitization. 
     // We explicitly avoid logging the 'error' object directly if it contains the request body.
-    // We only log the error message.
     console.error("Backend Analysis Error:", error.message);
     res.status(500).json({ error: 'Analysis failed. Please try a clearer image or try again later.' });
   }
