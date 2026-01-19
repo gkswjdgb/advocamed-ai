@@ -1,7 +1,7 @@
 import React from 'react';
 import SEO from '../components/SEO';
 
-const TermsOfService: React.FC = () => {
+const TermsPage: React.FC = () => {
   return (
     <>
       <SEO 
@@ -49,4 +49,4 @@ const TermsOfService: React.FC = () => {
   );
 };
 
-export default TermsOfService;
+export default TermsPage;
