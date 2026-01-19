@@ -7,8 +7,6 @@
     <!-- Resource Hints for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -28,25 +26,61 @@
     <!-- Fonts: Display Swap to prevent invisible text -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Google tag (gtag.js) - Deferred to reduce TBT -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3"></script>
+    <!-- Third-party Script Lazy Loader (Performance & Security) -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      (function() {
+        // Flags to prevent double loading
+        let adsLoaded = false;
+        let analyticsLoaded = false;
 
-      gtag('config', 'G-NLMH7ERZZ3');
+        function loadScripts() {
+          if (adsLoaded && analyticsLoaded) return;
+
+          // 1. Google Analytics (GTM)
+          if (!analyticsLoaded) {
+            analyticsLoaded = true;
+            const script = document.createElement('script');
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3';
+            script.async = true;
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-NLMH7ERZZ3');
+          }
+
+          // 2. Google AdSense (Heavy script - loaded last)
+          if (!adsLoaded) {
+            adsLoaded = true;
+            const script = document.createElement('script');
+            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382';
+            script.async = true;
+            script.crossOrigin = "anonymous";
+            document.head.appendChild(script);
+          }
+        }
+
+        // Trigger on user interaction or timeout
+        const events = ['scroll', 'mousemove', 'touchstart', 'click'];
+        function onInteraction() {
+          loadScripts();
+          events.forEach(evt => window.removeEventListener(evt, onInteraction));
+        }
+
+        events.forEach(evt => window.addEventListener(evt, onInteraction, { passive: true }));
+        
+        // Fallback: Load after 4 seconds if no interaction
+        setTimeout(loadScripts, 4000);
+      })();
     </script>
-
-    <!-- Google AdSense Script - Defer execution -->
-    <script defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382" crossorigin="anonymous"></script>
     
     <!-- Inline Manifest for PWA -->
     <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQWR2b2NhTWVkLmFpIiwic2hvcnRfbmFtZSI6IkFkdm9jYU1lZCIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjRkY0RjRGIiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vcGxhY2Vob2xkLmNvLzE5MngxOTIvRkY0RjRGL2ZmZmZmZj90ZXh0PUFNIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3BuZyJ9LHsic3JjIjoiaHR0cHM6Ly9wbGFjZWhvbGQuY28vNTEyeDUxMi9GRjRGNEYvZmZmZmZmP3RleHQ9QU0iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ==" />
 
     <title>AdvocaMed.ai - AI Medical Bill Advocate & Dispute Tool</title>
     
-    <!-- Tailwind CDN -->
+    <!-- Tailwind CDN (Note: For production, a build step is recommended, but keeping for compatibility) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -81,7 +115,7 @@
     </script>
     <style>
       body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-      /* Reduce CLS for hero images */
+      /* Reduce CLS */
       img { max-width: 100%; height: auto; }
     </style>
 <script type="importmap">
