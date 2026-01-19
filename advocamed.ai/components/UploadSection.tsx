@@ -14,12 +14,23 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
   const [householdSize, setHouseholdSize] = useState<string>('1');
   const [showTips, setShowTips] = useState<boolean>(false);
 
+  // Security: Max file size (4MB) to prevent Serverless Function Payload Limit (4.5MB)
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; 
+
   const handleFileChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      setError('Please upload an image file (JPEG, PNG). PDF support coming soon.');
+    // Security Check 1: File Type Validation
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
+    if (!validTypes.includes(file.type)) {
+      setError('Security Alert: Only standard image files (JPEG, PNG, WEBP) are allowed.');
+      return;
+    }
+
+    // Security Check 2: File Size Validation (DoS Prevention)
+    if (file.size > MAX_FILE_SIZE) {
+      setError(`File is too large (${(file.size / 1024 / 1024).toFixed(2)}MB). Please upload an image smaller than 4MB.`);
       return;
     }
 
@@ -38,6 +49,12 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64String = reader.result as string;
+        // Basic check to ensure it's a valid Data URL
+        if (!base64String.includes('base64,')) {
+             setError("Invalid file encoding.");
+             onLoading(false);
+             return;
+        }
         const base64Data = base64String.split(',')[1];
         
         try {
