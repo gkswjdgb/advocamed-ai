@@ -9,9 +9,10 @@ import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService'; // New Import
 import CookieBanner from './components/CookieBanner';
 import ScrollToTop from './components/ScrollToTop';
-import AboutUs from './pages/AboutUs'; // New Import
+import AboutUs from './pages/AboutUs'; 
 
 // Data
 import { demoAnalysisResult } from './data/demoData';
@@ -165,6 +166,7 @@ const App: React.FC = () => {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
@@ -191,24 +193,25 @@ const App: React.FC = () => {
                 </div>
 
                 <div>
-                    <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Popular Policies</h3>
-                    <ul className="space-y-2">
-                        {featuredHospitals.map(h => (
-                            <li key={h.id}>
-                                <Link to={`/hospital/${h.slug}`} className="text-gray-500 hover:text-primary text-sm truncate block">
-                                    {h.name} Financial Aid
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Support</h3>
+                    <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Policies</h3>
                     <ul className="space-y-2">
                         <li><Link to="/about" className="text-gray-500 hover:text-primary text-sm">About Us</Link></li>
                         <li><Link to="/contact-us" className="text-gray-500 hover:text-primary text-sm">Contact Us</Link></li>
                         <li><Link to="/privacy-policy" className="text-gray-500 hover:text-primary text-sm">Privacy Policy</Link></li>
+                        <li><Link to="/terms" className="text-gray-500 hover:text-primary text-sm">Terms of Service</Link></li>
+                    </ul>
+                </div>
+
+                <div>
+                   <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase mb-3">Featured</h3>
+                    <ul className="space-y-2">
+                        {featuredHospitals.slice(0,4).map(h => (
+                            <li key={h.id}>
+                                <Link to={`/hospital/${h.slug}`} className="text-gray-500 hover:text-primary text-sm truncate block">
+                                    {h.name}
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
               </div>
