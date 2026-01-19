@@ -14,6 +14,13 @@ export default function ContactUs() {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Contact Us</h1>
             <p className="text-gray-500 mt-2">Have questions about your medical bill analysis? We're here to help.</p>
+            
+            {/* AdSense Trust Signal: Visible Email Address */}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg inline-block">
+                <p className="text-sm text-blue-800">
+                    <strong>Email Support:</strong> hello@advocamed.ai
+                </p>
+            </div>
           </div>
 
           <form action="https://formspree.io/f/xpqzpbrz" method="POST" className="space-y-6">
