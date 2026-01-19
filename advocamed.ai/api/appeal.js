@@ -12,7 +12,6 @@ export default async function handler(req, res) {
   
   if (referer && !allowedOrigins.some(origin => referer.includes(origin))) {
       console.warn("Security Warning: Request missing or unauthorized referer.");
-      // We don't block strictly here to allow dev flexibility, but in prod consider 403.
   }
 
   try {
@@ -27,7 +26,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Invalid items format.' });
     }
 
-    // Sanitize Hospital Name: Allow letters, numbers, spaces, specific punctuation. Remove dangerous chars.
+    // Sanitize Hospital Name
     let safeHospitalName = "The Provider";
     if (analysis.hospitalName && typeof analysis.hospitalName === 'string') {
         safeHospitalName = analysis.hospitalName.substring(0, 100).replace(/[^a-zA-Z0-9 \-\.\&\(\)]/g, "");
@@ -38,7 +37,7 @@ export default async function handler(req, res) {
     // Safe Items Map
     const highVarianceItems = analysis.items
         .filter(i => i && typeof i === 'object' && i.variance_level !== 'Normal')
-        .slice(0, 8) // Reduced limit to 8 to prevent context overflow
+        .slice(0, 8) 
         .map(i => {
             const desc = (i.description || "").substring(0, 100).replace(/[^a-zA-Z0-9 \-\.\%]/g, ""); 
             const code = (i.code || "N/A").substring(0, 20).replace(/[^a-zA-Z0-9]/g, "");
@@ -94,7 +93,8 @@ export default async function handler(req, res) {
     res.status(200).json({ text: response.text });
 
   } catch (error) {
-    console.error("Backend Appeal Error:", error);
+    // SECURITY: Log Sanitization
+    console.error("Backend Appeal Error:", error.message);
     res.status(500).json({ error: 'Unable to generate letter. Please try again later.' });
   }
 }
