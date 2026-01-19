@@ -9,7 +9,7 @@ import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService'; // New Import
+import TermsPage from './pages/TermsPage'; // Renamed to fix build error
 import CookieBanner from './components/CookieBanner';
 import ScrollToTop from './components/ScrollToTop';
 import AboutUs from './pages/AboutUs'; 
@@ -43,10 +43,6 @@ const Home = () => {
 
   const handleDemo = () => {
     setIsLoading(true);
-    // Switch to upload view to show loading state if desired, or just show loading overlay
-    // Here we show loading immediately
-    
-    // Simulate a 1.5 second analysis delay for realism
     setTimeout(() => {
         setAnalysisData(demoAnalysisResult);
         setSearchParams({ step: 'RESULTS' });
@@ -84,7 +80,6 @@ const Home = () => {
         </>
       )}
 
-      {/* Show loading state explicitly if we are in Hero but loading (for demo) */}
       {(step === 'HERO' && isLoading) && (
         <div className="flex flex-col items-center justify-center h-[60vh] animate-fade-in-up">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-6"></div>
@@ -166,7 +161,7 @@ const App: React.FC = () => {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/terms" element={<TermsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
