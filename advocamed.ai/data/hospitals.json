@@ -163,7 +163,8 @@
     "fpl_limit": 200,
     "deadline_days": 240,
     "policy_note": "Emory Healthcare Financial Assistance",
-    "financial_aid_url": "https://www.emoryhealthcare.org/patients-visitors/billing-insurance/financial-assistance"
+    "financial_aid_url": "https://www.emoryhealthcare.org/patients-visitors/billing-insurance/financial-assistance",
+    "application_url": "https://www.emoryhealthcare.org/ui/pdfs/financial-assistance/financial-assistance-application-english.pdf"
   },
   {
     "id": "houston-methodist",
@@ -207,7 +208,8 @@
     "fpl_limit": 300,
     "deadline_days": 240,
     "policy_note": "Vanderbilt Financial Assistance (Up to 300% FPL)",
-    "financial_aid_url": "https://www.vanderbilthealth.com/patient-and-visitor-info/financial-assistance"
+    "financial_aid_url": "https://www.vanderbilthealth.com/patient-and-visitor-info/financial-assistance",
+    "application_url": "https://www.vanderbilthealth.com/sites/default/files/documents/financial-assistance-application.pdf"
   },
   {
     "id": "brigham-womens",
@@ -306,7 +308,8 @@
     "fpl_limit": 400,
     "deadline_days": 240,
     "policy_note": "Boston Children's Financial Assistance",
-    "financial_aid_url": "https://www.childrenshospital.org/patient-resources/billing-and-insurance/financial-assistance"
+    "financial_aid_url": "https://www.childrenshospital.org/patient-resources/billing-and-insurance/financial-assistance",
+    "application_url": "https://www.childrenshospital.org/sites/default/files/media_file/Financial-Assistance-Application.pdf"
   },
   {
     "id": "texas-childrens",
