@@ -9,7 +9,7 @@ import { AnalysisResultView } from './components/AnalysisResult';
 import { SEOContent } from './components/SEOContent';
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
-import TermsPage from './pages/TermsPage'; // Renamed to fix build error
+import TermsOfService from './pages/TermsOfService'; 
 import CookieBanner from './components/CookieBanner';
 import ScrollToTop from './components/ScrollToTop';
 import AboutUs from './pages/AboutUs'; 
@@ -161,7 +161,7 @@ const App: React.FC = () => {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/terms" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
