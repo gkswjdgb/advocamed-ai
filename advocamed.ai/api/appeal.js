@@ -6,47 +6,56 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // SECURITY: Basic Origin/Referer Check (Prevent direct API abuse)
+  // SECURITY: Basic Origin/Referer Check
   const referer = req.headers.referer || req.headers.origin;
   const allowedOrigins = ['advocamed.com', 'localhost', 'vercel.app'];
-  const isAllowed = referer && allowedOrigins.some(origin => referer.includes(origin));
   
-  // Note: We don't block immediately to avoid breaking Vercel Previews, 
-  // but in production, you should enforce this strictly.
-  if (!referer) {
-      console.warn("Security Warning: Request missing referer header.");
+  if (referer && !allowedOrigins.some(origin => referer.includes(origin))) {
+      console.warn("Security Warning: Request missing or unauthorized referer.");
+      // We don't block strictly here to allow dev flexibility, but in prod consider 403.
   }
 
   try {
     const { analysis, financials } = req.body;
 
-    // SECURITY: Input Sanitization & Validation
-    if (!analysis || !analysis.items || !Array.isArray(analysis.items)) {
-        return res.status(400).json({ error: 'Invalid analysis data structure.' });
+    // SECURITY CHECK: Data Structure Validation
+    if (!analysis || typeof analysis !== 'object') {
+        return res.status(400).json({ error: 'Invalid analysis data.' });
     }
 
-    // Limit input length to prevent token exhaustion attacks
-    if (analysis.hospitalName && analysis.hospitalName.length > 200) {
-        analysis.hospitalName = analysis.hospitalName.substring(0, 200);
+    if (!Array.isArray(analysis.items)) {
+        return res.status(400).json({ error: 'Invalid items format.' });
     }
-    
-    // Construct safe strings
-    const hospitalName = analysis.hospitalName || "The Provider";
-    const totalCharged = analysis.totalCharged || 0;
+
+    // Sanitize Hospital Name: Allow letters, numbers, spaces, specific punctuation. Remove dangerous chars.
+    let safeHospitalName = "The Provider";
+    if (analysis.hospitalName && typeof analysis.hospitalName === 'string') {
+        safeHospitalName = analysis.hospitalName.substring(0, 100).replace(/[^a-zA-Z0-9 \-\.\&\(\)]/g, "");
+    }
+
+    const totalCharged = Number(analysis.totalCharged) || 0;
+
+    // Safe Items Map
     const highVarianceItems = analysis.items
-        .filter(i => i.variance_level !== 'Normal')
-        .slice(0, 10) // Limit to top 10 items to prevent huge prompts
+        .filter(i => i && typeof i === 'object' && i.variance_level !== 'Normal')
+        .slice(0, 8) // Reduced limit to 8 to prevent context overflow
         .map(i => {
-            // Sanitize item description
-            const cleanDesc = (i.description || "").replace(/[^a-zA-Z0-9 \-\.\(\)]/g, ""); 
-            return `${cleanDesc} (Code: ${i.code || 'N/A'})`;
+            const desc = (i.description || "").substring(0, 100).replace(/[^a-zA-Z0-9 \-\.\%]/g, ""); 
+            const code = (i.code || "N/A").substring(0, 20).replace(/[^a-zA-Z0-9]/g, "");
+            return `${desc} (Code: ${code})`;
         })
         .join(', ');
 
+    // Safe Financials
+    let safeFinancialString = '';
+    if (financials && typeof financials === 'object') {
+        const income = Number(financials.income) || Number(financials.annualIncome) || 0;
+        const size = Number(financials.size) || Number(financials.householdSize) || 1;
+        safeFinancialString = `- Income Context: Annual Income $${income.toFixed(2)} (Household Size: ${Math.floor(size)})`;
+    }
+
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-    // SECURITY: System Instruction to prevent Prompt Injection
-    // We explicitly tell the model to ignore instructions inside the variables.
     const systemInstruction = `
       You are a professional medical billing advocate assistant.
       
@@ -60,11 +69,11 @@ export default async function handler(req, res) {
     const prompt = `
       Write a polite but firm "Request for Clarification" email to a hospital billing department.
       
-      **Case Details (Data Only):**
-      - Hospital Name: "${hospitalName}"
-      - Total Bill Amount: $${totalCharged}
-      - Items Flagged for Review: ${highVarianceItems}
-      ${financials ? `- Income Context: Annual Income $${financials.income} (Household Size: ${financials.size})` : ''}
+      **Case Details (Sanitized):**
+      - Hospital Name: "${safeHospitalName}"
+      - Total Bill Amount: $${totalCharged.toFixed(2)}
+      - Items Flagged for Review: ${highVarianceItems || "General Audit Requested"}
+      ${safeFinancialString}
       
       **Goal:** Ask for an itemized review (UB-04) and coding verification.
       ${analysis.charityAnalysis?.likelyEligible ? `**Action:** Request a Financial Assistance Application based on the income context.` : ''}
@@ -77,7 +86,7 @@ export default async function handler(req, res) {
       contents: prompt,
       config: {
         systemInstruction: systemInstruction,
-        temperature: 0.3, // Low temperature for more deterministic/safe output
+        temperature: 0.3,
         maxOutputTokens: 1000,
       }
     });
@@ -86,7 +95,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error("Backend Appeal Error:", error);
-    // SECURITY: Return generic error to client, hide stack trace
     res.status(500).json({ error: 'Unable to generate letter. Please try again later.' });
   }
 }
