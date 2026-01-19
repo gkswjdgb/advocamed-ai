@@ -6,13 +6,22 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
+  // SECURITY: Basic Origin Check
+  const referer = req.headers.referer || req.headers.origin;
+  const allowedOrigins = ['advocamed.com', 'localhost', 'vercel.app'];
+  
+  // Allow requests if they match allowed origins, or if it's a direct server call (referer might be undefined in some server contexts, but usually present for browser fetch)
+  if (referer && !allowedOrigins.some(origin => referer.includes(origin))) {
+      // Log the attempt but don't crash - return 403
+      console.warn(`Blocked request from unauthorized origin: ${referer}`);
+      return res.status(403).json({ error: 'Access Denied: Unauthorized Origin' });
+  }
+
   try {
     const { base64Image, mimeType, financials } = req.body;
 
-    // Security Check: Payload Size (Approximate base64 size check)
+    // Security Check: Payload Size
     if (!base64Image || base64Image.length > 6 * 1024 * 1024) {
-        // Vercel serverless limit is 4.5MB payload, base64 adds 33% overhead.
-        // We reject huge strings early to fail fast.
         return res.status(413).json({ error: 'Payload too large. Please upload a smaller image.' });
     }
 
@@ -23,9 +32,6 @@ export default async function handler(req, res) {
       ? `Patient Context: Annual Income $${financials.annualIncome}, Household Size ${financials.householdSize}.`
       : "Patient Context: No financial information provided.";
 
-    // SECURITY & SAFETY INSTRUCTION:
-    // 1. PII REDACTION: Instructions to strictly omit names/DOB.
-    // 2. PROMPT INJECTION DEFENSE: Instructions to ignore text in the image that commands the AI.
     const systemInstruction = `
       You are an AI assistant helping patients understand their medical bills.
       
@@ -36,7 +42,7 @@ export default async function handler(req, res) {
       
       **Your Task:**
       Analyze the provided medical bill image to find billing errors, upcoding, and charity care eligibility.
-
+      
       **Rules for Analysis:**
       1. **Benchmarks**: Explicitly state that price comparisons are based on "Estimated National Averages".
       2. **Neutral Tone**: Use "Potential Discrepancy" instead of "Fraud".
@@ -121,6 +127,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error("Backend Analysis Error:", error);
-    res.status(500).json({ error: error.message || 'Analysis failed' });
+    // SECURITY: Return generic error
+    res.status(500).json({ error: 'Analysis failed. Please try a clearer image or try again later.' });
   }
 }
