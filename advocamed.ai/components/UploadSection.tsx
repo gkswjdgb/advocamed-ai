@@ -14,58 +14,65 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
   const [householdSize, setHouseholdSize] = useState<string>('1');
   const [showTips, setShowTips] = useState<boolean>(false);
 
-  // Security: Max file size check (Client side first defense)
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // Allow larger input, but we will resize it down.
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; 
 
-  /**
-   * SECURITY FEATURE: Client-Side Metadata Stripping & Resizing
-   * 1. Loads image into memory.
-   * 2. Draws it onto a fresh Canvas (strips EXIF/GPS data).
-   * 3. Resizes to max 1024px (prevents large payload DoS).
-   * 4. Returns clean Base64 string.
-   */
   const processImage = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
+      
       reader.onload = (event) => {
+        if (!event.target?.result) {
+            reject(new Error("Failed to read file data."));
+            return;
+        }
+
         const img = new Image();
         img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          
-          // Resize logic: Max dimension 1024px
-          const MAX_DIMENSION = 1024;
-          if (width > height) {
-            if (width > MAX_DIMENSION) {
-              height *= MAX_DIMENSION / width;
-              width = MAX_DIMENSION;
-            }
-          } else {
-            if (height > MAX_DIMENSION) {
-              width *= MAX_DIMENSION / height;
-              height = MAX_DIMENSION;
-            }
+          try {
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              
+              const MAX_DIMENSION = 1024;
+              if (width > height) {
+                if (width > MAX_DIMENSION) {
+                  height *= MAX_DIMENSION / width;
+                  width = MAX_DIMENSION;
+                }
+              } else {
+                if (height > MAX_DIMENSION) {
+                  width *= MAX_DIMENSION / height;
+                  height = MAX_DIMENSION;
+                }
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              
+              if (!ctx) {
+                reject(new Error("Browser does not support canvas operations."));
+                return;
+              }
+
+              ctx.drawImage(img, 0, 0, width, height);
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+              
+              // Validate dataURL format
+              const base64Part = dataUrl.split(',')[1];
+              if (base64Part) {
+                  resolve(base64Part);
+              } else {
+                  reject(new Error("Failed to encode image."));
+              }
+          } catch (err) {
+              reject(err);
           }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          if (!ctx) {
-            reject(new Error("Could not create canvas context"));
-            return;
-          }
-
-          // Draw image to canvas - This action physically strips metadata (EXIF)
-          ctx.drawImage(img, 0, 0, width, height);
-
-          // Export as JPEG with 0.8 quality for optimal OCR vs Size
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          resolve(dataUrl.split(',')[1]); // Return only base64 data
         };
         img.onerror = () => reject(new Error("Failed to load image structure."));
-        img.src = event.target?.result as string;
+        img.src = event.target.result as string;
       };
+      
       reader.onerror = () => reject(new Error("Failed to read file."));
       reader.readAsDataURL(file);
     });
@@ -75,7 +82,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Security Check 1: File Type Validation
     const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
     if (!validTypes.includes(file.type)) {
       setError('Security Alert: Only standard image files (JPEG, PNG, WEBP) are allowed.');
@@ -99,16 +105,16 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
     }
 
     try {
-      // Step 1: Secure Processing (Strip Metadata & Resize)
       const cleanBase64Data = await processImage(file);
       
-      // Step 2: Send to API
       try {
         const result = await analyzeMedicalBill(cleanBase64Data, 'image/jpeg', financials);
         onAnalysisComplete(result);
-      } catch (apiError: any) {
-        console.error("Analysis Error (Sanitized):", apiError.message);
-        setError(apiError.message || "Failed to analyze. Please try a clearer photo.");
+      } catch (apiError: unknown) {
+        // Safe error handling for unknown error types
+        const errorMessage = apiError instanceof Error ? apiError.message : "An unknown error occurred.";
+        console.error("Analysis Error:", errorMessage);
+        setError(errorMessage || "Failed to analyze. Please try a clearer photo.");
         onLoading(false);
       }
     } catch (e) {
@@ -153,7 +159,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
           Our AI reads CPT codes to find errors. <strong className="text-gray-700">We do not store your data.</strong>
         </p>
 
-        {/* Improved Tips Accordion */}
         <div className="mb-8">
             <button 
                 onClick={() => setShowTips(!showTips)}
