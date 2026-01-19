@@ -17,6 +17,14 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'charts': ['recharts'],
+          'genai': ['@google/genai'],
+        },
+      },
+    },
   },
-  // SECURITY FIX: Removed 'define' block to prevent leaking API_KEY to the browser.
 });
