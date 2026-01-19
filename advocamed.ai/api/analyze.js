@@ -10,9 +10,7 @@ export default async function handler(req, res) {
   const referer = req.headers.referer || req.headers.origin;
   const allowedOrigins = ['advocamed.com', 'localhost', 'vercel.app'];
   
-  // Allow requests if they match allowed origins, or if it's a direct server call (referer might be undefined in some server contexts, but usually present for browser fetch)
   if (referer && !allowedOrigins.some(origin => referer.includes(origin))) {
-      // Log the attempt but don't crash - return 403
       console.warn(`Blocked request from unauthorized origin: ${referer}`);
       return res.status(403).json({ error: 'Access Denied: Unauthorized Origin' });
   }
@@ -20,17 +18,43 @@ export default async function handler(req, res) {
   try {
     const { base64Image, mimeType, financials } = req.body;
 
-    // Security Check: Payload Size
-    if (!base64Image || base64Image.length > 6 * 1024 * 1024) {
-        return res.status(413).json({ error: 'Payload too large. Please upload a smaller image.' });
+    // SECURITY CHECK 1: Payload Size & Existence
+    if (!base64Image || typeof base64Image !== 'string' || base64Image.length > 6 * 1024 * 1024) {
+        return res.status(413).json({ error: 'Payload invalid or too large.' });
+    }
+
+    // SECURITY CHECK 2: Validate Base64 Format (Prevent "Garbage Data" Attacks)
+    // Ensure string contains only valid base64 characters
+    const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+    if (!base64Regex.test(base64Image)) {
+        return res.status(400).json({ error: 'Invalid image encoding.' });
+    }
+
+    // SECURITY CHECK 3: Strict Input Validation (Prevent Prompt Injection via JSON)
+    let safeFinancialContext = "Patient Context: No financial information provided.";
+    
+    if (financials) {
+        // Attackers might try to send strings with commands in the 'annualIncome' field.
+        // We FORCE convert to numbers and check validity.
+        const income = Number(financials.annualIncome);
+        const size = Number(financials.householdSize);
+
+        if (isNaN(income) || isNaN(size) || !isFinite(income) || !isFinite(size)) {
+             // If malicious string was sent, Number() usually returns NaN or logic fails.
+             // We reject the request to be safe.
+             return res.status(400).json({ error: 'Invalid financial data format.' });
+        }
+
+        // Additional Sanity Check: Prevent unrealistic numbers causing token overflows
+        if (size > 20 || size < 1) {
+            return res.status(400).json({ error: 'Invalid household size.' });
+        }
+
+        safeFinancialContext = `Patient Context: Annual Income $${income.toFixed(2)}, Household Size ${Math.floor(size)}.`;
     }
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const currentYear = new Date().getFullYear();
-
-    const financialContext = financials 
-      ? `Patient Context: Annual Income $${financials.annualIncome}, Household Size ${financials.householdSize}.`
-      : "Patient Context: No financial information provided.";
 
     const systemInstruction = `
       You are an AI assistant helping patients understand their medical bills.
@@ -106,7 +130,7 @@ export default async function handler(req, res) {
       contents: {
         parts: [
           { inlineData: { mimeType, data: base64Image } },
-          { text: `Analyze this bill. Context: ${financialContext}. Year: ${currentYear}. Output JSON.` }
+          { text: `Analyze this bill. Context: ${safeFinancialContext}. Year: ${currentYear}. Output JSON.` }
         ]
       },
       config: {
@@ -127,7 +151,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error("Backend Analysis Error:", error);
-    // SECURITY: Return generic error
     res.status(500).json({ error: 'Analysis failed. Please try a clearer image or try again later.' });
   }
 }
