@@ -15,14 +15,14 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onDemo }) => {
           <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
             <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-200 bg-white shadow-sm mb-6">
                 <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-                <span className="text-sm font-medium text-gray-600">Updated for {new Date().getFullYear()} Regulations</span>
+                <span className="text-sm font-medium text-gray-700">Updated for {new Date().getFullYear()} Regulations</span>
             </div>
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
               <span className="block">Medical Billing,</span>
               <span className="block text-primary">Simplified & Fair.</span>
             </h1>
-            <p className="mt-4 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl leading-relaxed">
-              Don't fight the system alone. AdvocaMed uses AI to detect billing errors and identifies if you qualify for <strong className="text-gray-700">bill forgiveness</strong> under <strong className="text-gray-700">IRS 501(r) Charity Care</strong>.
+            <p className="mt-4 text-base text-gray-600 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl leading-relaxed">
+              Don't fight the system alone. AdvocaMed uses AI to detect billing errors and identifies if you qualify for <strong className="text-gray-900">bill forgiveness</strong> under <strong className="text-gray-900">IRS 501(r) Charity Care</strong>.
             </p>
             <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
               {/* Mobile Optimized Button Layout: Vertical stack on mobile, horizontal on desktop */}
@@ -30,25 +30,26 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onDemo }) => {
                 <button
                   onClick={onStart}
                   className="w-full sm:flex-1 flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-xl text-white bg-primary hover:bg-primaryHover shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
+                  aria-label="Start Free Bill Analysis"
                 >
                   <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                   Scan Bill For Free
                 </button>
                 <button
                     onClick={onDemo}
-                    className="w-full sm:flex-1 flex items-center justify-center px-8 py-4 border-2 border-gray-200 text-lg font-bold rounded-xl text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 shadow-sm"
+                    className="w-full sm:flex-1 flex items-center justify-center px-8 py-4 border-2 border-gray-200 text-lg font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 shadow-sm"
                 >
                     <span className="mr-2">👀</span> See a Sample Analysis
                 </button>
               </div>
-              <p className="mt-4 text-xs text-center sm:text-left text-gray-400">
-                <span className="font-semibold text-gray-500">100% Private.</span> No data stored. No sign-up required.
+              <p className="mt-4 text-xs text-center sm:text-left text-gray-500">
+                <span className="font-semibold text-gray-600">100% Private.</span> No data stored. No sign-up required.
               </p>
             </div>
           </div>
 
           {/* Right Column: Visual Mockup - Hidden on tiny screens to prioritize buttons */}
-          <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center hidden md:block">
+          <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center hidden md:block" style={{contain: "layout paint"}}>
             <div className="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
                 <div className="absolute top-0 -left-4 -right-4 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
                 <div className="absolute top-0 -right-4 w-72 h-72 bg-red-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -60,13 +61,13 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onDemo }) => {
                             <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
                             <div className="w-3 h-3 bg-green-400 rounded-full"></div>
                         </div>
-                        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Analysis Complete</div>
+                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Analysis Complete</div>
                     </div>
                     
                     <div className="p-6 space-y-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm text-gray-500">Total Charged</p>
+                                <p className="text-sm text-gray-600">Total Charged</p>
                                 <p className="text-xl font-bold text-gray-800">$12,450.00</p>
                             </div>
                             <div className="text-right">
@@ -81,7 +82,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onDemo }) => {
                                     <div className="flex-shrink-0 h-8 w-8 rounded-full bg-white flex items-center justify-center text-red-500 shadow-sm">!</div>
                                     <div className="ml-3">
                                         <p className="text-sm font-medium text-gray-900">Duplicate Charge</p>
-                                        <p className="text-xs text-gray-500">CPT 99285 found twice</p>
+                                        <p className="text-xs text-gray-600">CPT 99285 found twice</p>
                                     </div>
                                 </div>
                                 <span className="text-xs font-bold text-red-600">Dispute</span>
@@ -91,7 +92,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onDemo }) => {
                                     <div className="flex-shrink-0 h-8 w-8 rounded-full bg-white flex items-center justify-center text-green-500 shadow-sm">✓</div>
                                     <div className="ml-3">
                                         <p className="text-sm font-medium text-gray-900">Charity Eligible</p>
-                                        <p className="text-xs text-gray-500">Income &lt; 300% FPL</p>
+                                        <p className="text-xs text-gray-600">Income &lt; 300% FPL</p>
                                     </div>
                                 </div>
                                 <span className="text-xs font-bold text-green-600">Apply</span>
