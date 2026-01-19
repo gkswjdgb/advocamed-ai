@@ -23,6 +23,7 @@ const staticPages = [
   '/hospitals',
   '/contact-us',
   '/privacy-policy',
+  '/blog/trump-healthcare-plan-2026', // NEW: Newsjacking Post
   '/blog/how-to-dispute-medical-bill-errors',
   '/blog/explanation-of-benefits-guide',
   '/blog/how-to-apply-charity-care-2025',
