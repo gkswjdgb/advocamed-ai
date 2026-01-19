@@ -48,10 +48,7 @@ const HospitalGuide: React.FC = () => {
   const state = hospitalData.state || "your state";
   
   // SEO STRATEGY: High-CTR Titles using "Forgiveness" and "100% Free" keywords
-  // Old: `${hospitalName} Financial Assistance & Charity Care (${currentYear})`
   const seoTitle = `Get 100% Bill Forgiveness at ${hospitalName}: ${currentYear} Income Limits`;
-  
-  // SEO Description: Action-oriented hook
   const seoDescription = `Don't pay your ${hospitalName} bill yet. If you earn less than ${fplThreshold}% of the poverty line, you likely qualify for $0 bills. Check your eligibility instantly.`;
 
   const breadcrumbSchema = {
@@ -75,24 +72,36 @@ const HospitalGuide: React.FC = () => {
     }]
   };
 
+  // UPDATED FAQ SCHEMA for Rich Results
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [{
-      "@type": "Question",
-      "name": `What is the income limit for charity care at ${hospitalName}?`,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": `Patients with a household income up to ${fplThreshold}% of the Federal Poverty Level typically qualify for free or discounted care at ${hospitalName}.`
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `Does ${hospitalName} offer charity care?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Yes. ${hospitalName} provides 100% bill forgiveness for patients with a household income up to ${fplThreshold}% of the Federal Poverty Level.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `What is the deadline to apply for financial assistance at ${hospitalName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `You generally have up to ${deadline} days from the date of the first billing statement to apply for financial assistance. We recommend applying immediately to pause collections.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How do I apply for financial aid at ${hospitalName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `You must complete the 501(r) financial assistance application form and submit it with proof of income (pay stubs, tax returns).`
+        }
       }
-    }, {
-      "@type": "Question",
-      "name": `Does ${hospitalName} sue patients for medical debt?`,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": `While policies vary, non-profit hospitals like ${hospitalName} must make "reasonable efforts" to determine if you are eligible for financial assistance before engaging in extraordinary collection actions (ECAs) like lawsuits.`
-      }
-    }]
+    ]
   };
 
   return (
@@ -139,12 +148,19 @@ const HospitalGuide: React.FC = () => {
 
                 {/* Action Buttons: Stacked on Mobile for better CTR */}
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-                    {hospitalData?.financial_aid_url && (
+                    {/* PDF Download Button - High Value Action */}
+                    {hospitalData?.application_url ? (
+                      <a href={hospitalData.application_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-red-600 text-white text-base font-bold rounded-xl hover:bg-red-700 transition-all shadow-xl active:scale-95 group w-full sm:w-auto">
+                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Download Application PDF
+                      </a>
+                    ) : hospitalData?.financial_aid_url ? (
                       <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-base font-bold rounded-xl hover:bg-blue-700 transition-all shadow-xl active:scale-95 group w-full sm:w-auto">
                         Apply on Official Site
                         <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                       </a>
-                    )}
+                    ) : null}
+                    
                      <Link to="/?step=UPLOAD" className="inline-flex items-center justify-center px-8 py-4 border border-gray-300 text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-all shadow-sm w-full sm:w-auto">
                         Analyze My Bill with AI
                     </Link>
