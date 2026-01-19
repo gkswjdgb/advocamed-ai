@@ -14,8 +14,62 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
   const [householdSize, setHouseholdSize] = useState<string>('1');
   const [showTips, setShowTips] = useState<boolean>(false);
 
-  // Security: Max file size (4MB) to prevent Serverless Function Payload Limit (4.5MB)
-  const MAX_FILE_SIZE = 4 * 1024 * 1024; 
+  // Security: Max file size check (Client side first defense)
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // Allow larger input, but we will resize it down.
+
+  /**
+   * SECURITY FEATURE: Client-Side Metadata Stripping & Resizing
+   * 1. Loads image into memory.
+   * 2. Draws it onto a fresh Canvas (strips EXIF/GPS data).
+   * 3. Resizes to max 1024px (prevents large payload DoS).
+   * 4. Returns clean Base64 string.
+   */
+  const processImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          // Resize logic: Max dimension 1024px
+          const MAX_DIMENSION = 1024;
+          if (width > height) {
+            if (width > MAX_DIMENSION) {
+              height *= MAX_DIMENSION / width;
+              width = MAX_DIMENSION;
+            }
+          } else {
+            if (height > MAX_DIMENSION) {
+              width *= MAX_DIMENSION / height;
+              height = MAX_DIMENSION;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error("Could not create canvas context"));
+            return;
+          }
+
+          // Draw image to canvas - This action physically strips metadata (EXIF)
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Export as JPEG with 0.8 quality for optimal OCR vs Size
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          resolve(dataUrl.split(',')[1]); // Return only base64 data
+        };
+        img.onerror = () => reject(new Error("Failed to load image structure."));
+        img.src = event.target?.result as string;
+      };
+      reader.onerror = () => reject(new Error("Failed to read file."));
+      reader.readAsDataURL(file);
+    });
+  };
 
   const handleFileChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -28,9 +82,8 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
       return;
     }
 
-    // Security Check 2: File Size Validation (DoS Prevention)
     if (file.size > MAX_FILE_SIZE) {
-      setError(`File is too large (${(file.size / 1024 / 1024).toFixed(2)}MB). Please upload an image smaller than 4MB.`);
+      setError(`File is too large. Please upload an image smaller than 10MB.`);
       return;
     }
 
@@ -46,29 +99,21 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
     }
 
     try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64String = reader.result as string;
-        // Basic check to ensure it's a valid Data URL
-        if (!base64String.includes('base64,')) {
-             setError("Invalid file encoding.");
-             onLoading(false);
-             return;
-        }
-        const base64Data = base64String.split(',')[1];
-        
-        try {
-            const result = await analyzeMedicalBill(base64Data, file.type, financials);
-            onAnalysisComplete(result);
-        } catch (apiError: any) {
-            console.error(apiError);
-            setError(apiError.message || "Failed to analyze. Please try a clearer photo.");
-            onLoading(false);
-        }
-      };
-      reader.readAsDataURL(file);
+      // Step 1: Secure Processing (Strip Metadata & Resize)
+      const cleanBase64Data = await processImage(file);
+      
+      // Step 2: Send to API
+      try {
+        const result = await analyzeMedicalBill(cleanBase64Data, 'image/jpeg', financials);
+        onAnalysisComplete(result);
+      } catch (apiError: any) {
+        console.error("Analysis Error (Sanitized):", apiError.message);
+        setError(apiError.message || "Failed to analyze. Please try a clearer photo.");
+        onLoading(false);
+      }
     } catch (e) {
-      setError('Error reading file.');
+      console.error("Processing Error");
+      setError('Error processing image. Please try again.');
       onLoading(false);
     }
   }, [onAnalysisComplete, onLoading, income, householdSize]);
