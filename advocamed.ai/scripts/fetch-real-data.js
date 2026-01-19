@@ -1,3 +1,4 @@
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -33,6 +34,31 @@ const DEFAULT_POLICY = {
 const fetchRealData = async () => {
   console.log("📡 Connecting to US Hospital Database (CMS Mirror)...");
 
+  // Setup paths
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const outputPath = path.resolve(__dirname, '../data/hospitals.json');
+
+  // QA SAFETY: Read existing data first to preserve manual manual edits (like application_url)
+  let existingData = [];
+  try {
+    if (fs.existsSync(outputPath)) {
+        const rawExisting = fs.readFileSync(outputPath, 'utf8');
+        existingData = JSON.parse(rawExisting);
+        console.log(`🛡️  Preserving manual data from ${existingData.length} existing records...`);
+    }
+  } catch (e) {
+    console.warn("⚠️ Could not read existing data. Starting fresh.");
+  }
+
+  // Create a map of slug -> manual fields for quick lookup
+  const manualFieldsMap = new Map();
+  existingData.forEach(h => {
+      if (h.application_url) {
+          manualFieldsMap.set(h.slug, { application_url: h.application_url });
+      }
+  });
+
   try {
     const response = await fetch(SOURCE_URL);
     const rawData = await response.json();
@@ -44,6 +70,10 @@ const fetchRealData = async () => {
       const name = h.name || "Unknown Hospital";
       const city = h.city || "Unknown City";
       const state = h.state || "US";
+      
+      const slug = name.toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
 
       // Match policy based on name keywords
       let policy = DEFAULT_POLICY;
@@ -54,28 +84,26 @@ const fetchRealData = async () => {
         }
       }
 
+      // QA SAFETY: Re-inject manual fields if they exist for this slug
+      const preservedFields = manualFieldsMap.get(slug) || {};
+
       return {
         id: `hosp-${index}`,
-        slug: name.toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, ''),
+        slug: slug,
         name: name,
         city: city,
         state: state,
         fpl_limit: policy.fpl,
         deadline_days: policy.days,
-        policy_note: policy.note
+        policy_note: policy.note,
+        ...preservedFields // Merge preserved fields like application_url
       };
     });
-
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const outputPath = path.resolve(__dirname, '../data/hospitals.json');
 
     fs.writeFileSync(outputPath, JSON.stringify(processedHospitals, null, 2));
     
     console.log(`🎉 Success! Saved ${processedHospitals.length} REAL hospitals.`);
-    console.log(`📊 Data source: CMS General Information.`);
+    console.log(`🛡️  Restored PDF links for ${manualFieldsMap.size} hospitals.`);
 
   } catch (error) {
     console.error("❌ Error fetching data:", error);
