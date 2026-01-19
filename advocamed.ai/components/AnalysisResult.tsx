@@ -122,11 +122,14 @@ export const AnalysisResultView: React.FC<Props> = ({ data }) => {
                     <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${getVarianceColor(item.variance_level)}`}>
                         {getVarianceLabel(item.variance_level)}
                     </span>
-                    <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-0.5 rounded">
-                        CPT: {item.code || 'N/A'}
-                    </span>
+                    {/* HIDE CPT IF NULL to avoid looking broken */}
+                    {item.code && item.code !== 'null' && item.code !== 'N/A' && (
+                        <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-0.5 rounded border border-gray-200">
+                            CPT: {item.code}
+                        </span>
+                    )}
                     {/* EXTERNAL VERIFICATION LINK */}
-                    {item.code && item.code !== 'null' && (
+                    {item.code && item.code !== 'null' && item.code !== 'N/A' && (
                         <a 
                           href={`https://www.medicare.gov/procedure-price-lookup/cost/${item.code}`}
                           target="_blank" 
