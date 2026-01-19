@@ -14,7 +14,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
   const [householdSize, setHouseholdSize] = useState<string>('1');
   const [showTips, setShowTips] = useState<boolean>(false);
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
   const processImage = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
               let width = img.width;
               let height = img.height;
               
-              const MAX_DIMENSION = 1024;
+              const MAX_DIMENSION = 1500; // Increased slightly for better OCR readability
               if (width > height) {
                 if (width > MAX_DIMENSION) {
                   height *= MAX_DIMENSION / width;
@@ -56,7 +56,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
               }
 
               ctx.drawImage(img, 0, 0, width, height);
-              const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
               
               // Validate dataURL format
               const base64Part = dataUrl.split(',')[1];
@@ -82,9 +82,16 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
     const file = event.target.files?.[0];
     if (!file) return;
 
+    // UX: Handle PDF specifically to guide users
+    if (file.type === 'application/pdf') {
+        setError('⚠️ PDFs are not supported directly. Please take a SCREENSHOT of the PDF and upload the image.');
+        return;
+    }
+
     const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
-    if (!validTypes.includes(file.type)) {
-      setError('Security Alert: Only standard image files (JPEG, PNG, WEBP) are allowed.');
+    // Check type, but allow HEIC (some browsers might not report mime type correctly for heic)
+    if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.heic')) {
+      setError('Invalid format. Please upload a JPG, PNG, or HEIC image.');
       return;
     }
 
@@ -111,7 +118,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
         const result = await analyzeMedicalBill(cleanBase64Data, 'image/jpeg', financials);
         onAnalysisComplete(result);
       } catch (apiError: unknown) {
-        // Safe error handling for unknown error types
         const errorMessage = apiError instanceof Error ? apiError.message : "An unknown error occurred.";
         console.error("Analysis Error:", errorMessage);
         setError(errorMessage || "Failed to analyze. Please try a clearer photo.");
@@ -138,14 +144,14 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between animate-fade-in-down">
-            <div className="flex items-center text-left">
-                <svg className="w-5 h-5 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between animate-fade-in-down text-left">
+            <div className="flex items-start">
+                <svg className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span className="text-red-700 text-sm font-medium">{error}</span>
+                <span className="text-red-700 text-sm font-medium leading-snug">{error}</span>
             </div>
-            <button onClick={() => setError(null)} className="text-red-400 hover:text-red-600 p-2">
+            <button onClick={() => setError(null)} className="text-red-400 hover:text-red-600 p-1 ml-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -180,9 +186,9 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
                         <p className="text-[10px] text-gray-500">Unfold completely so text lines are straight.</p>
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                        <span className="text-lg">🔍</span>
-                        <p className="text-xs text-gray-600 mt-1 font-semibold">Itemized Bill</p>
-                        <p className="text-[10px] text-gray-500">Summary bills don't work. Use the detailed one.</p>
+                        <span className="text-lg">🚫</span>
+                        <p className="text-xs text-gray-600 mt-1 font-semibold">No PDFs</p>
+                        <p className="text-[10px] text-gray-500">Take a screenshot of digital PDFs first.</p>
                     </div>
                 </div>
             )}
@@ -236,15 +242,18 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
             </label>
 
             <label className="flex-1 flex flex-col items-center justify-center h-40 sm:h-48 border-2 border-gray-200 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all active:scale-95 group">
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center px-4">
                      <svg className="w-8 h-8 text-gray-400 mb-2 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     <p className="text-sm font-semibold text-gray-600">Upload Image</p>
-                    <p className="text-xs text-gray-400">JPEG or PNG</p>
+                    <p className="text-xs text-gray-400 mt-1">JPEG, PNG, WEBP, HEIC</p>
+                    <p className="text-[10px] text-red-400 font-medium mt-1">PDF? Please Screenshot it</p>
                 </div>
                 <input 
                     type="file" 
                     className="hidden" 
-                    accept="image/*"
+                    // Note: We intentionally exclude .pdf from accept to guide users, 
+                    // but we also check file.type in JS for drag-and-drop or 'All Files' selection
+                    accept="image/jpeg,image/png,image/webp,image/heic"
                     onChange={handleFileChange}
                 />
             </label>
