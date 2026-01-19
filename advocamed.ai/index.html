@@ -2,8 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- (권장) 접근성 때문에 user-scalable/no, max-scale 제거 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -11,17 +16,19 @@
     <meta name="description" content="AdvocaMed.ai: Free AI medical bill advocate. Detect billing errors, generate appeal letters, and find charity care eligibility under IRS 501(r)." />
     <meta name="keywords" content="medical bill dispute, hospital bill error, charity care, medical coding errors, AI patient advocate" />
     
-    <!-- Google AdSense Verification Meta Tag (Robust Connection) -->
+    <!-- Google AdSense Verification Meta Tag -->
     <meta name="google-adsense-account" content="ca-pub-9757952393788382">
 
     <!-- PWA & Mobile Optimization -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- (수정 권장) white는 표준값 아님 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#FF4F4F">
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Fonts: Display Swap to prevent invisible text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google tag (gtag.js) - Deferred to reduce TBT -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -31,25 +38,25 @@
       gtag('config', 'G-NLMH7ERZZ3');
     </script>
 
-    <!-- Google AdSense Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382" crossorigin="anonymous"></script>
+    <!-- Google AdSense Script - Defer execution -->
+    <script defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382" crossorigin="anonymous"></script>
     
-    <!-- Inline Manifest for PWA installation -->
+    <!-- Inline Manifest for PWA -->
     <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQWR2b2NhTWVkLmFpIiwic2hvcnRfbmFtZSI6IkFkdm9jYU1lZCIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjRkY0RjRGIiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vcGxhY2Vob2xkLmNvLzE5MngxOTIvRkY0RjRGL2ZmZmZmZj90ZXh0PUFNIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3BuZyJ9LHsic3JjIjoiaHR0cHM6Ly9wbGFjZWhvbGQuY28vNTEyeDUxMi9GRjRGNEYvZmZmZmZmP3RleHQ9QU0iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ==" />
 
     <title>AdvocaMed.ai - AI Medical Bill Advocate & Dispute Tool</title>
     
-    <!-- Tailwind CDN (개발 편의용) -->
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              primary: '#FF4F4F', // Core Brand Red
+              primary: '#FF4F4F', 
               primaryHover: '#E04343',
-              secondary: '#111827', // Dark Slate
-              surface: '#F9FAFB', // Light Gray
+              secondary: '#111827',
+              surface: '#F9FAFB',
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
@@ -72,9 +79,10 @@
         },
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+      /* Reduce CLS for hero images */
+      img { max-width: 100%; height: auto; }
     </style>
 <script type="importmap">
 {
