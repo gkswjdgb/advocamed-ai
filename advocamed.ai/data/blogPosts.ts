@@ -1,6 +1,81 @@
+
 import { BlogPost } from '../types';
 
 export const blogPosts: BlogPost[] = [
+  {
+    id: "trump-healthcare-plan-2026",
+    title: "Trump’s 2026 Healthcare Plan: What 'Price Transparency' Really Means for Your Medical Bill",
+    excerpt: "Why waiting for the government to fix hospital pricing is a mistake—and how you can get transparency today using AI.",
+    date: "2026-01-20",
+    readingTime: "5 min read",
+    category: "Healthcare News",
+    content: `
+      <p class="mb-6 text-lg leading-relaxed text-gray-700">
+        President Trump has announced a sweeping "Great Healthcare Plan" for 2026, putting <strong>Price Transparency</strong> and Lower Insurance Premiums at the center of his agenda.
+      </p>
+      <p class="mb-6 text-gray-700">
+        The promise is bold: force hospitals and insurers to publish their prices in "Plain English" and create a legal framework where Americans pay the lowest possible drug prices. But for patients holding a confusing medical bill right now, one question remains: <strong>Will this actually lower my bill today?</strong>
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">The Promise: "Plain-English" Pricing</h2>
+      <p class="mb-4 text-gray-700">
+        The core of the new plan involves holding big insurance companies accountable. The administration aims to mandate that:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li><strong>Denial Rates are Public:</strong> Insurers must display how often they deny claims on their websites.</li>
+        <li><strong>Real Prices on Display:</strong> Hospitals must post prices in public areas, not just hidden in complex spreadsheets.</li>
+        <li><strong>No More Jargon:</strong> Coverage details must be written in simple, understandable English.</li>
+      </ul>
+      <p class="mb-4 text-gray-700">
+        This is a massive step forward. Historically, hospitals have used "Chargemaster" prices—inflated sticker prices that nobody actually pays—to confuse patients.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">The Reality: Why You Can't Wait</h2>
+      <p class="mb-4 text-gray-700">
+        While the policy is promising, implementation takes time. Even with current laws like the <strong>No Surprises Act</strong>, many hospitals still bury their pricing data in machine-readable files that are impossible for the average patient to decipher.
+      </p>
+      <p class="mb-4 text-gray-700">
+        Hospitals are businesses. They have little incentive to make it easy for you to pay less. Even if the law passes, we expect a "chaos period" where compliance is slow and bills remain confusing.
+      </p>
+      <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-8">
+        <strong>Reality Check:</strong> If you have a bill due in 30 days, you cannot wait for a policy that fully matures in 2026.
+      </div>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">The Solution: Get Transparency Now with AI</h2>
+      <p class="mb-4 text-gray-700">
+        You don't need to wait for a new law to understand your medical bill. Technology has already moved faster than regulation. AdvocaMed was built to enforce the spirit of "Price Transparency" immediately.
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li><strong>Fair Price Lookup:</strong> We analyze millions of data points to tell you what a procedure should cost (Medicare rates), not what the hospital says it costs.</li>
+        <li><strong>Jargon Decoder:</strong> Our AI acts as the "Plain-English" translator the government is asking for. We turn codes like <strong>CPT 99285</strong> into "High-Severity Emergency Visit."</li>
+        <li><strong>Error Detection:</strong> We spot "Upcoding" and "Unbundling"—common tricks used to inflate bills—instantly.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Is This Legal Advice?</h2>
+      <p class="mb-4 text-gray-700">
+        <strong>No.</strong> AdvocaMed is a data analytics tool, not a law firm. We provide <strong>information leverage</strong>.
+      </p>
+      <p class="mb-4 text-gray-700">
+        Think of it like buying a car. You wouldn't walk into a dealership without checking the market price on Kelley Blue Book, right? Similarly, you shouldn't pay a hospital bill without checking the Fair Market Price on AdvocaMed. We empower you with the data you need to ask the right questions and negotiate confidently.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">What Should You Do Today?</h2>
+      <p class="mb-4 text-gray-700">
+        If you have a medical bill sitting on your desk: Don't panic. Don't pay it blindly.
+      </p>
+      <p class="mb-8 text-gray-700">
+        The government is working on transparency for the future, but we are delivering it for you today.
+      </p>
+
+      <div class="mt-8 p-6 bg-blue-50 border border-blue-100 rounded-xl text-center">
+        <h3 class="text-xl font-bold text-blue-900 mb-2">Check Your Medical Bill for Free</h3>
+        <p class="text-blue-700 mb-6">See if you are being overcharged in seconds.</p>
+        <button data-action="scan" class="bg-primary hover:bg-primaryHover text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg text-lg">
+           Scan Bill Now
+        </button>
+      </div>
+    `
+  },
   {
     id: "how-to-dispute-medical-bill-errors",
     title: "How to Dispute Medical Bills in 5 Easy Steps (and Win)",
@@ -167,10 +242,10 @@ export const blogPosts: BlogPost[] = [
       </div>
 
       <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center">
-        <h3 class="text-xl font-bold mb-2">Ready to take action?</h3>
-        <p class="mb-6">Analyze your bill now to find specific discrepancies for negotiation.</p>
+        <h3 class="text-xl font-bold mb-2">Too nervous to call?</h3>
+        <p class="mb-6">Let our AI generate a professional email for you instead.</p>
         <button data-action="scan" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors">
-          Start Free Analysis
+          Generate Dispute Letter
         </button>
       </div>
     `
@@ -246,6 +321,40 @@ export const blogPosts: BlogPost[] = [
           Scan Bill Now
         </button>
       </div>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">3. Documents You Need</h2>
+      <ul class="space-y-3 mb-8">
+        <li class="flex items-start">
+          <span class="text-green-500 mr-2">✓</span>
+          <span><strong>Tax Returns (Form 1040):</strong> Usually the most recent year.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-green-500 mr-2">✓</span>
+          <span><strong>Pay Stubs:</strong> Last 3 months of income proof.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-green-500 mr-2">✓</span>
+          <span><strong>Denial Letter:</strong> Proof that Medicaid denied you (if applicable).</span>
+        </li>
+      </ul>
+
+      <hr class="my-8 border-gray-200">
+      
+      <h3 class="text-xl font-bold mb-4">Frequently Asked Questions</h3>
+      <details class="mb-4 bg-white p-4 rounded-lg border border-gray-200 cursor-pointer group">
+        <summary class="font-semibold text-gray-800 list-none flex justify-between items-center">
+          Can I apply if I already paid?
+          <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="mt-2 text-gray-600 text-sm">Yes! Most hospitals allow you to apply for a refund within 240 days of the first bill.</p>
+      </details>
+      <details class="mb-4 bg-white p-4 rounded-lg border border-gray-200 cursor-pointer group">
+        <summary class="font-semibold text-gray-800 list-none flex justify-between items-center">
+          Does this affect my credit score?
+          <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="mt-2 text-gray-600 text-sm">Applying for charity care does not hurt your credit. In fact, it pauses collections.</p>
+      </details>
     `
   },
   {
@@ -300,11 +409,6 @@ export const blogPosts: BlogPost[] = [
         <li><strong>Time Errors:</strong> Did they charge for 60 minutes of surgery when it took 30?</li>
         <li><strong>Unbundled Kits:</strong> Did they charge for a surgical kit AND the gloves inside it separately?</li>
       </ul>
-
-      <div class="mt-8 p-4 bg-gray-100 rounded text-center">
-        <p class="font-bold text-gray-800">Got your itemized bill?</p>
-        <button data-action="scan" class="text-blue-600 underline hover:text-blue-800 cursor-pointer bg-transparent border-none">Upload it to AdvocaMed for a free audit.</button>
-      </div>
     `
   },
   {
