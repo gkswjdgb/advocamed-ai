@@ -24,32 +24,24 @@ export default async function handler(req, res) {
     }
 
     // SECURITY CHECK 2: Validate Base64 Format (Prevent "Garbage Data" Attacks)
-    // Ensure string contains only valid base64 characters
     const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
     if (!base64Regex.test(base64Image)) {
         return res.status(400).json({ error: 'Invalid image encoding.' });
     }
 
-    // SECURITY CHECK 3: Strict Input Validation (Prevent Prompt Injection via JSON)
+    // SECURITY CHECK 3: Strict Input Validation
     let safeFinancialContext = "Patient Context: No financial information provided.";
     
     if (financials) {
-        // Attackers might try to send strings with commands in the 'annualIncome' field.
-        // We FORCE convert to numbers and check validity.
         const income = Number(financials.annualIncome);
         const size = Number(financials.householdSize);
 
         if (isNaN(income) || isNaN(size) || !isFinite(income) || !isFinite(size)) {
-             // If malicious string was sent, Number() usually returns NaN or logic fails.
-             // We reject the request to be safe.
              return res.status(400).json({ error: 'Invalid financial data format.' });
         }
-
-        // Additional Sanity Check: Prevent unrealistic numbers causing token overflows
         if (size > 20 || size < 1) {
             return res.status(400).json({ error: 'Invalid household size.' });
         }
-
         safeFinancialContext = `Patient Context: Annual Income $${income.toFixed(2)}, Household Size ${Math.floor(size)}.`;
     }
 
@@ -150,7 +142,10 @@ export default async function handler(req, res) {
     }
 
   } catch (error) {
-    console.error("Backend Analysis Error:", error);
+    // SECURITY: Log Sanitization. 
+    // We explicitly avoid logging the 'error' object directly if it contains the request body.
+    // We only log the error message.
+    console.error("Backend Analysis Error:", error.message);
     res.status(500).json({ error: 'Analysis failed. Please try a clearer image or try again later.' });
   }
 }
