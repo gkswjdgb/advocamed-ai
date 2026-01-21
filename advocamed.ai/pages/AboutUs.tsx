@@ -6,11 +6,11 @@ const AboutUs: React.FC = () => {
   return (
     <>
       <SEO 
-        title="About AdvocaMed - Our Mission"
-        description="We are dedicated to ending the medical debt crisis in America through AI transparency and patient education."
+        title="About AdvocaMed - Our Mission & Editorial Standards"
+        description="We are dedicated to ending the medical debt crisis in America through AI transparency. Learn about our editorial standards and data sources."
         canonical="/about"
       />
-      <div className="bg-white py-16 px-4 sm:px-6 lg:px-8 pt-24 min-h-screen">
+      <div className="bg-white py-16 px-4 sm:px-6 lg:px-8 pt-24 min-h-screen animate-fade-in-up">
         <div className="max-w-3xl mx-auto">
             <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl mb-8">
                 Democratizing Medical Billing Transparency
@@ -21,7 +21,7 @@ const AboutUs: React.FC = () => {
                     Medical debt is the leading cause of bankruptcy in the United States. At <strong>AdvocaMed</strong>, we believe that understanding your healthcare costs shouldn't require a medical degree.
                 </p>
                 <p>
-                    Hospitals operate with complex "Chargemasters" and obscure coding systems that leave patients confused and vulnerable to overcharges. Our mission is to level the playing field.
+                    Hospitals operate with complex "Chargemasters" and obscure coding systems that leave patients confused and vulnerable to overcharges. Our mission is to level the playing field using technology.
                 </p>
 
                 <h2 className="text-gray-900">How Our Technology Works</h2>
@@ -33,6 +33,19 @@ const AboutUs: React.FC = () => {
                     <li><strong>Unbundling:</strong> When inclusive procedures are separated into multiple charges.</li>
                     <li><strong>Price Variances:</strong> Charges that exceed 300% of the regional median.</li>
                 </ul>
+
+                <h2 className="text-gray-900">Editorial Standards & Data Accuracy</h2>
+                <p>
+                    Given the sensitive nature of healthcare finance, we adhere to strict accuracy standards:
+                </p>
+                <div className="bg-indigo-50 p-6 rounded-xl border border-indigo-100 my-6">
+                    <ul className="list-disc pl-5 space-y-2 text-indigo-900 text-base">
+                        <li><strong>Data Sources:</strong> Our pricing benchmarks are derived from the <strong>CMS Physician Fee Schedule</strong> and <strong>Hospital Price Transparency</strong> machine-readable files.</li>
+                        <li><strong>Policy Verification:</strong> Our hospital charity care database is manually verified against 501(r) financial assistance policies and updated quarterly.</li>
+                        <li><strong>No Medical Advice:</strong> We strictly limit our analysis to <em>administrative billing data</em>. We do not offer medical diagnosis or treatment advice.</li>
+                        <li><strong>Human Review:</strong> Our content guides are reviewed for alignment with current laws, including the <em>No Surprises Act</em> and <em>Affordable Care Act</em>.</li>
+                    </ul>
+                </div>
 
                 <h2 className="text-gray-900">Why We Focus on Charity Care</h2>
                 <p>
