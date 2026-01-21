@@ -157,7 +157,7 @@ const App: React.FC = () => {
             </div>
           </nav>
 
-          {/* Added role="main" for Accessibility (Fixes "Document does not have a main landmark") */}
+          {/* Added role="main" for Accessibility */}
           <main className="flex-grow" role="main">
             <Suspense fallback={<PageLoader />}>
               <Routes>
@@ -175,9 +175,9 @@ const App: React.FC = () => {
             </Suspense>
           </main>
 
-          <footer className="bg-white border-t border-gray-200 mt-auto">
-            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-gray-100 pb-8">
+          <footer className="bg-white border-t border-gray-200 mt-auto pt-12 pb-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-gray-100">
                 <div className="col-span-1 md:col-span-1">
                   <span className="text-xl font-bold text-gray-900 tracking-tight">
                     Advoca<span className="text-primary">Med</span>.ai
@@ -218,6 +218,13 @@ const App: React.FC = () => {
                         ))}
                     </ul>
                 </div>
+              </div>
+
+              {/* CRITICAL: Explicit Disclaimer for AdSense/YMYL Compliance */}
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-8 text-left">
+                  <p className="text-[10px] text-gray-500 leading-relaxed">
+                      <strong>DISCLAIMER:</strong> AdvocaMed.ai is an automated analysis tool designed for informational and educational purposes only. We are not a law firm, medical provider, or insurance entity. The "potential savings," "errors," and "charity care eligibility" detected by our AI are estimates based on national datasets (CMS) and public hospital policies. They do not constitute legal or medical advice. Results may vary based on your specific insurance plan and state laws. Always verify CPT codes and billing details with a certified professional or your healthcare provider before taking financial action. Use of this service is subject to our <Link to="/terms" className="underline">Terms of Service</Link> and <Link to="/privacy-policy" className="underline">Privacy Policy</Link>.
+                  </p>
               </div>
               
               <div className="flex flex-col items-center justify-center">
