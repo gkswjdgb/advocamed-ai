@@ -1,151 +1,291 @@
-<!DOCTYPE html>
-<html lang="en" class="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Resource Hints for Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+import React, { useState, useCallback } from 'react';
+import { analyzeMedicalBill } from '../services/geminiService';
+import { AnalysisResult } from '../types';
+import { blogPosts } from '../data/blogPosts';
+import { Link } from 'react-router-dom';
 
-    <meta name="description" content="AdvocaMed.ai: Free AI medical bill advocate. Detect billing errors, generate appeal letters, and find charity care eligibility under IRS 501(r)." />
-    <meta name="keywords" content="medical bill dispute, hospital bill error, charity care, medical coding errors, AI patient advocate" />
-    
-    <!-- Google AdSense Verification Meta Tag -->
-    <meta name="google-adsense-account" content="ca-pub-9757952393788382">
-
-    <!-- PWA & Mobile Optimization -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#1152d4">
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Noto+Sans:wght@300..800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-    <!-- Third-party Script Lazy Loader (Performance & Security) -->
-    <script>
-      (function() {
-        // Flags to prevent double loading
-        let adsLoaded = false;
-        let analyticsLoaded = false;
-
-        function loadScripts() {
-          if (adsLoaded && analyticsLoaded) return;
-
-          // 1. Google Analytics (GTM)
-          if (!analyticsLoaded) {
-            analyticsLoaded = true;
-            const script = document.createElement('script');
-            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3';
-            script.async = true;
-            document.head.appendChild(script);
-
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-NLMH7ERZZ3');
-          }
-
-          // 2. Google AdSense (Heavy script - loaded last)
-          if (!adsLoaded) {
-            adsLoaded = true;
-            const script = document.createElement('script');
-            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382';
-            script.async = true;
-            script.crossOrigin = "anonymous";
-            document.head.appendChild(script);
-          }
-        }
-
-        // Trigger on user interaction or timeout
-        const events = ['scroll', 'mousemove', 'touchstart', 'click'];
-        function onInteraction() {
-          loadScripts();
-          events.forEach(evt => window.removeEventListener(evt, onInteraction));
-        }
-
-        events.forEach(evt => window.addEventListener(evt, onInteraction, { passive: true }));
-        
-        // Fallback: Load after 4 seconds if no interaction
-        setTimeout(loadScripts, 4000);
-      })();
-    </script>
-    
-    <!-- Inline Manifest for PWA -->
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQWR2b2NhTWVkLmFpIiwic2hvcnRfbmFtZSI6IkFkdm9jYU1lZCIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjMTE1MmQ0IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vcGxhY2Vob2xkLmNvLzE5MngxOTIvMTE1MmQ0L2ZmZmZmZj90ZXh0PUFNIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3BuZyJ9LHsic3JjIjoiaHR0cHM6Ly9wbGFjZWhvbGQuY28vNTEyeDUxMi8xMTUyZDQvZmZmZmZmP3RleHQ9QU0iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ==" />
-
-    <title>AdvocaMed.ai - AI Medical Bill Advocate & Dispute Tool</title>
-    
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#1152d4",
-              "primary-hover": "#0d3fa6",
-              "background-light": "#f8f9fc",
-              "background-dark": "#101622",
-              "surface-light": "#ffffff",
-              "surface-dark": "#1a2234",
-              "text-main-light": "#0d121b",
-              "text-main-dark": "#ffffff",
-              "text-secondary-light": "#4c669a",
-              "text-secondary-dark": "#9aaebb",
-              "border-light": "#e7ebf3",
-              "border-dark": "#2a3447"
-            },
-            fontFamily: {
-              "display": ["Manrope", "sans-serif"],
-              "body": ["Noto Sans", "sans-serif"],
-            },
-            borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
-            animation: {
-              'fade-in-up': 'fadeInUp 0.8s ease-out',
-            },
-            keyframes: {
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            }
-          },
-        },
-      }
-    </script>
-    <style>
-      body { font-family: 'Manrope', sans-serif; -webkit-tap-highlight-color: transparent; }
-      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-      img { max-width: 100%; height: auto; }
-    </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "recharts": "https://esm.sh/recharts@^3.6.0",
-    "react-helmet-async": "https://esm.sh/react-helmet-async@^2.0.5",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.11.0",
-    "vite": "https://esm.sh/vite@^7.3.0",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "fs": "https://esm.sh/fs@^0.0.1-security",
-    "path": "https://esm.sh/path@^0.12.7",
-    "url": "https://esm.sh/url@^0.11.4"
-  }
+interface HeroProps {
+  onAnalysisComplete: (result: AnalysisResult, image: string) => void;
+  onLoading: (isLoading: boolean) => void;
+  onDemo: () => void;
 }
-</script>
-  </head>
-  <body class="bg-background-light dark:bg-background-dark font-display text-text-main-light dark:text-text-main-dark flex flex-col min-h-screen transition-colors duration-200">
-    <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
-  </body>
-</html>
+
+export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDemo }) => {
+  const [error, setError] = useState<string | null>(null);
+  
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+  const processImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (!event.target?.result) {
+            reject(new Error("Failed to read file data."));
+            return;
+        }
+        const img = new Image();
+        img.onload = () => {
+          try {
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              // Resize logic for optimal AI processing (max 1500px)
+              const MAX_DIMENSION = 1500; 
+              if (width > height) {
+                if (width > MAX_DIMENSION) {
+                  height *= MAX_DIMENSION / width;
+                  width = MAX_DIMENSION;
+                }
+              } else {
+                if (height > MAX_DIMENSION) {
+                  width *= MAX_DIMENSION / height;
+                  height = MAX_DIMENSION;
+                }
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              if (!ctx) {
+                reject(new Error("Browser does not support canvas operations."));
+                return;
+              }
+              ctx.drawImage(img, 0, 0, width, height);
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+              const base64Part = dataUrl.split(',')[1];
+              if (base64Part) resolve(base64Part);
+              else reject(new Error("Failed to encode image."));
+          } catch (err) {
+              reject(err);
+          }
+        };
+        img.onerror = () => reject(new Error("Failed to load image structure."));
+        img.src = event.target.result as string;
+      };
+      reader.onerror = () => reject(new Error("Failed to read file."));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    processFile(file);
+  }, []);
+
+  const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files?.[0];
+    if (file) processFile(file);
+  }, []);
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
+  const processFile = async (file: File) => {
+    // 1. PDF Check
+    if (file.type === 'application/pdf') {
+        setError('⚠️ PDFs are not supported directly. Please take a SCREENSHOT of the PDF and upload the image.');
+        return;
+    }
+
+    // 2. Format Check
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
+    if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.heic')) {
+      setError('Invalid format. Please upload a JPG, PNG, or HEIC image.');
+      return;
+    }
+
+    // 3. Size Check
+    if (file.size > MAX_FILE_SIZE) {
+      setError(`File is too large. Please upload an image smaller than 10MB.`);
+      return;
+    }
+
+    onLoading(true);
+    setError(null);
+
+    try {
+      const cleanBase64Data = await processImage(file);
+      // Construct Data URI for display
+      const imageUrl = `data:image/jpeg;base64,${cleanBase64Data}`;
+      
+      try {
+        const result = await analyzeMedicalBill(cleanBase64Data, 'image/jpeg');
+        onAnalysisComplete(result, imageUrl);
+      } catch (apiError: unknown) {
+        const errorMessage = apiError instanceof Error ? apiError.message : "An unknown error occurred.";
+        console.error("Analysis Error:", errorMessage);
+        setError(errorMessage || "Failed to analyze. Please try a clearer photo.");
+        onLoading(false);
+      }
+    } catch (e) {
+      console.error("Processing Error");
+      setError('Error processing image. Please try again.');
+      onLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <section className="py-12 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          
+          {/* Left: Headline & Steps */}
+          <div className="flex flex-col gap-8 animate-fade-in-up">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold w-fit">
+                <span className="material-symbols-outlined text-base">verified_user</span>
+                Privacy First • No Account Required
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight text-text-main-light dark:text-text-main-dark">
+                Decipher Your <span className="text-primary">Hospital Bill</span> in Seconds
+              </h1>
+              <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark max-w-lg leading-relaxed">
+                Stop overpaying. Our advanced AI scans your bills for errors, unbundling, and price gouging instantly.
+              </p>
+            </div>
+
+            {/* Steps Guide */}
+            <div className="grid gap-4 mt-4">
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:border-primary/50 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <span className="material-symbols-outlined">cloud_upload</span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark">1. Upload Bill</h3>
+                  <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Securely submit your PDF (Screenshot) or Image. Data is encrypted.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:border-primary/50 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <span className="material-symbols-outlined">psychology</span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark">2. AI Analysis</h3>
+                  <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Engine checks CPT codes & detects pricing errors.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:border-primary/50 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <span className="material-symbols-outlined">savings</span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark">3. Save Money</h3>
+                  <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Get a generated negotiation script & error report.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Demo Button for Trust */}
+            <button onClick={onDemo} className="text-sm text-text-secondary-light hover:text-primary underline">
+              Want to see how it works first? Try a Demo
+            </button>
+          </div>
+
+          {/* Right: Upload Zone */}
+          <div className="relative group animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            {/* Background Decoration */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-300/20 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+            
+            <div 
+              className="relative bg-white dark:bg-surface-dark p-8 lg:p-12 rounded-2xl border-2 border-dashed border-primary/30 hover:border-primary transition-all duration-300 flex flex-col items-center justify-center text-center min-h-[500px] shadow-lg"
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <div className="w-24 h-24 mb-6 rounded-full bg-background-light dark:bg-background-dark flex items-center justify-center text-primary">
+                <span className="material-symbols-outlined text-5xl">description</span>
+              </div>
+              
+              <h2 className="text-2xl font-bold mb-2 text-text-main-light dark:text-text-main-dark">Upload Bill Here</h2>
+              <p className="text-text-secondary-light dark:text-text-secondary-dark mb-8 max-w-xs mx-auto">
+                Drag & Drop your Image here, or browse from your computer.
+              </p>
+
+              {/* Error Message */}
+              {error && (
+                 <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm font-bold max-w-sm">
+                    {error}
+                 </div>
+              )}
+
+              <label className="w-full max-w-[280px] bg-primary hover:bg-primary-hover text-white h-12 rounded-lg font-bold shadow-md transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
+                <span className="material-symbols-outlined">add_circle</span>
+                Select File
+                <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/jpeg,image/png,image/webp,image/heic"
+                    onChange={handleFileChange}
+                />
+              </label>
+
+              <div className="mt-8 flex items-center justify-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark opacity-80">
+                <span className="material-symbols-outlined text-sm">lock</span>
+                <span>AES-256 Encrypted • Auto-deleted after 24h</span>
+              </div>
+              
+               <div className="mt-2 text-[10px] text-red-400 font-medium">
+                  PDF? Please take a Screenshot
+               </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Sponsored Ad Placeholder */}
+      <section className="max-w-7xl mx-auto px-4 w-full mb-16">
+        <div className="w-full h-[120px] bg-background-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg flex flex-col items-center justify-center relative overflow-hidden">
+          <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium uppercase tracking-wider mb-2 z-10">Sponsored</p>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent dark:via-white/5 skew-x-12 translate-x-[-150%] animate-[shimmer_2s_infinite]"></div>
+          {/* Simulating Ad Content */}
+          <div className="flex items-center gap-4 opacity-50 z-10">
+            <div className="h-12 w-12 bg-gray-300 dark:bg-gray-600 rounded"></div>
+            <div className="flex flex-col gap-2">
+              <div className="h-3 w-48 bg-gray-300 dark:bg-gray-600 rounded"></div>
+              <div className="h-3 w-32 bg-gray-300 dark:bg-gray-600 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest News Section */}
+      <section className="bg-white dark:bg-surface-dark py-16 border-t border-border-light dark:border-border-dark">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h2 className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">Latest Medical Billing News</h2>
+              <p className="text-text-secondary-light dark:text-text-secondary-dark mt-1">Stay informed about healthcare costs and patient rights.</p>
+            </div>
+            <Link to="/blog" className="hidden sm:flex items-center gap-1 text-primary font-bold hover:underline">
+               View all
+               <span className="material-symbols-outlined text-lg">arrow_forward</span>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogPosts.slice(0, 3).map((post) => (
+              <article key={post.id} className="group flex flex-col gap-4">
+                <div className="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 relative border border-border-light dark:border-border-dark">
+                   <div className="absolute inset-0 flex items-center justify-center text-gray-300">
+                      <span className="material-symbols-outlined text-5xl">article</span>
+                   </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-bold text-primary uppercase tracking-wider">{post.category}</span>
+                  <h3 className="text-lg font-bold leading-tight group-hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                    <Link to={`/blog/${post.id}`}>{post.title}</Link>
+                  </h3>
+                  <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-2">
+                     {post.excerpt}
+                  </p>
+                  <span className="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-1">{post.date} • {post.readingTime}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
