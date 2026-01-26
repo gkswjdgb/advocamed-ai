@@ -39,7 +39,7 @@ export const analyzeMedicalBill = async (
 
 export const generateAppealLetter = async (
   analysis: AnalysisResult, 
-  financials?: { income: number; size: number }
+  financials?: UserFinancials
 ): Promise<string> => {
   
   try {
