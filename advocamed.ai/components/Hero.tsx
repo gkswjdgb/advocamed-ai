@@ -266,8 +266,8 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
               <h2 className="text-2xl font-bold text-text-main-light dark:text-text-main-dark">Latest Medical Billing News</h2>
               <p className="text-text-secondary-light dark:text-text-secondary-dark mt-1">Stay informed about healthcare costs and patient rights.</p>
             </div>
-            <Link to="/blog" className="hidden sm:flex items-center gap-1 text-primary font-bold hover:underline">
-               View all
+            <Link to="/blog" className="hidden sm:flex items-center gap-1 text-primary font-bold hover:underline px-4 py-2 rounded-lg hover:bg-primary/5 transition-colors">
+               View all articles
                <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </Link>
           </div>
@@ -281,6 +281,7 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
                        alt={post.title} 
                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                        loading="lazy"
+                       referrerPolicy="no-referrer"
                        onError={() => handleImageError(post.id)}
                      />
                    ) : (
@@ -301,6 +302,13 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
                 </div>
               </article>
             ))}
+          </div>
+          
+          <div className="mt-8 text-center sm:hidden">
+             <Link to="/blog" className="inline-flex items-center gap-1 text-primary font-bold hover:underline px-4 py-2 border border-primary/20 rounded-lg hover:bg-primary/5 transition-colors">
+               View all articles
+               <span className="material-symbols-outlined text-lg">arrow_forward</span>
+            </Link>
           </div>
         </div>
       </section>
