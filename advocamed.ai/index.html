@@ -4,9 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Resource Hints for Performance -->
+    <!-- Performance: Preconnect to critical domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -14,10 +18,10 @@
     <meta name="description" content="AdvocaMed.ai: Free AI medical bill advocate. Detect billing errors, generate appeal letters, and find charity care eligibility under IRS 501(r)." />
     <meta name="keywords" content="medical bill dispute, hospital bill error, charity care, medical coding errors, AI patient advocate" />
     
-    <!-- Google Search Console Verification (Replace content with your code if needed) -->
+    <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_CODE_HERE" />
     
-    <!-- Google AdSense Verification Meta Tag -->
+    <!-- Google AdSense Verification -->
     <meta name="google-adsense-account" content="ca-pub-9757952393788382">
 
     <!-- PWA & Mobile Optimization -->
@@ -26,65 +30,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#1152d4">
 
-    <!-- Fonts -->
+    <!-- Fonts: Added display=swap to prevent render blocking (LCP improvement) -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Noto+Sans:wght@300..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
-    <!-- Third-party Script Lazy Loader (Performance & Security) -->
-    <script>
-      (function() {
-        // Flags to prevent double loading
-        let adsLoaded = false;
-        let analyticsLoaded = false;
-
-        function loadScripts() {
-          if (adsLoaded && analyticsLoaded) return;
-
-          // 1. Google Analytics (GTM)
-          if (!analyticsLoaded) {
-            analyticsLoaded = true;
-            const script = document.createElement('script');
-            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3';
-            script.async = true;
-            document.head.appendChild(script);
-
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-NLMH7ERZZ3');
-          }
-
-          // 2. Google AdSense (Heavy script - loaded last)
-          if (!adsLoaded) {
-            adsLoaded = true;
-            const script = document.createElement('script');
-            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382';
-            script.async = true;
-            script.crossOrigin = "anonymous";
-            document.head.appendChild(script);
-          }
-        }
-
-        // Trigger on user interaction or timeout
-        const events = ['scroll', 'mousemove', 'touchstart', 'click'];
-        function onInteraction() {
-          loadScripts();
-          events.forEach(evt => window.removeEventListener(evt, onInteraction));
-        }
-
-        events.forEach(evt => window.addEventListener(evt, onInteraction, { passive: true }));
-        
-        // Fallback: Load after 3 seconds if no interaction to ensure visibility
-        setTimeout(loadScripts, 3000);
-      })();
-    </script>
-    
-    <!-- Inline Manifest for PWA -->
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQWR2b2NhTWVkLmFpIiwic2hvcnRfbmFtZSI6IkFkdm9jYU1lZCIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjMTE1MmQ0IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vcGxhY2Vob2xkLmNvLzE5MngxOTIvMTE1MmQ0L2ZmZmZmZj90ZXh0PUFNIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3BuZyJ9LHsic3JjIjoiaHR0cHM6Ly9wbGFjZWhvbGQuY28vNTEyeDUxMi8xMTUyZDQvZmZmZmZmP3RleHQ9QU0iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ==" />
-
     <title>AdvocaMed.ai - AI Medical Bill Advocate & Dispute Tool</title>
     
-    <!-- Tailwind CDN -->
+    <!-- Tailwind CDN (Production Note: For max speed, a build step is recommended, but optimized here for current setup) -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
       tailwind.config = {
@@ -128,6 +80,33 @@
       .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
       img { max-width: 100%; height: auto; }
     </style>
+
+    <!-- Optimized Script Loader for Google Tools -->
+    <script>
+      // Defer loading of non-critical analytics to improve TBT (Total Blocking Time)
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+            // 1. Google Analytics
+            const gaScript = document.createElement('script');
+            gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3';
+            gaScript.async = true;
+            document.head.appendChild(gaScript);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-NLMH7ERZZ3');
+
+            // 2. Google AdSense (Lazy load)
+            const adsScript = document.createElement('script');
+            adsScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382';
+            adsScript.async = true;
+            adsScript.crossOrigin = "anonymous";
+            document.head.appendChild(adsScript);
+        }, 3000); // Wait 3 seconds after load to ensure LCP is finished
+      });
+    </script>
+
 <script type="importmap">
 {
   "imports": {
