@@ -54,6 +54,7 @@ export interface BlogPost {
   date: string;
   readingTime: string;
   category: string;
+  imageUrl?: string; // New field for blog images
 }
 
 // pSEO Data Interface
