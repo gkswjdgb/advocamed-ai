@@ -12,8 +12,13 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDemo }) => {
   const [error, setError] = useState<string | null>(null);
+  const [imageError, setImageError] = useState<Record<string, boolean>>({});
   
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+  const handleImageError = (id: string) => {
+    setImageError(prev => ({ ...prev, [id]: true }));
+  };
 
   const processImage = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -242,7 +247,7 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
         <div className="w-full h-[120px] bg-background-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg flex flex-col items-center justify-center relative overflow-hidden">
           <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium uppercase tracking-wider mb-2 z-10">Sponsored</p>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent dark:via-white/5 skew-x-12 translate-x-[-150%] animate-[shimmer_2s_infinite]"></div>
-          {/* Simulating Ad Content */}
+          {/* Simulating Ad Content - Replace with Google AdSense Unit <ins> tag in production */}
           <div className="flex items-center gap-4 opacity-50 z-10">
             <div className="h-12 w-12 bg-gray-300 dark:bg-gray-600 rounded"></div>
             <div className="flex flex-col gap-2">
@@ -270,16 +275,17 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
             {blogPosts.slice(0, 3).map((post) => (
               <article key={post.id} className="group flex flex-col gap-4 h-full">
                 <Link to={`/blog/${post.id}`} className="block h-48 w-full rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 relative border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-all">
-                   {post.imageUrl ? (
+                   {post.imageUrl && !imageError[post.id] ? (
                      <img 
                        src={post.imageUrl} 
                        alt={post.title} 
                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                        loading="lazy"
+                       onError={() => handleImageError(post.id)}
                      />
                    ) : (
-                     <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-                        <span className="material-symbols-outlined text-5xl">article</span>
+                     <div className="absolute inset-0 flex items-center justify-center text-gray-300 bg-gray-100 dark:bg-gray-800">
+                        <span className="material-symbols-outlined text-5xl opacity-50">article</span>
                      </div>
                    )}
                 </Link>
