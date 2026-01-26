@@ -1,6 +1,6 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter, Routes, Route, Link, useSearchParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 
 // Components
 import { Hero } from './components/Hero';
@@ -16,7 +16,7 @@ import { demoAnalysisResult } from './data/demoData';
 import { AnalysisResult } from './types';
 
 // Lazy Load Pages
-const BlogPage = React.lazy(() => import('./pages/BlogPage'));
+const BlogPage = React.lazy(() => import('./pages/BlogList')); // Updated to point to BlogList
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const HospitalGuide = React.lazy(() => import('./pages/HospitalGuide'));
 const HospitalDirectory = React.lazy(() => import('./pages/HospitalDirectory'));
@@ -26,18 +26,92 @@ const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 // Loading Fallback Component
 const PageLoader = () => (
-  <div className="flex justify-center items-center min-h-[50vh]">
+  <div className="flex justify-center items-center min-h-[50vh] bg-background-light dark:bg-background-dark">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
 );
 
+// Navigation Component to handle scrolling and active states
+const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleScrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleReset = () => {
+    navigate('/?step=HERO');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <nav className="w-full bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-3">
+              <div className="w-8 h-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
+                  <span className="material-symbols-outlined text-2xl">health_and_safety</span>
+              </div>
+              <span className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">AdvocaMed</span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex gap-8 items-center">
+              <button onClick={() => handleScrollToSection('how-it-works')} className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark bg-transparent border-none cursor-pointer">
+                How it Works
+              </button>
+              <Link to="/blog" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                Latest News
+              </Link>
+              <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                About Us
+              </Link>
+          </div>
+
+          {/* CTA */}
+          <div className="flex items-center gap-4">
+               <button onClick={handleReset} className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                  <span className="material-symbols-outlined text-lg">upload_file</span>
+                  <span className="hidden sm:inline">Check a Bill</span>
+                  <span className="sm:hidden">Check</span>
+               </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = searchParams.get('step') === 'RESULTS' ? 'RESULTS' : 'HERO';
+  const location = useLocation();
 
   const [analysisData, setAnalysisData] = useState<AnalysisResult | null>(null);
   const [billImage, setBillImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Handle hash scrolling on load
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => element.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    }
+  }, [location]);
 
   const handleAnalysisComplete = (result: AnalysisResult, image: string) => {
     setAnalysisData(result);
@@ -116,38 +190,9 @@ const App: React.FC = () => {
     <HelmetProvider>
       <BrowserRouter>
         <ScrollToTop />
-        <div className="min-h-screen bg-background-light dark:bg-background-dark flex flex-col font-display">
+        <div className="min-h-screen bg-background-light dark:bg-background-dark flex flex-col font-display transition-colors duration-200">
           
-          {/* Header */}
-          <nav className="w-full bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center h-16">
-                {/* Logo */}
-                <Link to="/" className="flex items-center gap-3">
-                    <div className="w-8 h-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
-                        <span className="material-symbols-outlined text-2xl">health_and_safety</span>
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">AdvocaMed</span>
-                </Link>
-
-                {/* Desktop Nav */}
-                <div className="hidden md:flex gap-8 items-center">
-                    <Link to="/?step=HERO" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">How it Works</Link>
-                    <Link to="/blog" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">Latest News</Link>
-                    <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">About Us</Link>
-                </div>
-
-                {/* CTA */}
-                <div className="flex items-center gap-4">
-                     <Link to="/?step=HERO" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                        <span className="material-symbols-outlined text-lg">upload_file</span>
-                        <span className="hidden sm:inline">Check a Bill</span>
-                        <span className="sm:hidden">Check</span>
-                     </Link>
-                </div>
-              </div>
-            </div>
-          </nav>
+          <Navbar />
 
           {/* Main Content */}
           <main className="flex-grow flex flex-col" role="main">
@@ -172,10 +217,10 @@ const App: React.FC = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8">
-                        <div className="flex items-center gap-2 text-text-main-light dark:text-text-main-dark opacity-80">
+                        <Link to="/" className="flex items-center gap-2 text-text-main-light dark:text-text-main-dark opacity-80 hover:opacity-100 transition-opacity">
                             <span className="material-symbols-outlined">health_and_safety</span>
                             <span className="font-bold">AdvocaMed</span>
-                        </div>
+                        </Link>
                         <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">© {currentYear} AdvocaMed. All rights reserved.</p>
                     </div>
                     <div className="flex flex-wrap justify-center gap-6">
