@@ -48,6 +48,7 @@ export const BlogList: React.FC = () => {
                        alt={post.title} 
                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                        loading="lazy"
+                       referrerPolicy="no-referrer"
                        onError={() => handleImageError(post.id)}
                      />
                    ) : (
@@ -115,3 +116,5 @@ export const BlogList: React.FC = () => {
     </>
   );
 };
+
+export default BlogList;
