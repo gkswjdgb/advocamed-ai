@@ -146,8 +146,8 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
               </p>
             </div>
 
-            {/* Steps Guide */}
-            <div className="grid gap-4 mt-4">
+            {/* Steps Guide - ID added for scroll anchor */}
+            <div id="how-it-works" className="grid gap-4 mt-4 scroll-mt-24">
               <div className="flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:border-primary/50 transition-colors">
                 <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
                   <span className="material-symbols-outlined">cloud_upload</span>
@@ -177,10 +177,13 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
               </div>
             </div>
 
-            {/* Demo Button for Trust */}
-            <button onClick={onDemo} className="text-sm text-text-secondary-light hover:text-primary underline">
-              Want to see how it works first? Try a Demo
-            </button>
+            {/* Demo Button for Trust - Made more prominent */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+                <button onClick={onDemo} className="flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-hover px-4 py-2 rounded-lg bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-all">
+                  <span className="material-symbols-outlined text-lg">play_circle</span>
+                  See Demo Analysis
+                </button>
+            </div>
           </div>
 
           {/* Right: Upload Zone */}
