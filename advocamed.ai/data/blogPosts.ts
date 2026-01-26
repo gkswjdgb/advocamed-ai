@@ -173,8 +173,8 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-02",
     readingTime: "6 min read",
     category: "Actionable Guides",
-    // Replaced with handshake image
-    imageUrl: "https://images.unsplash.com/photo-1521791136064-798591d72544?q=80&w=1000&auto=format&fit=crop", 
+    // FIXED: Replaced failed image with a new stable handshake/agreement image
+    imageUrl: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         Talking to a hospital billing department is intimidating. But remember: <strong>medical bills are negotiable</strong>. Hospitals would rather get paid <em>something</em> now than sell your debt to a collector for pennies later.
