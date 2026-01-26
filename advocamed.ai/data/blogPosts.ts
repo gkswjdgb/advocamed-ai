@@ -8,8 +8,8 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-26",
     readingTime: "5 min read",
     category: "Actionable Guides",
-    // Writing/Paperwork image
-    imageUrl: "https://images.unsplash.com/photo-1555421689-491724325294?q=80&w=1000&auto=format&fit=crop",
+    // Fixed: Replaced broken URL with a reliable 'Writing/Paperwork' image
+    imageUrl: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=1000&auto=format&fit=crop",
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         Did you know that up to <strong>80% of medical bills contain errors</strong>? If you received a hospital bill that looks suspiciously high, do not pick up the phone just yet.
@@ -87,7 +87,6 @@ Sincerely,
     date: "2026-01-20",
     readingTime: "5 min read",
     category: "Healthcare News",
-    // Swapped to a highly stable generic medical/business image to ensure loading
     imageUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
@@ -147,7 +146,6 @@ Sincerely,
     date: "2026-01-15",
     readingTime: "7 min read",
     category: "Actionable Guides",
-    // Verified working URL
     imageUrl: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
@@ -191,7 +189,6 @@ Sincerely,
     date: "2026-01-10",
     readingTime: "5 min read",
     category: "Insurance Basics",
-    // Replaced broken URL with a new stable one
     imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
@@ -252,7 +249,6 @@ Sincerely,
     date: "2026-01-02",
     readingTime: "6 min read",
     category: "Actionable Guides",
-    // FIXED: Replaced failed image with a new stable handshake/agreement image
     imageUrl: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
@@ -280,7 +276,6 @@ Sincerely,
     date: "2025-12-27",
     readingTime: "5 min read",
     category: "Financial Aid",
-    // Replaced with hands holding image
     imageUrl: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
@@ -305,7 +300,6 @@ Sincerely,
     date: "2026-01-01",
     readingTime: "4 min read",
     category: "Billing Secrets",
-    // Replaced with calculator/bill image
     imageUrl: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
@@ -368,7 +362,6 @@ Sincerely,
     date: "2025-12-25",
     readingTime: "6 min read",
     category: "Legal Rights",
-    // Replaced broken URL
     imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
