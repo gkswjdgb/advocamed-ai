@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AnalysisResult } from '../types';
 import { generateAppealLetter } from '../services/geminiService';
+import { Link } from 'react-router-dom';
 
 interface Props {
   data: AnalysisResult;
@@ -181,8 +182,15 @@ export const AnalysisResultView: React.FC<Props> = ({ data, billImage, onReset }
                             {item.flag_reason || "Price exceeds national average standards."}
                         </p>
                         <div className="flex items-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark">
-                            <span className="material-symbols-outlined text-sm">visibility</span>
-                            <span>Verify CPT {item.code || 'N/A'}</span>
+                            <a 
+                                href={`https://www.google.com/search?q=CPT+code+${item.code}+fee+schedule`} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 hover:text-primary hover:underline"
+                            >
+                                <span className="material-symbols-outlined text-sm">open_in_new</span>
+                                <span>Verify CPT {item.code || 'N/A'}</span>
+                            </a>
                         </div>
                     </div>
                   );
@@ -192,7 +200,7 @@ export const AnalysisResultView: React.FC<Props> = ({ data, billImage, onReset }
                   <div className="bg-white dark:bg-surface-dark p-5 rounded-lg border-l-4 border-l-blue-500 border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow cursor-pointer">
                     <div className="flex justify-between items-start mb-2">
                         <h4 className="font-bold text-text-main-light dark:text-text-main-dark">Charity Care Eligible</h4>
-                        <span className="text-green-600 text-sm font-bold">Apply Now</span>
+                        <Link to="/hospitals" className="text-green-600 text-sm font-bold hover:underline">Apply Now</Link>
                     </div>
                     <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-3">
                         {data.charityAnalysis.reasoning}
@@ -211,7 +219,9 @@ export const AnalysisResultView: React.FC<Props> = ({ data, billImage, onReset }
                     <span className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-1">Sponsored</span>
                     <h4 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">0% Interest Medical Loans Approved in Minutes</h4>
                 </div>
-                <button className="z-10 bg-white dark:bg-blue-600 text-blue-700 dark:text-white border border-blue-200 dark:border-transparent px-6 py-2 rounded-full font-bold text-sm hover:shadow-lg transition-all">Check Eligibility</button>
+                <Link to="/contact-us" className="z-10 bg-white dark:bg-blue-600 text-blue-700 dark:text-white border border-blue-200 dark:border-transparent px-6 py-2 rounded-full font-bold text-sm hover:shadow-lg transition-all text-center">
+                    Check Eligibility
+                </Link>
             </div>
         </div>
 
@@ -251,7 +261,7 @@ export const AnalysisResultView: React.FC<Props> = ({ data, billImage, onReset }
                 </div>
                 <div className="mt-8">
                     <button 
-                        onClick={() => {navigator.clipboard.writeText(disputeLetter); alert('Copied!');}}
+                        onClick={() => {navigator.clipboard.writeText(disputeLetter); alert('Email copied to clipboard!');}}
                         className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-bold py-3 px-4 rounded-lg shadow-md transition-colors"
                     >
                         <span className="material-symbols-outlined">content_copy</span>
