@@ -7,51 +7,102 @@ const BlogList: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Medical Billing Guides & Tips"
-        description="Expert advice on lowering medical bills, understanding CPT codes, and applying for hospital financial assistance."
+        title="Patient Advocacy Knowledge Hub | Medical Billing Guides"
+        description="Browse our complete library of guides on fighting medical bills, understanding health insurance, and applying for financial assistance."
         canonical="/blog"
       />
-      <div className="bg-background-light dark:bg-background-dark min-h-screen py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h1 className="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark sm:text-4xl">Patient Advocacy Blog</h1>
-            <p className="mt-3 max-w-2xl mx-auto text-xl text-text-secondary-light dark:text-text-secondary-dark sm:mt-4">
-              Latest guides on medical billing, patient rights, and financial aid.
+      <div className="bg-background-light dark:bg-background-dark min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-display">
+        <div className="max-w-7xl mx-auto">
+          
+          {/* Header */}
+          <div className="text-center mb-16 animate-fade-in-up">
+            <span className="text-primary font-bold text-sm uppercase tracking-widest mb-2 block">Resource Center</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-text-main-light dark:text-text-main-dark mb-6 tracking-tight">
+              Master Your Medical Bills
+            </h1>
+            <p className="mt-4 max-w-2xl mx-auto text-xl text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+              Expert advice, legal rights, and step-by-step guides to help you stop overpaying for healthcare.
             </p>
           </div>
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12">
-            {blogPosts.map((post) => (
-              <Link key={post.id} to={`/blog/${post.id}`} className="group block h-full animate-fade-in-up">
-                <div className="bg-white dark:bg-surface-dark rounded-lg shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col hover:border-primary/50">
-                  <div className="p-6 flex-grow">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                          {post.category}
-                        </span>
-                        <span className="text-xs text-text-secondary-light dark:text-text-secondary-dark">{post.readingTime}</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
-                    <p className="mt-3 text-base text-text-secondary-light dark:text-text-secondary-dark line-clamp-3">
-                      {post.excerpt}
-                    </p>
+
+          {/* Featured / Grid */}
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {blogPosts.map((post, index) => (
+              <Link 
+                key={post.id} 
+                to={`/blog/${post.id}`} 
+                className="group flex flex-col h-full bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {/* Image Container */}
+                <div className="h-52 overflow-hidden bg-gray-100 dark:bg-gray-800 relative">
+                   {post.imageUrl ? (
+                     <img 
+                       src={post.imageUrl} 
+                       alt={post.title} 
+                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                       loading="lazy"
+                     />
+                   ) : (
+                     <div className="absolute inset-0 flex items-center justify-center text-gray-300 bg-gray-100">
+                        <span className="material-symbols-outlined text-6xl opacity-50">article</span>
+                     </div>
+                   )}
+                   <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-white/90 text-primary shadow-sm backdrop-blur-sm">
+                        {post.category}
+                      </span>
+                   </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="flex items-center gap-2 mb-3 text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium">
+                      <span className="material-symbols-outlined text-sm">calendar_today</span>
+                      <span>{post.date}</span>
+                      <span>•</span>
+                      <span>{post.readingTime}</span>
                   </div>
-                  <div className="px-6 pb-6 mt-auto">
-                    <div className="flex items-center justify-between">
-                        <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                            {post.date}
-                        </div>
-                        <span className="text-primary font-medium text-sm flex items-center group-hover:underline">
-                            Read Guide 
-                            <span className="material-symbols-outlined text-sm ml-1">arrow_forward</span>
-                        </span>
-                    </div>
+                  
+                  <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-3 group-hover:text-primary transition-colors leading-snug">
+                    {post.title}
+                  </h3>
+                  
+                  <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 mb-6 flex-grow leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                  
+                  <div className="flex items-center text-primary font-bold text-sm mt-auto group-hover:underline decoration-2 underline-offset-4">
+                      Read Full Article 
+                      <span className="material-symbols-outlined text-sm ml-1 transition-transform group-hover:translate-x-1">arrow_forward</span>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
+
+          {/* Newsletter / CTA */}
+          <div className="mt-20 bg-blue-600 dark:bg-blue-700 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden shadow-2xl">
+             <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+             <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+             
+             <div className="relative z-10 max-w-2xl mx-auto">
+                <span className="material-symbols-outlined text-5xl mb-4">mail</span>
+                <h2 className="text-3xl font-bold mb-4">Stay Informed, Save Money</h2>
+                <p className="text-blue-100 mb-8 text-lg">
+                    Join 15,000+ patients getting weekly tips on fighting medical debt and understanding insurance loopholes.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link to="/contact-us" className="bg-white text-blue-700 font-bold py-3 px-8 rounded-xl hover:bg-gray-50 transition-colors shadow-lg">
+                        Contact Us
+                    </Link>
+                    <Link to="/?step=HERO" className="bg-blue-800 text-white font-bold py-3 px-8 rounded-xl hover:bg-blue-900 transition-colors shadow-lg border border-blue-500">
+                        Analyze a Bill Now
+                    </Link>
+                </div>
+             </div>
+          </div>
+
         </div>
       </div>
     </>
