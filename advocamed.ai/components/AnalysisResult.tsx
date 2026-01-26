@@ -1,236 +1,295 @@
-import React, { useState, useEffect } from 'react';
-import { AnalysisResult, CharityEligibility, UserFinancials, Hospital } from '../types';
-import { CharityMatcher } from './CharityMatcher';
-import { AppealGenerator } from './AppealGenerator';
-import { hospitals } from '../data/hospitals'; // Import the database
+import React, { useState } from 'react';
+import { AnalysisResult } from '../types';
+import { generateAppealLetter } from '../services/geminiService';
 
 interface Props {
   data: AnalysisResult;
+  billImage: string | null;
+  onReset: () => void;
 }
 
-export const AnalysisResultView: React.FC<Props> = ({ data }) => {
-  const [financials, setFinancials] = useState<UserFinancials | undefined>(data.userFinancials);
-  const [charityStatus, setCharityStatus] = useState<CharityEligibility | undefined>(undefined);
-  const [matchedHospital, setMatchedHospital] = useState<Hospital | undefined>(undefined);
+export const AnalysisResultView: React.FC<Props> = ({ data, billImage, onReset }) => {
+  const [tone, setTone] = useState<string>('Formal & Firm');
+  const [recipient, setRecipient] = useState<string>('billing@hospital.com');
+  const [disputeLetter, setDisputeLetter] = useState<string>('Generating preview...');
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [zoom, setZoom] = useState<number>(1);
 
-  // Cross-reference AI-detected name with our Database
-  useEffect(() => {
-    if (data.hospitalName) {
-      const normalizedQuery = data.hospitalName.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const found = hospitals.find(h => 
-        h.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalizedQuery) ||
-        normalizedQuery.includes(h.name.toLowerCase().replace(/[^a-z0-9]/g, ''))
-      );
-      setMatchedHospital(found);
-    }
-  }, [data.hospitalName]);
+  // Auto-generate letter on mount or data change
+  React.useEffect(() => {
+    const fetchLetter = async () => {
+        setIsGenerating(true);
+        const letter = await generateAppealLetter(data, data.userFinancials);
+        setDisputeLetter(letter);
+        setIsGenerating(false);
+    };
+    fetchLetter();
+  }, [data]);
 
   const formatMoney = (amount: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
-  const handleCharityCheck = (status: CharityEligibility, fin: UserFinancials) => {
-    setCharityStatus(status);
-    setFinancials(fin);
-  };
-
-  const getVarianceStyle = (level: string) => {
-    switch (level) {
-      case 'Very High': return 'border-red-500 bg-red-50/20';
-      case 'High': return 'border-yellow-500 bg-yellow-50/20';
-      default: return 'border-green-500 bg-green-50/20';
-    }
-  };
-
-  const getVarianceLabel = (level: string) => {
-    switch (level) {
-      case 'Very High': return 'Review Recommended';
-      case 'High': return 'Potential Variance';
-      default: return 'Within Standard';
-    }
-  };
-
-  const getVarianceColor = (level: string) => {
-    switch (level) {
-      case 'Very High': return 'text-red-700 bg-red-100';
-      case 'High': return 'text-yellow-800 bg-yellow-100';
-      default: return 'text-green-700 bg-green-100';
-    }
-  };
+  const errorCount = data.items.filter(i => i.variance_level !== 'Normal').length;
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4 animate-fade-in-up">
-
-      {/* 1. Hero Summary Card */}
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-10 transition-transform hover:scale-[1.01] duration-300">
-        <div className="bg-[#111827] text-white p-8 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-          
-          <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">Estimated Variance</h2>
-          <p className="text-5xl md:text-6xl font-extrabold text-[#FF4F4F] drop-shadow-sm">
-            {formatMoney(data.potentialSavings || 0)}
-          </p>
-          <p className="text-gray-400 text-sm mt-3 max-w-lg mx-auto">
-             Difference between charged amount and national average estimates.
-          </p>
-        </div>
-
-        <div className="p-6 grid grid-cols-2 gap-4 text-center divide-x divide-gray-100 bg-white">
-          <div className="py-2">
-            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Charged</p>
-            <p className="text-2xl font-bold text-gray-900 mt-1">{formatMoney(data.totalCharged)}</p>
-          </div>
-          <div className="py-2">
-            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Charity Eligible</p>
-            <p className={`text-2xl font-bold mt-1 ${data.charityAnalysis?.likelyEligible ? 'text-green-600' : 'text-gray-400'}`}>
-              {data.charityAnalysis?.likelyEligible ? 'Likely ✅' : 'Check Below'}
-            </p>
-          </div>
-        </div>
+    <div className="flex-1 flex flex-col items-center w-full py-8 px-4 md:px-10 animate-fade-in-up">
+      <div className="w-full max-w-6xl flex flex-col gap-6">
         
-        {/* Database Match Notification */}
-        {matchedHospital && (
-          <div className="bg-blue-50 px-6 py-3 border-t border-blue-100 flex items-center justify-center gap-2">
-             <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-             </span>
-             <p className="text-sm text-blue-800">
-                <strong>Verified Policy Found:</strong> We matched <span className="font-bold">{matchedHospital.name}</span> in our database.
-                <span className="hidden sm:inline"> Income Limit: {matchedHospital.fpl_limit}% FPL.</span>
-             </p>
+        {/* Top Banner: No Data Stored */}
+        <div className="w-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-400 dark:bg-slate-500"></div>
+          <div className="flex items-start gap-4 z-10 w-full md:w-auto">
+            <div className="p-2.5 bg-white dark:bg-slate-700 rounded-full shadow-sm text-slate-700 dark:text-slate-200 shrink-0 border border-slate-100 dark:border-slate-600">
+              <span className="material-symbols-outlined">visibility_off</span>
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                No Data Stored
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed max-w-xl">
+                Your privacy is our priority. We do not store your bills or personal information on our servers.
+              </p>
+            </div>
           </div>
-        )}
-      </div>
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto z-10">
+            <div className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
+              <span className="material-symbols-outlined text-base text-amber-500 animate-pulse">timer</span>
+              <span>Auto-Destruct: <span className="font-bold text-slate-800 dark:text-slate-200">24:00</span></span>
+            </div>
+            <button 
+                onClick={onReset}
+                className="w-full sm:w-auto group flex items-center justify-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg transition-all shadow-sm hover:shadow text-sm font-bold whitespace-nowrap"
+            >
+              <span className="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">delete_forever</span>
+              Clear All Data & Close
+            </button>
+          </div>
+        </div>
 
-      {/* 2. Audit Details List */}
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-gray-900">Items to Review</h3>
-        <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full border border-gray-200">
-            Source: {data.dataSourceCitation || 'National Averages'}
-        </span>
-      </div>
-      
-      <div className="space-y-5 mb-12">
-        {data.items.map((item, index) => (
-          <div 
-            key={index} 
-            className={`bg-white p-6 rounded-xl border-l-8 shadow-sm hover:shadow-md transition-shadow ${getVarianceStyle(item.variance_level)}`}
-          >
-            <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-3">
-              <div className="flex-1">
-                <div className="flex items-center flex-wrap gap-2 mb-2">
-                    <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${getVarianceColor(item.variance_level)}`}>
-                        {getVarianceLabel(item.variance_level)}
-                    </span>
-                    {/* HIDE CPT IF NULL to avoid looking broken */}
-                    {item.code && item.code !== 'null' && item.code !== 'N/A' && (
-                        <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-0.5 rounded border border-gray-200">
-                            CPT: {item.code}
-                        </span>
-                    )}
-                    {/* EXTERNAL VERIFICATION LINK */}
-                    {item.code && item.code !== 'null' && item.code !== 'N/A' && (
-                        <a 
-                          href={`https://www.medicare.gov/procedure-price-lookup/cost/${item.code}`}
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-xs flex items-center text-blue-600 hover:text-blue-800 font-medium underline decoration-blue-300 hover:decoration-blue-800 transition-colors"
-                        >
-                           Verify on Medicare.gov ↗
-                        </a>
-                    )}
-                </div>
-                <h4 className="font-bold text-lg text-gray-900 leading-tight">{item.description}</h4>
+        {/* Header Section */}
+        <div className="flex flex-col gap-8 mt-2">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h1 className="text-text-main-light dark:text-text-main-dark text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Analysis Results</h1>
+              <p className="text-text-secondary-light dark:text-text-secondary-dark text-base font-normal mt-2">Review your potential savings and take action.</p>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 rounded-full border border-green-100 dark:border-green-800">
+              <span className="material-symbols-outlined text-green-600 text-lg">lock</span>
+              <span className="text-green-700 dark:text-green-400 text-xs font-bold uppercase tracking-wide">HIPAA Compliant & Secure</span>
+            </div>
+          </div>
+          
+          {/* 3 Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-surface-dark border border-green-200 dark:border-green-800 shadow-sm relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span className="material-symbols-outlined text-6xl text-green-500">savings</span>
               </div>
-              
-              <div className="text-left md:text-right min-w-[140px]">
-                <p className="text-xs text-gray-500 uppercase font-semibold">Charged</p>
-                <p className="font-bold text-xl text-gray-900">{formatMoney(item.chargedAmount)}</p>
-                {item.expectedAmount && (
-                    <div className="mt-1">
-                        <p className="text-[10px] text-gray-400 uppercase">Est. National Avg</p>
-                        <p className="text-sm font-semibold text-green-600">{formatMoney(item.expectedAmount)}</p>
-                    </div>
-                )}
+              <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm font-bold uppercase tracking-wider">Potential Savings</p>
+              <p className="text-green-600 dark:text-green-400 tracking-tight text-4xl font-extrabold leading-tight">{formatMoney(data.potentialSavings || 0)}</p>
+              <div className="flex items-center gap-1 mt-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                <span className="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+                <span>Found in {errorCount} items</span>
               </div>
             </div>
             
-            {/* AI Reasoning & Questions */}
-            <div className="mt-4 space-y-3">
-                {item.flag_reason && (
-                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                        <p className="text-sm text-gray-700">
-                            <strong className="text-gray-900">Observation:</strong> {item.flag_reason}
-                        </p>
+            <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <span className="material-symbols-outlined text-6xl text-primary">verified</span>
+              </div>
+              <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm font-bold uppercase tracking-wider">Confidence Score</p>
+              <p className="text-text-main-light dark:text-text-main-dark tracking-tight text-4xl font-extrabold leading-tight">
+                {data.confidenceScore ? (data.confidenceScore > 80 ? 'High' : 'Medium') : 'N/A'}
+              </p>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-4">
+                <div className="bg-primary h-1.5 rounded-full" style={{ width: `${data.confidenceScore || 0}%` }}></div>
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <span className="material-symbols-outlined text-6xl text-red-500">error</span>
+              </div>
+              <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm font-bold uppercase tracking-wider">Errors Detected</p>
+              <p className="text-text-main-light dark:text-text-main-dark tracking-tight text-4xl font-extrabold leading-tight">{errorCount}</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                 {data.items.some(i => i.variance_level === 'Very High') && (
+                    <span className="px-2 py-0.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-xs rounded font-medium">Overcharge</span>
+                 )}
+                 {data.items.some(i => i.flag_reason?.toLowerCase().includes('duplicate')) && (
+                    <span className="px-2 py-0.5 bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-300 text-xs rounded font-medium">Duplicate</span>
+                 )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Split View: Bill Viewer & Findings */}
+        <div className="flex flex-col lg:flex-row gap-6 h-auto min-h-[600px]">
+           {/* Left: Bill Image Viewer */}
+           <div className="lg:w-7/12 flex flex-col bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden h-[600px] lg:h-auto">
+             <div className="p-4 border-b border-border-light dark:border-border-dark flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 className="font-bold text-lg dark:text-white flex items-center gap-2">
+                    <span className="material-symbols-outlined">receipt_long</span>
+                    Scanned Document
+                </h3>
+                <div className="flex gap-2">
+                    <button onClick={() => setZoom(z => Math.min(z + 0.2, 3))} className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 transition-colors">
+                        <span className="material-symbols-outlined text-lg">zoom_in</span>
+                    </button>
+                    <button onClick={() => setZoom(z => Math.max(z - 0.2, 0.5))} className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 transition-colors">
+                        <span className="material-symbols-outlined text-lg">zoom_out</span>
+                    </button>
+                </div>
+             </div>
+             <div className="relative flex-1 overflow-auto bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+                 {billImage ? (
+                    <img 
+                        src={billImage} 
+                        alt="Scanned Bill" 
+                        className="shadow-lg transition-transform duration-200 origin-top-left"
+                        style={{ transform: `scale(${zoom})` }}
+                    />
+                 ) : (
+                    <div className="text-gray-400 flex flex-col items-center">
+                        <span className="material-symbols-outlined text-4xl">image_not_supported</span>
+                        <p className="text-xs mt-2">No Image Preview Available</p>
                     </div>
-                )}
-                {item.suggested_question && (
-                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                        <p className="text-sm text-blue-900">
-                            <strong className="text-blue-800">Ask the Hospital:</strong> "{item.suggested_question}"
+                 )}
+             </div>
+           </div>
+
+           {/* Right: Findings List */}
+           <div className="lg:w-5/12 flex flex-col gap-4 overflow-y-auto max-h-[800px]">
+              <h3 className="font-bold text-xl dark:text-white px-2">Analysis Findings</h3>
+              
+              {data.items.map((item, idx) => {
+                  if (item.variance_level === 'Normal') return null; // Only show flagged items in this prioritized view
+                  
+                  const isVeryHigh = item.variance_level === 'Very High';
+                  const borderColor = isVeryHigh ? 'border-l-red-500' : 'border-l-orange-500';
+                  const textColor = isVeryHigh ? 'text-red-600' : 'text-orange-600';
+                  const savings = item.expectedAmount ? item.chargedAmount - item.expectedAmount : 0;
+
+                  return (
+                    <div key={idx} className={`bg-white dark:bg-surface-dark p-5 rounded-lg border-l-4 ${borderColor} border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
+                        <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-bold text-text-main-light dark:text-text-main-dark pr-2">{item.description}</h4>
+                            <span className={`${textColor} text-sm font-bold whitespace-nowrap`}>Save {formatMoney(savings)}</span>
+                        </div>
+                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-3">
+                            {item.flag_reason || "Price exceeds national average standards."}
                         </p>
+                        <div className="flex items-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark">
+                            <span className="material-symbols-outlined text-sm">visibility</span>
+                            <span>Verify CPT {item.code || 'N/A'}</span>
+                        </div>
+                    </div>
+                  );
+              })}
+
+              {data.charityAnalysis?.likelyEligible && (
+                  <div className="bg-white dark:bg-surface-dark p-5 rounded-lg border-l-4 border-l-blue-500 border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                    <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-bold text-text-main-light dark:text-text-main-dark">Charity Care Eligible</h4>
+                        <span className="text-green-600 text-sm font-bold">Apply Now</span>
+                    </div>
+                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-3">
+                        {data.charityAnalysis.reasoning}
+                    </p>
+                  </div>
+              )}
+           </div>
+        </div>
+
+        {/* Ad Placeholder */}
+        <div className="w-full flex flex-col items-center gap-1 my-4">
+            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Advertisement</span>
+            <div className="w-full h-24 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border border-blue-100 dark:border-gray-700 rounded-lg flex items-center justify-between px-6 md:px-10 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-10" style={{backgroundImage: "radial-gradient(#4f46e5 1px, transparent 1px)", backgroundSize: "20px 20px"}}></div>
+                <div className="flex flex-col z-10">
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-1">Sponsored</span>
+                    <h4 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">0% Interest Medical Loans Approved in Minutes</h4>
+                </div>
+                <button className="z-10 bg-white dark:bg-blue-600 text-blue-700 dark:text-white border border-blue-200 dark:border-transparent px-6 py-2 rounded-full font-bold text-sm hover:shadow-lg transition-all">Check Eligibility</button>
+            </div>
+        </div>
+
+        {/* Dispute Assistant */}
+        <div className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-lg overflow-hidden flex flex-col md:flex-row">
+            {/* Control Panel */}
+            <div className="md:w-1/3 bg-gray-50 dark:bg-gray-800 p-8 border-b md:border-b-0 md:border-r border-border-light dark:border-border-dark flex flex-col justify-between">
+                <div>
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="bg-primary/10 p-2 rounded-lg text-primary">
+                            <span className="material-symbols-outlined">auto_fix_high</span>
+                        </div>
+                        <h3 className="text-xl font-bold dark:text-white">Dispute Assistant</h3>
+                    </div>
+                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-6">
+                        AdvocaMed has generated a formal dispute letter referencing specific billing codes and federal guidelines.
+                    </p>
+                    <div className="space-y-3">
+                        <label className="block text-xs font-bold uppercase text-text-secondary-light dark:text-text-secondary-dark">Tone</label>
+                        <select 
+                            value={tone} 
+                            onChange={(e) => setTone(e.target.value)}
+                            className="w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:border-primary focus:ring-primary dark:text-white p-2"
+                        >
+                            <option>Formal & Firm</option>
+                            <option>Polite Inquiry</option>
+                            <option>Legal Threat</option>
+                        </select>
+                        <label className="block text-xs font-bold uppercase text-text-secondary-light dark:text-text-secondary-dark mt-4">Recipient</label>
+                        <input 
+                            className="w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:border-primary focus:ring-primary dark:text-white p-2" 
+                            type="text" 
+                            value={recipient}
+                            onChange={(e) => setRecipient(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="mt-8">
+                    <button 
+                        onClick={() => {navigator.clipboard.writeText(disputeLetter); alert('Copied!');}}
+                        className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-bold py-3 px-4 rounded-lg shadow-md transition-colors"
+                    >
+                        <span className="material-symbols-outlined">content_copy</span>
+                        Copy Email to Clipboard
+                    </button>
+                    <a 
+                        href={`mailto:${recipient}?subject=Billing Dispute&body=${encodeURIComponent(disputeLetter)}`}
+                        className="w-full mt-3 flex items-center justify-center gap-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-text-main-light dark:text-text-main-dark border border-gray-300 dark:border-gray-600 font-bold py-3 px-4 rounded-lg transition-colors"
+                    >
+                        <span className="material-symbols-outlined">mail</span>
+                        Open in Gmail
+                    </a>
+                </div>
+            </div>
+
+            {/* Letter Preview */}
+            <div className="md:w-2/3 p-8 flex flex-col h-full min-h-[500px]">
+                <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-100 dark:border-gray-700">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">Preview</span>
+                    <span className="text-xs text-gray-400">Last updated: Just now</span>
+                </div>
+                {isGenerating ? (
+                    <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                         <span className="material-symbols-outlined animate-spin text-4xl mb-2">refresh</span>
+                         <p>Writing highly effective dispute letter...</p>
+                    </div>
+                ) : (
+                    <div 
+                        className="font-body text-gray-800 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-wrap flex-1 outline-none p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors" 
+                        contentEditable={true}
+                    >
+                        {disputeLetter}
                     </div>
                 )}
             </div>
-          </div>
-        ))}
-      </div>
+        </div>
 
-      {/* 3. Action Center */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-6">Next Steps</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
-          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-             <div className="mb-4">
-                 <h4 className="text-lg font-bold text-gray-900 flex items-center">
-                    <span className="bg-green-100 text-green-600 p-2 rounded-lg mr-3">💰</span>
-                    Financial Assistance
-                 </h4>
-                 {matchedHospital ? (
-                     <p className="text-sm text-green-700 mt-1 bg-green-50 p-2 rounded">
-                        <strong>Verified Match:</strong> {matchedHospital.name} offers assistance up to <strong>{matchedHospital.fpl_limit}% FPL</strong>. Apply within {matchedHospital.deadline_days} days.
-                     </p>
-                 ) : (
-                     <p className="text-sm text-gray-500 mt-1 ml-12">
-                         Non-profit hospitals often waive bills for low-income patients (IRS 501r).
-                     </p>
-                 )}
-             </div>
-             <CharityMatcher 
-                onCheck={handleCharityCheck} 
-                initialFinancials={data.userFinancials} 
-             />
-             {charityStatus && (
-                 <div className={`mt-4 p-4 rounded-xl border ${charityStatus.isEligible ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`}>
-                     <p className={`font-bold ${charityStatus.isEligible ? 'text-green-800' : 'text-gray-700'}`}>
-                         {charityStatus.isEligible ? 'Criteria Met 🎉' : 'Low Probability'}
-                     </p>
-                     <p className="text-xs text-gray-600 mt-1">{charityStatus.reasoning}</p>
-                 </div>
-             )}
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-             <div className="mb-4">
-                 <h4 className="text-lg font-bold text-gray-900 flex items-center">
-                    <span className="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">📧</span>
-                    Request Clarification
-                 </h4>
-                 <p className="text-sm text-gray-500 mt-1 ml-12">
-                     Generate an email asking for itemized receipts and coding clarification.
-                 </p>
-             </div>
-             <AppealGenerator analysis={data} financials={financials} />
-          </div>
       </div>
-      
-      {/* Disclaimer */}
-      <div className="mt-12 text-center text-xs text-gray-400 max-w-2xl mx-auto leading-relaxed">
-          <strong>Important Disclaimer:</strong> AdvocaMed.ai is an informational tool, not a law firm or medical provider. 
-          The "Estimated Variance" is based on national datasets and may not reflect your specific insurance plan's negotiated rates. 
-          Always verify CPT codes and prices directly with your provider or insurance carrier.
-      </div>
-
     </div>
   );
 };
