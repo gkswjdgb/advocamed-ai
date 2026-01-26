@@ -268,13 +268,22 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.slice(0, 3).map((post) => (
-              <article key={post.id} className="group flex flex-col gap-4">
-                <div className="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 relative border border-border-light dark:border-border-dark">
-                   <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-                      <span className="material-symbols-outlined text-5xl">article</span>
-                   </div>
-                </div>
-                <div className="flex flex-col gap-2">
+              <article key={post.id} className="group flex flex-col gap-4 h-full">
+                <Link to={`/blog/${post.id}`} className="block h-48 w-full rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 relative border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-all">
+                   {post.imageUrl ? (
+                     <img 
+                       src={post.imageUrl} 
+                       alt={post.title} 
+                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                       loading="lazy"
+                     />
+                   ) : (
+                     <div className="absolute inset-0 flex items-center justify-center text-gray-300">
+                        <span className="material-symbols-outlined text-5xl">article</span>
+                     </div>
+                   )}
+                </Link>
+                <div className="flex flex-col gap-2 flex-grow">
                   <span className="text-xs font-bold text-primary uppercase tracking-wider">{post.category}</span>
                   <h3 className="text-lg font-bold leading-tight group-hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
                     <Link to={`/blog/${post.id}`}>{post.title}</Link>
@@ -282,7 +291,7 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
                   <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-2">
                      {post.excerpt}
                   </p>
-                  <span className="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-1">{post.date} • {post.readingTime}</span>
+                  <span className="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-auto pt-2">{post.date} • {post.readingTime}</span>
                 </div>
               </article>
             ))}
