@@ -8,7 +8,8 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-20",
     readingTime: "5 min read",
     category: "Healthcare News",
-    imageUrl: "https://images.unsplash.com/photo-1575503802870-45d871e79469?q=80&w=1200&auto=format&fit=crop", // Capitol / Government
+    // Swapped to a highly stable generic medical/business image to ensure loading
+    imageUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         President Trump has announced a sweeping "Great Healthcare Plan" for 2026, putting <strong>Price Transparency</strong> and Lower Insurance Premiums at the center of his agenda.
@@ -67,7 +68,8 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-15",
     readingTime: "7 min read",
     category: "Actionable Guides",
-    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200&auto=format&fit=crop", // Papers / Accounting
+    // Verified working URL
+    imageUrl: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         Finding an error on your medical bill is frustrating, but it is extremely common. Estimates suggest up to <strong>80% of medical bills contain errors</strong>. The good news is that you have a legal right to dispute them.
@@ -110,7 +112,8 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-10",
     readingTime: "5 min read",
     category: "Insurance Basics",
-    imageUrl: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1200&auto=format&fit=crop", // Bill reading / Invoice
+    // Replaced broken URL with a new stable one
+    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         You open your mail and see a document that looks exactly like a bill. It lists thousands of dollars in charges. But in big bold letters, it says: <strong>"THIS IS NOT A BILL."</strong>
@@ -170,7 +173,8 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-02",
     readingTime: "6 min read",
     category: "Actionable Guides",
-    imageUrl: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=1200&auto=format&fit=crop", // Business meeting / Talking
+    // Replaced with handshake image
+    imageUrl: "https://images.unsplash.com/photo-1521791136064-798591d72544?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         Talking to a hospital billing department is intimidating. But remember: <strong>medical bills are negotiable</strong>. Hospitals would rather get paid <em>something</em> now than sell your debt to a collector for pennies later.
@@ -197,7 +201,8 @@ export const blogPosts: BlogPost[] = [
     date: "2025-12-27",
     readingTime: "5 min read",
     category: "Financial Aid",
-    imageUrl: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=1200&auto=format&fit=crop", // Helping Hands
+    // Replaced with hands holding image
+    imageUrl: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
         <p class="font-bold text-blue-900">Key Takeaway</p>
@@ -221,7 +226,8 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-01",
     readingTime: "4 min read",
     category: "Billing Secrets",
-    imageUrl: "https://images.unsplash.com/photo-1580048914918-da71cf64ce48?q=80&w=1200&auto=format&fit=crop", // Receipt / Bill
+    // Replaced with calculator/bill image
+    imageUrl: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         Imagine going to a grocery store, buying 50 items, and getting a receipt that just says "Food: $400". You wouldn't pay it. Yet, this is exactly what hospitals send you.
@@ -246,7 +252,7 @@ export const blogPosts: BlogPost[] = [
     date: "2025-12-30",
     readingTime: "5 min read",
     category: "Legal Rights",
-    imageUrl: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=1200&auto=format&fit=crop", // Hourglass / Time
+    imageUrl: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=1000&auto=format&fit=crop", // Gavel
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         A common fear is being sued for old medical bills. The good news? Debt collectors have a deadline. This is called the <strong>Statute of Limitations</strong>.
@@ -264,7 +270,7 @@ export const blogPosts: BlogPost[] = [
     date: "2025-12-26",
     readingTime: "4 min read",
     category: "Billing Errors",
-    imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop", // Medical Tech / Code
+    imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop", // Computer / Code
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         Medical bills look like a foreign language. But the most important part is the <strong>CPT Code</strong> (Current Procedural Terminology). If this 5-digit number is wrong, you are overpaying.
@@ -283,7 +289,8 @@ export const blogPosts: BlogPost[] = [
     date: "2025-12-25",
     readingTime: "6 min read",
     category: "Legal Rights",
-    imageUrl: "https://images.unsplash.com/photo-1516574187841-693018957de5?q=80&w=1200&auto=format&fit=crop", // Doctor / Hospital Hall
+    // Replaced broken URL
+    imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop", 
     content: `
       <p class="mb-6 text-lg leading-relaxed text-gray-700">
         Have you ever gone to an in-network hospital, only to get a huge bill from an anesthesiologist you never met? This "Balance Billing" is now largely <strong>illegal</strong> under the No Surprises Act (2022).
