@@ -14,28 +14,29 @@ const hospitals = JSON.parse(rawData);
 
 const DOMAIN = 'https://www.advocamed.com';
 
-// 2. Static Pages & Blog Posts
-// QA Fix: Added missing blog posts to ensure full indexing
+// 2. Static Pages & All 9 Blog Posts (Manually synced with data/blogPosts.ts for SEO safety)
 const staticPages = [
   '',
   '/blog',
-  '/about', // NEW: Added About page
+  '/about',
   '/hospitals',
   '/contact-us',
   '/privacy-policy',
-  '/blog/trump-healthcare-plan-2026', // NEW: Newsjacking Post
+  '/terms',
+  // Newsjacking & Guides
+  '/blog/trump-healthcare-plan-2026',
   '/blog/how-to-dispute-medical-bill-errors',
   '/blog/explanation-of-benefits-guide',
-  '/blog/how-to-apply-charity-care-2025',
-  '/blog/understanding-cpt-codes',
-  '/blog/no-surprises-act-guide',
   '/blog/medical-bill-negotiation-scripts',
+  '/blog/how-to-apply-charity-care-2025',
   '/blog/itemized-bill-secret-weapon',
-  '/blog/medical-debt-statute-limitations'
+  '/blog/medical-debt-statute-limitations',
+  '/blog/understanding-cpt-codes',
+  '/blog/no-surprises-act-guide'
 ];
 
 const generateSitemap = () => {
-  console.log(`🔍 Generating sitemap for ${hospitals.length} hospitals...`);
+  console.log(`🔍 Generating sitemap for ${hospitals.length} hospitals and ${staticPages.length} pages...`);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
