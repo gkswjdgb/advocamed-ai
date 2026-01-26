@@ -14,7 +14,7 @@ export const AppealGenerator: React.FC<AppealGeneratorProps> = ({ analysis, fina
 
   const handleGenerate = async () => {
     setLoading(true);
-    const result = await generateAppealLetter(analysis, financials ? { income: financials.annualIncome, size: financials.householdSize } : undefined);
+    const result = await generateAppealLetter(analysis, financials);
     setLetter(result);
     setLoading(false);
     setGenerated(true);
