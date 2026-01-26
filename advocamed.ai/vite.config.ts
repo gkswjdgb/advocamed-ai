@@ -19,10 +19,19 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'charts': ['recharts'],
-          'genai': ['@google/genai'],
+        manualChunks: (id) => {
+          // Optimization: Group React core together
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
+            return 'react-vendor';
+          }
+          // Optimization: Group Google AI SDK separately (lazy loaded usually)
+          if (id.includes('@google/genai')) {
+            return 'genai-sdk';
+          }
+          // Optimization: Group heavy charts
+          if (id.includes('recharts')) {
+            return 'charts-vendor';
+          }
         },
       },
     },
