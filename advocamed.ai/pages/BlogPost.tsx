@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { blogPosts } from '../data/blogPosts';
 import SEO from '../components/SEO';
@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet-async';
 const BlogPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [imgError, setImgError] = useState(false);
   const post = blogPosts.find(p => p.id === id);
 
   // Handle in-content action clicks to direct to home for scanning
@@ -85,12 +86,14 @@ const BlogPost: React.FC = () => {
           Back to Articles
         </Link>
 
-        {post.imageUrl && (
-          <div className="w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-10 shadow-md">
+        {post.imageUrl && !imgError && (
+          <div className="w-full h-64 md:h-[400px] rounded-2xl overflow-hidden mb-10 shadow-md bg-gray-100 dark:bg-gray-800 relative">
             <img 
               src={post.imageUrl} 
               alt={post.title} 
               className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+              onError={() => setImgError(true)}
             />
           </div>
         )}
