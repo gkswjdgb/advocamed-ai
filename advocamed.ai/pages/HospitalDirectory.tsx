@@ -145,6 +145,37 @@ const HospitalDirectory: React.FC = () => {
               Scan Any Bill Now
             </Link>
           </div>
+
+          {/* SEO Content Block: FAQ for ranking high-intent keywords */}
+          <div className="mt-20 pt-10 border-t border-border-light dark:border-border-dark">
+              <h2 className="text-2xl font-bold mb-6 text-text-main-light dark:text-text-main-dark text-center">Frequently Asked Questions about Hospital Financial Aid</h2>
+              <div className="grid md:grid-cols-2 gap-8 text-left">
+                  <div>
+                      <h3 className="font-bold text-text-main-light dark:text-text-main-dark mb-2">Are all hospitals required to provide charity care?</h3>
+                      <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+                          Not all, but non-profit hospitals (which make up nearly 60% of US hospitals) are required by IRS Section 501(r) to have a Financial Assistance Policy (FAP). Even for-profit hospitals often have charity programs to write off tax liabilities.
+                      </p>
+                  </div>
+                  <div>
+                      <h3 className="font-bold text-text-main-light dark:text-text-main-dark mb-2">What income qualifies for 100% forgiveness?</h3>
+                      <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+                          It varies by hospital policy, but generally, if your household income is below 200% of the Federal Poverty Level (approx. $30,000 for an individual in 2025), you will likely qualify for free care.
+                      </p>
+                  </div>
+                  <div>
+                      <h3 className="font-bold text-text-main-light dark:text-text-main-dark mb-2">Can I apply after the bill goes to collections?</h3>
+                      <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+                          Yes. Under federal law, you usually have 240 days from the first billing statement to apply. Once you submit an application, the hospital must recall the debt from collections while they review your case.
+                      </p>
+                  </div>
+                  <div>
+                      <h3 className="font-bold text-text-main-light dark:text-text-main-dark mb-2">Does financial assistance cover copays?</h3>
+                      <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+                          Often, yes. Financial assistance can be used as a "secondary insurance" to cover high deductibles and copays that your primary insurance didn't cover, provided you meet the income requirements.
+                      </p>
+                  </div>
+              </div>
+          </div>
         </div>
       </div>
     </>
