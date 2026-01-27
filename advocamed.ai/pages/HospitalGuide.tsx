@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Helmet } from 'react-helmet-async';
 import { hospitals } from '../data/hospitals';
+import { blogPosts } from '../data/blogPosts';
 
 const HospitalGuide: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -101,6 +102,11 @@ const HospitalGuide: React.FC = () => {
       }
     ]
   };
+
+  // SEO: Select relevant blog posts for internal linking
+  const relatedPosts = blogPosts.filter(p => 
+    p.id.includes('charity') || p.id.includes('negotiation') || p.id.includes('dispute')
+  ).slice(0, 3);
 
   return (
     <>
@@ -247,6 +253,20 @@ const HospitalGuide: React.FC = () => {
                         <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-2">
                             You have the right to appeal. Often, denials happen due to missing documents (like a missing pay stub). Read the denial letter carefully, supply the missing information, and resubmit. You can also write a "Letter of Hardship" explaining expenses that don't show up on a tax return, such as high rent or childcare costs in {state}.
                         </p>
+                    </div>
+                </div>
+
+                {/* Internal Linking Strategy: Connect Hospital Page to Blog Posts */}
+                <div className="mt-16 pt-8 border-t border-border-light dark:border-border-dark not-prose">
+                    <h3 className="text-xl font-bold mb-6 text-text-main-light dark:text-text-main-dark">Related Advocacy Guides</h3>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {relatedPosts.map(post => (
+                            <Link key={post.id} to={`/blog/${post.id}`} className="group bg-white dark:bg-surface-dark p-4 rounded-xl border border-border-light dark:border-border-dark hover:shadow-md transition-all">
+                                <span className="text-xs font-bold text-primary uppercase">{post.category}</span>
+                                <h4 className="font-bold text-sm mt-1 mb-2 group-hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">{post.title}</h4>
+                                <span className="text-xs text-text-secondary-light dark:text-text-secondary-dark hover:underline">Read Guide &rarr;</span>
+                            </Link>
+                        ))}
                     </div>
                 </div>
 
