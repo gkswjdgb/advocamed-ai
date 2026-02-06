@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 export const SEOContent: React.FC = () => {
     const currentYear = new Date().getFullYear();
 
-    // GEO Strategy: Feed specific Q&A to AI engines
+    // GEO Strategy: Feed specific Q&A to AI engines & Google Bots
     const faqSchema = {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -16,7 +16,7 @@ export const SEOContent: React.FC = () => {
           "name": "How does AdvocaMed find billing errors?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "AdvocaMed uses AI to cross-reference your bill's CPT codes against national Medicare guidelines and identifying upcoding (charging for a higher level of service) or unbundling errors automatically."
+            "text": "AdvocaMed uses AI to cross-reference your bill's CPT codes against national Medicare guidelines (CMS Physician Fee Schedule), automatically identifying 'Upcoding' (charging for a higher level of service) or 'Unbundling' errors."
           }
         },
         {
@@ -24,7 +24,7 @@ export const SEOContent: React.FC = () => {
           "name": "Can I negotiate a hospital bill after insurance pays?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Even after insurance, you can negotiate your 'patient responsibility' portion. Hospitals often accept 20-40% less if you offer a one-time lump sum payment."
+            "text": "Yes. Even after insurance, you can negotiate your 'patient responsibility' portion (Co-pay, Deductible). Hospitals often accept 20-40% less if you offer a one-time lump sum payment."
           }
         },
         {
@@ -32,7 +32,7 @@ export const SEOContent: React.FC = () => {
           "name": "What is the income limit for hospital charity care?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Under IRS 501(r), most non-profit hospitals must provide free care to patients earning under 200% of the Federal Poverty Level (approx. $30,000 for an individual in 2025)."
+            "text": "Under IRS Section 501(r), non-profit hospitals must provide free care to patients earning under 200% of the Federal Poverty Level (approx. $30,000 for an individual in 2025). Some hospitals extend discounts up to 400% FPL."
           }
         },
         {
@@ -40,14 +40,14 @@ export const SEOContent: React.FC = () => {
           "name": "Is this tool HIPAA compliant?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "AdvocaMed is designed with privacy first. We do not store your medical bills on our servers. The analysis is performed instantly, and the data is discarded immediately after processing."
+            "text": "AdvocaMed is designed with privacy first. We do not store your medical bills on our servers. The analysis is performed in real-time, and the data is discarded immediately after processing."
           }
         }
       ]
     };
 
     return (
-        <section id="seo-content" className="bg-white py-16 border-t border-gray-100">
+        <section id="seo-content" className="bg-white dark:bg-surface-dark py-16 border-t border-border-light dark:border-border-dark mt-12">
             {/* Inject FAQ Schema for SEO/GEO */}
             <Helmet>
                 <script type="application/ld+json">
@@ -55,106 +55,111 @@ export const SEOContent: React.FC = () => {
                 </script>
             </Helmet>
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-lg prose-red text-gray-600">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                        Complete Guide to Medical Bill Advocacy
+                    <span className="text-primary font-bold tracking-widest uppercase text-xs">Patient Advocacy Knowledge Base</span>
+                    <h2 className="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark sm:text-4xl mt-2">
+                        Complete Guide to Fighting Medical Bills
                     </h2>
-                    <p className="mt-4 text-lg text-gray-500">
-                        The US healthcare system is complex. AdvocaMed empowers you with the data you need to fight back against unfair charges.
+                    <p className="mt-4 text-lg text-text-secondary-light dark:text-text-secondary-dark max-w-2xl mx-auto">
+                        The US healthcare system is complex by design. This guide explains your federal rights, common billing scams, and how to use our AI tool to save money.
                     </p>
                 </div>
 
-                <div className="grid gap-10 lg:grid-cols-2 lg:gap-x-12 lg:gap-y-16">
-                    {/* Article 1 */}
-                    <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            The "Chargemaster" Problem
+                {/* Long-form content to satisfy "High Value Content" requirement */}
+                <div className="grid gap-10 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-16 text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+                    
+                    {/* Article 1: The Problem */}
+                    <div className="prose dark:prose-invert">
+                        <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-3 flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">warning</span>
+                            The "Chargemaster" Trap
                         </h3>
-                        <p className="text-sm leading-relaxed">
-                            Hospitals have a list of prices for every procedure called a "Chargemaster". These prices are often 3-5 times higher than what Medicare or insurance companies actually pay. If you are uninsured or out-of-network, you are often billed these inflated rates. AdvocaMed helps you identify the "Fair Market Price" so you can negotiate a realistic settlement.
+                        <p className="text-sm">
+                            Hospitals maintain a secret list of prices called a "Chargemaster." These prices are often <strong>300% to 500% higher</strong> than what Medicare or private insurance companies actually pay. If you are uninsured, out-of-network, or have a high-deductible plan, you are often billed these inflated sticker prices.
+                        </p>
+                        <p className="text-sm mt-2">
+                            <strong>How We Help:</strong> AdvocaMed calculates the "Fair Market Price" based on CMS data, giving you the leverage to demand the same rates insurance companies get.
                         </p>
                     </div>
 
-                    {/* Article 2 */}
-                    <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            Federal Protections: No Surprises Act
+                    {/* Article 2: The Law */}
+                    <div className="prose dark:prose-invert">
+                        <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-3 flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">gavel</span>
+                            Federal Protections (No Surprises Act)
                         </h3>
-                        <p className="text-sm leading-relaxed">
-                            Effective from 2022, the <strong>No Surprises Act</strong> protects patients from receiving surprise medical bills from out-of-network providers at in-network facilities. If you go to an in-network hospital for surgery, the anesthesiologist cannot secretly bill you at an out-of-network rate. Our tool scans for these potential violations.
+                        <p className="text-sm">
+                            Effective January 1, 2022, the <strong>No Surprises Act</strong> protects patients from receiving surprise bills when receiving emergency care, non-emergency care from out-of-network providers at in-network facilities, and air ambulance services.
+                        </p>
+                        <p className="text-sm mt-2">
+                            If you went to an in-network hospital but received a separate bill from an out-of-network anesthesiologist, <strong>do not pay it.</strong> Use our dispute generator to cite federal law.
                         </p>
                     </div>
 
-                    {/* Article 3 */}
-                    <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            How Charity Care (IRS 501r) Works
+                    {/* Article 3: Financial Aid */}
+                    <div className="prose dark:prose-invert">
+                        <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-3 flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">volunteer_activism</span>
+                            IRS 501(r) Charity Care
                         </h3>
-                        <p className="text-sm leading-relaxed">
-                            Under <strong>IRS Section 501(r)</strong>, non-profit hospitals in the US must provide financial assistance policies (FAPs). If your income is below a certain percentage of the Federal Poverty Level (FPL), typically 200%-400%, you may be legally entitled to a reduced bill or complete forgiveness, regardless of insurance status.
+                        <p className="text-sm">
+                            Non-profit hospitals (which make up nearly 60% of US hospitals) <strong>must</strong> provide financial assistance to maintain their tax-exempt status. This is not a suggestion; it is IRS law.
+                        </p>
+                        <p className="text-sm mt-2">
+                            If your household income is under 200% of the Federal Poverty Level (FPL), you likely qualify for <strong>100% bill forgiveness</strong>. Our tool automatically checks your eligibility against the hospital's specific policy 501(r) limits.
                         </p>
                     </div>
 
-                    {/* Article 4 */}
-                    <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            Common Medical Billing Errors
+                    {/* Article 4: Coding Errors */}
+                    <div className="prose dark:prose-invert">
+                        <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-3 flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">code_off</span>
+                            Common CPT Code Errors
                         </h3>
                         <ul className="list-disc pl-5 text-sm space-y-2">
-                            <li><strong>Upcoding:</strong> Being billed for a more expensive service than what was performed (e.g., Level 5 ER visit for a sore throat).</li>
-                            <li><strong>Unbundling:</strong> Separating charges that should be billed together under one code (e.g., surgical tray) to increase cost.</li>
-                            <li><strong>Duplicate Billing:</strong> Being charged twice for the same medication or procedure due to clerical error.</li>
+                            <li><strong>Upcoding (CPT 99285 vs 99283):</strong> Billing for a life-threatening emergency (Level 5) when you only had a minor issue (Level 3). This is the most common automated error we find.</li>
+                            <li><strong>Unbundling:</strong> Charging separately for items that should be included in the room rate, like surgical kits, gloves, or Tylenol.</li>
+                            <li><strong>Duplicate Billing:</strong> Being charged twice for the same test or medication due to clerical error.</li>
                         </ul>
                     </div>
                 </div>
 
-                <hr className="my-12 border-gray-200" />
+                <div className="my-16 border-t border-border-light dark:border-border-dark"></div>
 
-                {/* FAQ Section Display (Visible to User) */}
-                <div className="bg-gray-50 rounded-2xl p-8">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h3>
-                    <div className="space-y-6">
+                {/* FAQ Section Display (Visible text for Bots) */}
+                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-8 border border-border-light dark:border-border-dark">
+                    <h3 className="text-2xl font-bold text-text-main-light dark:text-text-main-dark mb-8 text-center">Frequently Asked Questions</h3>
+                    <div className="grid md:grid-cols-2 gap-6">
                         {faqSchema.mainEntity.map((faq, idx) => (
-                            <div key={idx} className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                                <h4 className="font-bold text-gray-900 text-lg mb-2">{faq.name}</h4>
-                                <p className="text-gray-600 text-sm">{faq.acceptedAnswer.text}</p>
+                            <div key={idx} className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+                                <h4 className="font-bold text-text-main-light dark:text-text-main-dark text-lg mb-2">{faq.name}</h4>
+                                <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm leading-relaxed">{faq.acceptedAnswer.text}</p>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* pSEO Internal Links - Condensed for cleaner UI */}
+                {/* pSEO Internal Links - The "Spiderweb" Structure */}
                 <div className="mt-16 pt-10">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Find Financial Aid by Hospital</h3>
-                    <p className="text-center text-sm text-gray-500 mb-6">Browse our directory of 5,000+ US hospitals to find specific charity care policies.</p>
+                    <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-6 text-center">Find Financial Assistance by Hospital</h3>
+                    <p className="text-center text-sm text-text-secondary-light dark:text-text-secondary-dark mb-6 max-w-2xl mx-auto">
+                        We have compiled verified financial aid policies for over 5,000 locations. Click your hospital below to see specific income limits and application deadlines.
+                    </p>
                     <div className="flex flex-wrap justify-center gap-3">
-                        {hospitals.slice(0, 15).map((hospital) => (
+                        {hospitals.slice(0, 20).map((hospital) => (
                             <Link 
                                 key={hospital.slug} 
                                 to={`/hospital/${hospital.slug}`}
-                                className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors no-underline"
+                                className="px-3 py-1.5 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-colors no-underline"
                             >
-                                {hospital.name}
+                                {hospital.name} Financial Aid
                             </Link>
                         ))}
-                        <Link to="/hospitals" className="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-200 no-underline">
-                            View All Hospitals &rarr;
+                        <Link to="/hospitals" className="px-4 py-1.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-bold text-text-main-light dark:text-text-main-dark hover:bg-gray-200 dark:hover:bg-gray-700 no-underline flex items-center gap-1">
+                            View All 5,000+ Hospitals <span className="material-symbols-outlined text-xs">arrow_forward</span>
                         </Link>
                     </div>
-                </div>
-
-                <div className="mt-16 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 text-center text-white not-prose">
-                    <h3 className="text-2xl font-bold mb-4">Start Your Savings Journey</h3>
-                    <p className="mb-6 text-gray-300">
-                        Don't let medical debt ruin your financial future. Use our free AI auditor today.
-                    </p>
-                    <button 
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-900 bg-white hover:bg-gray-100"
-                    >
-                        Start Free Analysis
-                    </button>
                 </div>
             </div>
         </section>
