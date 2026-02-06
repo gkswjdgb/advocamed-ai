@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Link, useSearchParams, useLocation, useNa
 // Components
 import { Hero } from './components/Hero';
 import { AnalysisResultView } from './components/AnalysisResult';
+import { SEOContent } from './components/SEOContent'; // Added Import
 import SEO from './components/SEO';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
@@ -16,7 +17,7 @@ import { demoAnalysisResult } from './data/demoData';
 import { AnalysisResult } from './types';
 
 // Lazy Load Pages
-const BlogPage = React.lazy(() => import('./pages/BlogList')); // Updated to point to BlogList
+const BlogPage = React.lazy(() => import('./pages/BlogList')); 
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const HospitalGuide = React.lazy(() => import('./pages/HospitalGuide'));
 const HospitalDirectory = React.lazy(() => import('./pages/HospitalDirectory'));
@@ -165,11 +166,15 @@ const Home = () => {
       )}
 
       {step === 'HERO' && (
-        <Hero 
-          onAnalysisComplete={handleAnalysisComplete}
-          onLoading={handleLoading}
-          onDemo={handleDemo}
-        />
+        <>
+          <Hero 
+            onAnalysisComplete={handleAnalysisComplete}
+            onLoading={handleLoading}
+            onDemo={handleDemo}
+          />
+          {/* Added SEOContent here: This is the 'Text Bomb' for crawlers */}
+          <SEOContent />
+        </>
       )}
 
       {step === 'RESULTS' && analysisData && (
