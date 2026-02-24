@@ -13,6 +13,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
   const [income, setIncome] = useState<string>('');
   const [householdSize, setHouseholdSize] = useState<string>('1');
   const [showTips, setShowTips] = useState<boolean>(false);
+  const [isAgreed, setIsAgreed] = useState<boolean>(false);
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -223,7 +224,21 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
             </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Mandatory Legal Consent */}
+        <div className="mb-6 text-left flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <input 
+                type="checkbox" 
+                id="legal-consent"
+                checked={isAgreed}
+                onChange={(e) => setIsAgreed(e.target.checked)}
+                className="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
+            />
+            <label htmlFor="legal-consent" className="text-sm text-gray-600 cursor-pointer select-none">
+                I agree to the <strong>Disclaimer</strong> and <strong>Privacy Policy</strong>. I understand AdvocaMed.ai provides informational estimates based on public data, not legal or medical advice.
+            </label>
+        </div>
+
+        <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-opacity duration-200 ${!isAgreed ? 'opacity-50 pointer-events-none' : ''}`}>
             <label className="flex-1 flex flex-col items-center justify-center h-40 sm:h-48 border-2 border-primary border-dashed rounded-xl cursor-pointer bg-red-50/50 hover:bg-red-50 transition-all active:scale-95 group relative overflow-hidden">
                 <div className="flex flex-col items-center justify-center z-10">
                     <div className="p-3 bg-white rounded-full shadow-sm mb-2 group-hover:shadow-md transition-shadow">
@@ -238,6 +253,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
                     accept="image/*"
                     capture="environment"
                     onChange={handleFileChange}
+                    disabled={!isAgreed}
                 />
             </label>
 
@@ -255,8 +271,15 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onAnalysisComplete
                     // but we also check file.type in JS for drag-and-drop or 'All Files' selection
                     accept="image/jpeg,image/png,image/webp,image/heic"
                     onChange={handleFileChange}
+                    disabled={!isAgreed}
                 />
             </label>
+        </div>
+
+        {/* Privacy Shield Badge */}
+        <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500 bg-gray-50 py-2 px-4 rounded-full w-fit mx-auto border border-gray-200">
+            <span className="material-symbols-outlined text-green-600 text-sm">shield_lock</span>
+            <span><strong>Privacy Shield:</strong> Zero-Storage Policy. Files auto-deleted in 24h. HIPAA-aligned encryption.</span>
         </div>
       </div>
     </div>
