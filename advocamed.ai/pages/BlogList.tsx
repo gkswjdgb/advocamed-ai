@@ -25,60 +25,100 @@ const BlogList: React.FC = () => {
             </p>
           </div>
 
-          {/* Featured / Grid */}
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {blogPosts.map((post, index) => (
-              <Link 
-                key={post.id} 
-                to={`/blog/${post.id}`} 
-                className="group flex flex-col h-full bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {/* Image Container */}
-                <div className="h-52 overflow-hidden bg-gray-100 dark:bg-gray-800 relative">
-                   {post.imageUrl ? (
-                     <img 
-                       src={post.imageUrl} 
-                       alt={post.title} 
-                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                       loading="lazy"
-                     />
-                   ) : (
-                     <div className="absolute inset-0 flex items-center justify-center text-gray-300 bg-gray-100">
-                        <span className="material-symbols-outlined text-6xl opacity-50">article</span>
+          {/* Main Layout with Sidebar */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            {/* Left Column: Blog Posts */}
+            <div className="lg:col-span-2 grid gap-8 md:grid-cols-2">
+              {blogPosts.map((post, index) => (
+                <Link 
+                  key={post.id} 
+                  to={`/blog/${post.id}`} 
+                  className="group flex flex-col h-full bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {/* Image Container */}
+                  <div className="h-48 overflow-hidden bg-gray-100 dark:bg-gray-800 relative">
+                     {post.imageUrl ? (
+                       <img 
+                         src={post.imageUrl} 
+                         alt={post.title} 
+                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                         loading="lazy"
+                       />
+                     ) : (
+                       <div className="absolute inset-0 flex items-center justify-center text-gray-300 bg-gray-100">
+                          <span className="material-symbols-outlined text-6xl opacity-50">article</span>
+                       </div>
+                     )}
+                     <div className="absolute top-4 left-4">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-white/90 text-primary shadow-sm backdrop-blur-sm">
+                          {post.category}
+                        </span>
                      </div>
-                   )}
-                   <div className="absolute top-4 left-4">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-white/90 text-primary shadow-sm backdrop-blur-sm">
-                        {post.category}
-                      </span>
-                   </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 flex flex-col flex-grow">
+                    <div className="flex items-center gap-2 mb-3 text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium">
+                        <span className="material-symbols-outlined text-sm">calendar_today</span>
+                        <span>{post.date}</span>
+                        <span>•</span>
+                        <span>{post.readingTime}</span>
+                    </div>
+                    
+                    <h3 className="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-3 group-hover:text-primary transition-colors leading-snug">
+                      {post.title}
+                    </h3>
+                    
+                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 mb-6 flex-grow leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                    
+                    <div className="flex items-center text-primary font-bold text-sm mt-auto group-hover:underline decoration-2 underline-offset-4">
+                        Read Full Article 
+                        <span className="material-symbols-outlined text-sm ml-1 transition-transform group-hover:translate-x-1">arrow_forward</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Right Column: Sidebar */}
+            <div className="lg:col-span-1 space-y-8">
+                
+                {/* CTA Widget: Dispute Template */}
+                <div className="bg-white dark:bg-surface-dark rounded-2xl p-8 border-2 border-primary/10 shadow-lg sticky top-24">
+                    <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-2xl flex items-center justify-center text-red-600 dark:text-red-400 mb-6 mx-auto transform -rotate-3">
+                        <span className="material-symbols-outlined text-4xl">gavel</span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-center text-text-main-light dark:text-text-main-dark mb-2">
+                        Fight Back Today
+                    </h3>
+                    <p className="text-center text-text-secondary-light dark:text-text-secondary-dark mb-6 text-sm">
+                        Download our battle-tested <strong>Medical Bill Dispute Letter</strong> template. It's 100% free and works for upcoding errors.
+                    </p>
+                    <Link to="/blog/medical-bill-dispute-letter-template-2026" className="block w-full bg-primary hover:bg-primary-hover text-white text-center font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
+                        Download Free Template
+                    </Link>
+                    <p className="text-[10px] text-center text-gray-400 mt-4">
+                        *Updated for 2026 Regulations
+                    </p>
                 </div>
 
-                {/* Content */}
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="flex items-center gap-2 mb-3 text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium">
-                      <span className="material-symbols-outlined text-sm">calendar_today</span>
-                      <span>{post.date}</span>
-                      <span>•</span>
-                      <span>{post.readingTime}</span>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-text-main-light dark:text-text-main-dark mb-3 group-hover:text-primary transition-colors leading-snug">
-                    {post.title}
-                  </h3>
-                  
-                  <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 mb-6 flex-grow leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                  
-                  <div className="flex items-center text-primary font-bold text-sm mt-auto group-hover:underline decoration-2 underline-offset-4">
-                      Read Full Article 
-                      <span className="material-symbols-outlined text-sm ml-1 transition-transform group-hover:translate-x-1">arrow_forward</span>
-                  </div>
+                {/* Secondary Widget: Upload Bill */}
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 text-white shadow-lg">
+                    <h3 className="text-xl font-bold mb-4">Have a confusing bill?</h3>
+                    <p className="text-gray-300 text-sm mb-6">
+                        Our AI can scan it for errors in seconds. No account required.
+                    </p>
+                    <Link to="/?step=HERO" className="block w-full bg-white text-gray-900 text-center font-bold py-3 rounded-xl hover:bg-gray-100 transition-colors">
+                        Scan Bill Now
+                    </Link>
                 </div>
-              </Link>
-            ))}
+
+            </div>
+
           </div>
 
           {/* Newsletter / CTA */}
