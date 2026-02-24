@@ -84,8 +84,8 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
                <button onClick={handleReset} className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
                   <span className="material-symbols-outlined text-lg">upload_file</span>
-                  <span className="hidden sm:inline">Check a Bill</span>
-                  <span className="sm:hidden">Check</span>
+                  <span className="hidden sm:inline">Start My Free Medical Bill Audit</span>
+                  <span className="sm:hidden">Audit Bill</span>
                </button>
           </div>
         </div>
