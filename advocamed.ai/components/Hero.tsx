@@ -144,10 +144,10 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
                 Privacy First • No Account Required
               </div>
               <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight text-text-main-light dark:text-text-main-dark">
-                Decipher Your <span className="text-primary">Hospital Bill</span> in Seconds
+                Decipher & Dispute Your <span className="text-primary">Medical Bills</span> with AI — HIPAA Compliant.
               </h1>
               <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark max-w-lg leading-relaxed">
-                Stop overpaying. Our advanced AI scans your bills for errors, unbundling, and price gouging instantly.
+                Don't pay the sticker price. Our AI scans CPT codes for upcoding and unbundling errors instantly. Access verified Charity Care policies for 5,000+ US hospitals.
               </p>
             </div>
 
@@ -219,7 +219,7 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
 
               <label className="w-full max-w-[280px] bg-primary hover:bg-primary-hover text-white h-12 rounded-lg font-bold shadow-md transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
                 <span className="material-symbols-outlined">add_circle</span>
-                Select File
+                Scan My Bill Now (Free)
                 <input 
                     type="file" 
                     className="hidden" 
@@ -230,7 +230,7 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
 
               <div className="mt-8 flex items-center justify-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark opacity-80">
                 <span className="material-symbols-outlined text-sm">lock</span>
-                <span>AES-256 Encrypted • Auto-deleted after 24h</span>
+                <span>AES-256 Encryption • Auto-deletion after 24h</span>
               </div>
               
                <div className="mt-2 text-[10px] text-red-400 font-medium">
