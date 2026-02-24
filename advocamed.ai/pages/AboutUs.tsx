@@ -17,8 +17,13 @@ const AboutUs: React.FC = () => {
             </h1>
             
             <div className="prose prose-lg prose-indigo text-text-secondary-light dark:text-text-secondary-dark">
+                <p className="lead text-xl">
+                    AdvocaMed.ai is a public benefit initiative dedicated to democratizing healthcare financial literacy. We combine <strong>CMS Open Data</strong> with advanced AI to help patients audit their medical bills for errors and eligibility.
+                </p>
+
+                <h2 className="text-text-main-light dark:text-text-main-dark font-bold mt-8 mb-4">Our Mission: Transparency as a Right</h2>
                 <p>
-                    Medical debt is the leading cause of bankruptcy in the United States. At <strong>AdvocaMed</strong>, we believe that understanding your healthcare costs shouldn't require a medical degree.
+                    Medical debt is the leading cause of bankruptcy in the United States. At AdvocaMed, we believe that understanding your healthcare costs shouldn't require a medical degree or a lawyer.
                 </p>
                 <p>
                     Hospitals operate with complex "Chargemasters" and obscure coding systems that leave patients confused and vulnerable to overcharges. Our mission is to level the playing field using technology.
