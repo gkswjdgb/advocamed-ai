@@ -21,6 +21,16 @@ export const blogPosts: BlogPost[] = [
         But writing a formal dispute letter can be intimidating. Here is a free, battle-tested template you can use today to freeze your bill and demand a review.
       </p>
 
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Why You Must Dispute in Writing</h2>
+      <p class="mb-4 text-gray-700">
+        Under the Fair Credit Billing Act and the Affordable Care Act, you have specific rights when disputing charges. However, these rights are best protected when you have a paper trail.
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li><strong>Legal Proof:</strong> A letter sent via certified mail proves the hospital received your dispute.</li>
+        <li><strong>Pauses Collections:</strong> A formal dispute often forces the billing department to pause collection activities while they investigate.</li>
+        <li><strong>Clear Documentation:</strong> It prevents "he said, she said" situations regarding what was promised over the phone.</li>
+      </ul>
+
       <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">📋 Free Dispute Letter Template (Copy & Paste)</h2>
       <p class="mb-4 text-gray-700">
         You can copy the text below, fill in the brackets, and mail it to the hospital's billing department (and your insurance company).
@@ -61,6 +71,22 @@ Sincerely,
 [Your Signature]
       </div>
 
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Step-by-Step Guide to Sending This Letter</h2>
+      <h3 class="text-xl font-bold mt-6 mb-2 text-gray-800">1. Verify the Address</h3>
+      <p class="mb-4 text-gray-700">
+        Do not just send it to the address on the bill. Call the hospital and ask for the specific address for "Billing Disputes" or "Appeals". Sometimes this is a different department.
+      </p>
+
+      <h3 class="text-xl font-bold mt-6 mb-2 text-gray-800">2. Send via Certified Mail</h3>
+      <p class="mb-4 text-gray-700">
+        Spend the extra few dollars at the post office to send it "Certified Mail with Return Receipt Requested". This gives you a legal receipt proving they got it.
+      </p>
+
+      <h3 class="text-xl font-bold mt-6 mb-2 text-gray-800">3. Follow Up</h3>
+      <p class="mb-4 text-gray-700">
+        If you don't hear back in 30 days, call them and reference the tracking number.
+      </p>
+
       <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">💡 Why Writing This Manually is Risky</h2>
       <p class="mb-4 text-gray-700">While the template above works, manual disputes have risks:</p>
       <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
@@ -78,6 +104,60 @@ Sincerely,
            Generate My Dispute Letter (Free)
         </button>
       </div>
+    `
+  },
+  {
+    id: "negotiating-with-debt-collectors-guide",
+    title: "Negotiating with Medical Debt Collectors: Your Rights & Strategy",
+    excerpt: "Has your bill gone to collections? Don't panic. Learn how to validate the debt, negotiate a 'Pay for Delete', and stop harassment.",
+    date: "2026-02-01",
+    readingTime: "8 min read",
+    category: "Debt Defense",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=1000&auto=format&fit=crop", 
+    content: `
+      <p class="mb-6 text-lg leading-relaxed text-gray-700">
+        Hearing from a debt collector is stressful. They often use aggressive tactics to scare you into paying immediately. But when it comes to medical debt, you have significant rights under the <strong>Fair Debt Collection Practices Act (FDCPA)</strong> and recent credit reporting changes.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Step 1: Validate the Debt (The "Magic Letter")</h2>
+      <p class="mb-4 text-gray-700">
+        Never pay a collector on the first call. They often buy debts for pennies on the dollar and may not even have the paperwork to prove you owe it.
+      </p>
+      <p class="mb-4 text-gray-700">
+        Within 30 days of their first contact, send a <strong>Debt Validation Letter</strong>. This forces them to prove:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li>The original creditor (hospital name).</li>
+        <li>The exact amount owed.</li>
+        <li>That they are legally licensed to collect this debt in your state.</li>
+      </ul>
+      <p class="mb-4 text-gray-700">
+        If they cannot provide this proof, they must stop collecting.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Step 2: Know the Credit Reporting Rules (2025/2026)</h2>
+      <p class="mb-4 text-gray-700">
+        Recent laws have changed how medical debt affects your credit score:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li><strong>Under $500:</strong> Medical debt under $500 generally cannot appear on your credit report.</li>
+        <li><strong>Paid Debt:</strong> Once you pay a medical debt, it must be removed from your report immediately (unlike credit card debt which stays for 7 years).</li>
+        <li><strong>Waiting Period:</strong> They must wait 365 days before reporting unpaid debt, giving you time to resolve it with insurance.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Step 3: Negotiate a Settlement</h2>
+      <p class="mb-4 text-gray-700">
+        Collectors bought your debt cheaply. If you owe $1,000, they might have paid $50 for it. This gives you leverage.
+      </p>
+      <p class="mb-4 text-gray-700">
+        <strong>The Strategy:</strong> Offer a "Lump Sum Settlement."
+      </p>
+      <blockquote class="bg-gray-100 p-4 border-l-4 border-gray-500 italic text-gray-700 my-6">
+        "I dispute this debt. However, to save us both time, I am willing to pay $300 today as settlement in full, provided you send me a letter confirming this satisfies the debt and will not be reported to credit bureaus."
+      </blockquote>
+      <p class="mb-4 text-gray-700">
+        Get the agreement in writing <strong>before</strong> you pay.
+      </p>
     `
   },
   {
@@ -274,7 +354,7 @@ Sincerely,
     title: "How to Apply for Hospital Charity Care in 2025: The Ultimate Guide",
     excerpt: "Qualify for $0 medical bills. See the 2025 income limits and apply for mandatory debt forgiveness.",
     date: "2025-12-27",
-    readingTime: "5 min read",
+    readingTime: "10 min read",
     category: "Financial Aid",
     imageUrl: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1000&auto=format&fit=crop", 
     content: `
@@ -291,6 +371,80 @@ Sincerely,
       <p class="mb-4 text-gray-700">
         Most hospitals base eligibility on the <strong>Federal Poverty Level (FPL)</strong>. Use the table below to see where you stand.
       </p>
+
+      <div class="overflow-x-auto mb-8">
+        <table class="min-w-full bg-white border border-gray-200 text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="py-2 px-3 text-left">Household Size</th>
+              <th class="py-2 px-3 text-left">100% FPL (Usually Free Care)</th>
+              <th class="py-2 px-3 text-left">200% FPL (Usually Discounted)</th>
+              <th class="py-2 px-3 text-left">400% FPL (Partial Help)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr>
+              <td class="py-2 px-3 font-bold">1 Person</td>
+              <td class="py-2 px-3">$15,060</td>
+              <td class="py-2 px-3">$30,120</td>
+              <td class="py-2 px-3">$60,240</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-3 font-bold">2 People</td>
+              <td class="py-2 px-3">$20,440</td>
+              <td class="py-2 px-3">$40,880</td>
+              <td class="py-2 px-3">$81,760</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-3 font-bold">3 People</td>
+              <td class="py-2 px-3">$25,820</td>
+              <td class="py-2 px-3">$51,640</td>
+              <td class="py-2 px-3">$103,280</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-3 font-bold">4 People</td>
+              <td class="py-2 px-3">$31,200</td>
+              <td class="py-2 px-3">$62,400</td>
+              <td class="py-2 px-3">$124,800</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="text-xs text-gray-500 mt-2">*Estimated 2025 guidelines. Check specific hospital policy.</p>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">2. How to Find the Application</h2>
+      <p class="mb-4 text-gray-700">
+        Hospitals often hide these forms. Do not look for "Charity Care" on the homepage. Instead:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li><strong>Google Search:</strong> Type "[Hospital Name] Financial Assistance Policy PDF".</li>
+        <li><strong>Call Billing:</strong> Ask specifically for the "Financial Assistance Application" to be mailed to you.</li>
+        <li><strong>Use AdvocaMed:</strong> Our tool automatically links you to the policy for 5,000+ hospitals.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">3. Documents You Need</h2>
+      <p class="mb-4 text-gray-700">
+        Gather these before you start:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li>Last 2-3 pay stubs.</li>
+        <li>Last year's tax return (Form 1040).</li>
+        <li>Bank statements (checking/savings) for the last 3 months.</li>
+        <li>Denial letter from Medicaid (sometimes required).</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">4. The "Presumptive Eligibility" Secret</h2>
+      <p class="mb-4 text-gray-700">
+        Some hospitals use credit checks to automatically qualify you. If you have a low credit score or no credit history, mention this. You might qualify for "Presumptive Eligibility" without filling out the full form.
+      </p>
+
+      <div class="mt-8 p-6 bg-green-50 border border-green-100 rounded-xl text-center">
+        <h3 class="text-xl font-bold text-green-900 mb-2">Check Your Eligibility Instantly</h3>
+        <p class="text-green-700 mb-6">Don't do the math yourself. Our AI calculator checks your income against the hospital's specific policy.</p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg text-lg">
+           Check My Eligibility
+        </button>
+      </div>
     `
   },
   {
@@ -315,7 +469,35 @@ Sincerely,
             <span class="text-sm text-gray-600">Impossible to audit. Hides errors.</span>
           </div>
         </li>
+         <li class="flex p-4 bg-green-50 rounded-lg border border-green-100">
+          <span class="text-2xl mr-4">✅</span>
+          <div>
+            <strong>Itemized Bill:</strong> "CBC Blood Test (CPT 85025): $40", "Tylenol 500mg: $15". <br>
+            <span class="text-sm text-gray-600">Shows exactly what you are paying for.</span>
+          </div>
+        </li>
       </ul>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Why Hospitals Hate Sending This</h2>
+      <p class="mb-4 text-gray-700">
+        When you ask for an itemized bill, you are signaling that you are paying attention. Hospitals know that itemized bills expose:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-8">
+        <li><strong>Duplicate Charges:</strong> Being billed twice for the same Tylenol.</li>
+        <li><strong>Ridiculous Pricing:</strong> $50 for a pair of gloves.</li>
+        <li><strong>Services You Didn't Receive:</strong> A doctor visit that never happened.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">How to Ask (The Script)</h2>
+      <p class="mb-4 text-gray-700">
+        Call the billing department and say:
+      </p>
+      <blockquote class="bg-gray-100 p-6 rounded-xl font-mono text-sm text-gray-800 border border-gray-300 shadow-inner mb-8">
+        "I am requesting a full itemized statement for account #12345. I want to see the CPT codes for every line item. Please mail this to me and pause the billing clock until I receive it."
+      </blockquote>
+      <p class="mb-4 text-gray-700">
+        <strong>Note:</strong> By law, they must provide this. If they refuse, tell them you are filing a complaint with your state's Attorney General.
+      </p>
     `
   },
   {
@@ -334,6 +516,40 @@ Sincerely,
       <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-8">
         <strong>Warning:</strong> Making a small payment (even $5) or acknowledging the debt in writing can <strong>RESET</strong> the clock. Do not pay anything until you verify the age of the debt.
       </div>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">What is the Statute of Limitations?</h2>
+      <p class="mb-4 text-gray-700">
+        It is the maximum time a creditor has to sue you for a debt. Once this time passes, the debt is "Time-Barred." They can still ask you to pay, but they cannot take you to court.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">State-by-State Guide (General Estimates)</h2>
+      <p class="mb-4 text-gray-700">
+        <em>Note: Laws change. Verify with a local attorney.</em>
+      </p>
+      <div class="overflow-x-auto mb-8">
+        <table class="min-w-full bg-white border border-gray-200 text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="py-2 px-3 text-left">State</th>
+              <th class="py-2 px-3 text-left">Years (Written Contract)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr><td class="py-2 px-3">California</td><td class="py-2 px-3">4 Years</td></tr>
+            <tr><td class="py-2 px-3">New York</td><td class="py-2 px-3">6 Years (Reduced to 3 for some consumer debts)</td></tr>
+            <tr><td class="py-2 px-3">Texas</td><td class="py-2 px-3">4 Years</td></tr>
+            <tr><td class="py-2 px-3">Florida</td><td class="py-2 px-3">5 Years</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">What to Do if They Sue After the Deadline</h2>
+      <p class="mb-4 text-gray-700">
+        If you are sued for a time-barred debt, <strong>do not ignore the lawsuit</strong>. You must go to court and tell the judge: "This debt is past the statute of limitations."
+      </p>
+      <p class="mb-4 text-gray-700">
+        If you don't show up, they win automatically (Default Judgment).
+      </p>
     `
   },
   {
@@ -341,7 +557,7 @@ Sincerely,
     title: "CPT Codes Explained: How to Catch 'Upcoding' Scams",
     excerpt: "Don't let them 'Upcode' you. Learn how to spot inflated CPT codes and save money on your next ER visit.",
     date: "2025-12-26",
-    readingTime: "4 min read",
+    readingTime: "10 min read",
     category: "Billing Errors",
     imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop", // Computer / Code
     content: `
@@ -353,6 +569,40 @@ Sincerely,
       <p class="mb-4 text-gray-700">
         Upcoding is when a provider bills you for a more complex service than you actually received. It's illegal, but it happens every day.
       </p>
+      <p class="mb-4 text-gray-700">
+        <strong>Example:</strong> You go to the ER for a sore throat (Level 1 or 2). But the hospital bills you for a Level 5 Emergency (CPT 99285), which is for life-threatening conditions like a heart attack.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">Top 5 CPT Codes to Watch Out For</h2>
+      <div class="space-y-4 mb-8">
+        <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <h3 class="font-bold text-gray-900">99281 - 99285 (ER Visits)</h3>
+          <p class="text-sm text-gray-600">The higher the last digit, the more expensive. If you walked in and out, it shouldn't be a 99285.</p>
+        </div>
+        <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <h3 class="font-bold text-gray-900">80053 (Comprehensive Metabolic Panel)</h3>
+          <p class="text-sm text-gray-600">Watch for "Unbundling" here. They shouldn't bill for individual tests (like Glucose or Calcium) if they already billed 80053.</p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">How to Check Your Codes</h2>
+      <p class="mb-4 text-gray-700">
+        1. Get your Itemized Bill.
+      </p>
+      <p class="mb-4 text-gray-700">
+        2. Google the 5-digit code + "CMS description".
+      </p>
+      <p class="mb-4 text-gray-700">
+        3. Compare the description to your medical records.
+      </p>
+
+      <div class="mt-8 p-6 bg-indigo-50 border border-indigo-100 rounded-xl text-center">
+        <h3 class="text-xl font-bold text-indigo-900 mb-2">Too Complicated?</h3>
+        <p class="text-indigo-700 mb-6">Our AI scanner reads these codes instantly and flags them if they look suspicious.</p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg text-lg">
+           Scan My Codes
+        </button>
+      </div>
     `
   },
   {
@@ -360,7 +610,7 @@ Sincerely,
     title: "Surprise Medical Bills are Illegal: The No Surprises Act Guide",
     excerpt: "Received a surprise bill? It might be illegal. Learn how to use the No Surprises Act to wipe out out-of-network charges.",
     date: "2025-12-25",
-    readingTime: "6 min read",
+    readingTime: "10 min read",
     category: "Legal Rights",
     imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop", 
     content: `
@@ -377,7 +627,30 @@ Sincerely,
             <p class="text-sm text-gray-600">You cannot be charged out-of-network rates for ER visits, even if the hospital is out-of-network.</p>
           </div>
         </div>
+        <div class="flex p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div class="text-3xl mr-4">🏥</div>
+          <div>
+            <h3 class="font-bold text-gray-900">Non-Emergency Care at In-Network Facilities</h3>
+            <p class="text-sm text-gray-600">If you go to an in-network hospital, the doctors there (anesthesiologists, radiologists) cannot surprise you with out-of-network bills unless you signed a specific consent form.</p>
+          </div>
+        </div>
       </div>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">What to Do If You Get a Surprise Bill</h2>
+      <p class="mb-4 text-gray-700">
+        1. <strong>Do Not Pay It.</strong> Paying might be seen as accepting the charge.
+      </p>
+      <p class="mb-4 text-gray-700">
+        2. <strong>Call the Provider.</strong> Say: "This bill appears to violate the No Surprises Act. I am disputing it."
+      </p>
+      <p class="mb-4 text-gray-700">
+        3. <strong>File a Complaint.</strong> If they don't fix it, file a complaint at <a href="https://www.cms.gov/nosurprises" class="text-primary hover:underline">cms.gov/nosurprises</a> or call 1-800-985-3059.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4 text-gray-900">The "Good Faith Estimate" Rule</h2>
+      <p class="mb-4 text-gray-700">
+        If you are uninsured or paying cash, providers MUST give you a "Good Faith Estimate" of costs before treatment. If the final bill is more than $400 higher than the estimate, you can dispute it.
+      </p>
     `
   }
 ];
