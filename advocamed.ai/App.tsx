@@ -148,8 +148,8 @@ const Home = () => {
     <>
       {step !== 'RESULTS' && (
         <SEO 
-          title="Medical Bill Dispute Tool & Charity Care Finder"
-          description="Stop overpaying for medical bills. AdvocaMed uses AI to find billing errors, upcoding, and unbundled charges instantly."
+          title="Decipher & Dispute Your Medical Bills with AI — HIPAA Compliant"
+          description="Don't pay the sticker price. Our AI scans CPT codes for upcoding and unbundling errors instantly. Access verified Charity Care policies for 5,000+ US hospitals."
           canonical="/"
         />
       )}
@@ -235,6 +235,14 @@ const App: React.FC = () => {
                     </div>
                 </div>
                 
+                {/* Data Power Attribution */}
+                <div className="mt-8 text-center">
+                    <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium flex items-center justify-center gap-2">
+                        <span className="material-symbols-outlined text-sm">verified</span>
+                        Data Powered by CMS.gov & IRS 501(r) Guidelines.
+                    </p>
+                </div>
+
                 {/* Legal Disclaimer for YMYL */}
                 <div className="mt-8 border-t border-border-light dark:border-border-dark pt-6">
                      <p className="text-[10px] text-text-secondary-light dark:text-text-secondary-dark leading-relaxed text-center max-w-4xl mx-auto">
