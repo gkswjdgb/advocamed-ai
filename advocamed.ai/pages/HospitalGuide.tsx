@@ -48,8 +48,17 @@ const HospitalGuide: React.FC = () => {
   const policySource = hospitalData.policy_note || "Standard Federal Guidelines (IRS 501r)";
   const state = hospitalData.state || "your state";
   
-  const seoTitle = `Get 100% Bill Forgiveness at ${hospitalName}: ${currentYear} Income Limits`;
+  const seoTitle = `${hospitalName} Financial Assistance & Charity Care Guide (2026 Updated)`;
   const seoDescription = `Don't pay your ${hospitalName} bill yet. If you earn less than ${fplThreshold}% of the poverty line, you likely qualify for $0 bills. Check your eligibility instantly.`;
+
+  // 2025/2026 Projected Federal Poverty Guidelines (Approximate)
+  const baseFPL = 15060;
+  const perPerson = 5380;
+
+  const calculateLimit = (size: number, percentage: number) => {
+    const limit = (baseFPL + (perPerson * (size - 1))) * (percentage / 100);
+    return limit.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -176,27 +185,53 @@ const HospitalGuide: React.FC = () => {
 
         <div className="max-w-3xl mx-auto px-4 py-12">
             
-            {/* Quick Stats Grid */}
-            <div className="bg-white dark:bg-surface-dark border-2 border-border-light dark:border-border-dark rounded-2xl overflow-hidden shadow-sm mb-12">
-                <div className="bg-gray-50 dark:bg-gray-800 px-6 py-3 border-b border-border-light dark:border-border-dark flex justify-between items-center">
-                    <span className="text-xs font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-tighter">Policy Snapshot</span>
-                    <span className="text-xs text-primary font-mono truncate ml-4">{policySource}</span>
+            {/* Quick Eligibility Check Table */}
+            <div className="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl overflow-hidden shadow-sm mb-12">
+                <div className="bg-primary/5 px-6 py-4 border-b border-border-light dark:border-border-dark flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div>
+                        <h2 className="text-lg font-bold text-text-main-light dark:text-text-main-dark flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">calculate</span>
+                            Quick Eligibility Check (2026 Estimates)
+                        </h2>
+                        <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">Based on {hospitalName}'s policy limit of {fplThreshold}% FPL.</p>
+                    </div>
+                    <span className="text-xs font-mono bg-white dark:bg-gray-800 px-2 py-1 rounded border border-gray-200 dark:border-gray-700 text-text-secondary-light dark:text-text-secondary-dark">
+                        Source: {policySource}
+                    </span>
                 </div>
-                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark uppercase font-bold mb-1">Max Income for Discount</p>
-                        <p className="text-3xl font-black text-text-main-light dark:text-text-main-dark">{fplThreshold}% FPL</p>
-                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-2">
-                            Households earning less than {fplThreshold}% of the Federal Poverty Level likely qualify for a 100% write-off or significant discount.
-                        </p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark uppercase font-bold mb-1">Application Deadline</p>
-                        <p className="text-3xl font-black text-text-main-light dark:text-text-main-dark">{deadline} Days</p>
-                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-2">
-                            You have up to {deadline} days from the first billing statement to apply. Collections must pause during the application process.
-                        </p>
-                    </div>
+                
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                        <thead className="text-xs text-text-secondary-light dark:text-text-secondary-dark uppercase bg-gray-50 dark:bg-gray-800/50 border-b border-border-light dark:border-border-dark">
+                            <tr>
+                                <th className="px-6 py-3 font-bold">Household Size</th>
+                                <th className="px-6 py-3 font-bold text-green-700 dark:text-green-400">
+                                    Likely $0 Bill <br/>
+                                    <span className="text-[10px] font-normal opacity-80">(Under {fplThreshold}% FPL)</span>
+                                </th>
+                                <th className="px-6 py-3 font-bold text-blue-700 dark:text-blue-400">
+                                    Partial Discount <br/>
+                                    <span className="text-[10px] font-normal opacity-80">(Est. up to 400% FPL)</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-border-light dark:divide-border-dark">
+                            {[1, 2, 3, 4, 5].map((size) => (
+                                <tr key={size} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                    <td className="px-6 py-4 font-medium text-text-main-light dark:text-text-main-dark">{size} Person{size > 1 ? 's' : ''}</td>
+                                    <td className="px-6 py-4 font-bold text-green-700 dark:text-green-400 bg-green-50/30 dark:bg-green-900/10">
+                                        {calculateLimit(size, fplThreshold)}
+                                    </td>
+                                    <td className="px-6 py-4 font-medium text-blue-700 dark:text-blue-400">
+                                        {calculateLimit(size, 400)}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/30 text-[10px] text-text-secondary-light dark:text-text-secondary-dark border-t border-border-light dark:border-border-dark">
+                    *Estimates based on Federal Poverty Guidelines. Actual eligibility depends on assets and medical necessity. "Partial Discount" is a common standard (400% FPL) but varies by hospital.
                 </div>
             </div>
 
