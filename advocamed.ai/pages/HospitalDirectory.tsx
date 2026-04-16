@@ -38,6 +38,10 @@ const HospitalDirectory: React.FC = () => {
         <div className="max-w-5xl mx-auto animate-fade-in-up">
           
           <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center space-x-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-bold mb-6 border border-green-200 dark:border-green-800 shadow-sm">
+                <span className="material-symbols-outlined text-sm">update</span>
+                <span>Database Updated Monthly • Last Update: {new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+            </div>
             <h1 className="text-3xl md:text-4xl font-extrabold text-text-main-light dark:text-text-main-dark mb-4">Hospital Policy Database</h1>
             <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark max-w-2xl mx-auto mb-8">
               Search over 5,000 US hospitals to find their charity care policies, income limits, and how to apply for forgiveness.
