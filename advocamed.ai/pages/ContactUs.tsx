@@ -16,14 +16,8 @@ export default function ContactUs() {
             <p className="text-text-secondary-light dark:text-text-secondary-dark mt-2">Have questions about your medical bill analysis? We're here to help.</p>
             
             <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg inline-block text-left">
-                <p className="text-sm text-blue-800 dark:text-blue-300 mb-2">
-                    <strong>Email Support:</strong> hello@advocamed.ai
-                </p>
                 <p className="text-sm text-blue-800 dark:text-blue-300">
-                    <strong>Mailing Address:</strong><br/>
-                    AdvocaMed Legal Compliance Dept.<br/>
-                    548 Market St, PMB 72855<br/>
-                    San Francisco, CA 94104
+                    <strong>Email Support:</strong> hello@advocamed.ai
                 </p>
             </div>
           </div>
