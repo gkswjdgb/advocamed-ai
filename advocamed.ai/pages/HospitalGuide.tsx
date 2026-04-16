@@ -148,7 +148,7 @@ const HospitalGuide: React.FC = () => {
         <div className="bg-gradient-to-b from-blue-50 to-white dark:from-surface-dark dark:to-background-dark py-12 md:py-16 border-b border-border-light dark:border-border-dark">
             <div className="max-w-4xl mx-auto px-4 text-center">
                 <span className="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-[10px] font-bold mb-4 uppercase tracking-widest">
-                    Verified {currentYear} Policy Data 🛡️
+                    Verified {new Date().toLocaleString('default', { month: 'long', year: 'numeric' })} Policy Data 🛡️
                 </span>
                 <h1 className="text-3xl md:text-5xl font-extrabold text-text-main-light dark:text-text-main-dark mb-6 leading-tight">
                     {hospitalName}<br />
@@ -168,12 +168,17 @@ const HospitalGuide: React.FC = () => {
                       </a>
                     )}
                     
-                    {/* Official Site Button */}
+                    {/* Official Site Button with 404 Fallback */}
                     {hospitalData?.financial_aid_url && (
-                      <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-base font-bold rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 group w-full sm:w-auto">
-                        Official Website
-                        <span className="material-symbols-outlined ml-2 text-sm group-hover:translate-x-1 transition-transform">open_in_new</span>
-                      </a>
+                      <div className="flex flex-col items-center w-full sm:w-auto">
+                        <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-base font-bold rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 group w-full">
+                          Official Website
+                          <span className="material-symbols-outlined ml-2 text-sm group-hover:translate-x-1 transition-transform">open_in_new</span>
+                        </a>
+                        <a href={`https://www.google.com/search?q=${encodeURIComponent(hospitalName + ' financial assistance charity care policy')}`} target="_blank" rel="noreferrer" className="mt-2 text-xs text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                          Link broken? Search Google instead
+                        </a>
+                      </div>
                     )}
                     
                      <Link to="/?step=HERO" className="inline-flex items-center justify-center px-8 py-4 border border-border-light dark:border-border-dark text-base font-medium rounded-xl text-text-main-light dark:text-text-main-dark bg-white dark:bg-surface-dark hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm w-full sm:w-auto">
