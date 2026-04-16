@@ -98,7 +98,21 @@ const BlogPost: React.FC = () => {
           </div>
         )}
 
-        <article className="prose prose-lg prose-indigo mx-auto text-text-secondary-light dark:text-text-secondary-dark">
+        <article className="prose prose-lg prose-indigo mx-auto text-text-secondary-light dark:text-text-secondary-dark relative">
+          
+          {/* Sticky Check My Bill Now Button */}
+          <div className="hidden lg:block absolute -right-48 top-0 h-full">
+            <div className="sticky top-24 w-40">
+              <button 
+                  onClick={() => navigate('/?step=HERO')}
+                  className="w-full bg-primary hover:bg-primary-hover text-white px-4 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm flex flex-col items-center gap-2"
+              >
+                  <span className="material-symbols-outlined text-2xl">document_scanner</span>
+                  Check My Bill Now
+              </button>
+            </div>
+          </div>
+
           <div className="text-center mb-10 border-b border-border-light dark:border-border-dark pb-8">
              <div className="flex justify-center space-x-2 mb-4">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
