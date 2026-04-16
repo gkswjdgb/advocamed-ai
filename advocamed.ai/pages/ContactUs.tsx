@@ -13,49 +13,16 @@ export default function ContactUs() {
         <div className="max-w-lg mx-auto bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 animate-fade-in-up">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-text-main-light dark:text-text-main-dark">Contact Us</h1>
-            <p className="text-text-secondary-light dark:text-text-secondary-dark mt-2">Have questions about your medical bill analysis? We're here to help.</p>
+            <p className="text-text-secondary-light dark:text-text-secondary-dark mt-2 mb-8">Have questions about your medical bill analysis? We're here to help.</p>
             
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg inline-block text-left">
-                <p className="text-sm text-blue-800 dark:text-blue-300">
-                    <strong>Email Support:</strong> hello@advocamed.ai
-                </p>
-            </div>
-          </div>
-
-          <form action="https://formspree.io/f/xpqzpbrz" method="POST" className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-text-main-light dark:text-text-main-dark mb-1">
-                Your email
-              </label>
-              <input 
-                type="email" 
-                name="email" 
-                required
-                placeholder="name@example.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main-light dark:text-text-main-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-text-main-light dark:text-text-main-dark mb-1">
-                Your message
-              </label>
-              <textarea 
-                name="message" 
-                required
-                rows={5}
-                placeholder="How can we assist you today?"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main-light dark:text-text-main-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-              ></textarea>
-            </div>
-
-            <button 
-              type="submit"
-              className="w-full bg-primary hover:bg-primaryHover text-white font-bold py-4 rounded-xl shadow-lg transition-colors"
+            <a 
+              href="mailto:hello@advocamed.ai"
+              className="inline-flex items-center justify-center w-full bg-primary hover:bg-primaryHover text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-transform hover:-translate-y-1"
             >
-              Send Message
-            </button>
-          </form>
+              <span className="material-symbols-outlined mr-2">mail</span>
+              Send us an Email
+            </a>
+          </div>
 
           <p className="mt-6 text-center text-xs text-text-secondary-light dark:text-text-secondary-dark">
             *We typically respond within 48 business hours.
