@@ -17,7 +17,7 @@ import { demoAnalysisResult } from './data/demoData';
 import { AnalysisResult } from './types';
 
 // Lazy Load Pages
-const BlogPage = React.lazy(() => import('./pages/BlogList')); 
+const BlogPage = React.lazy(() => import('./components/BlogList').then(module => ({ default: module.BlogList })));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const HospitalGuide = React.lazy(() => import('./pages/HospitalGuide'));
 const HospitalDirectory = React.lazy(() => import('./pages/HospitalDirectory'));
