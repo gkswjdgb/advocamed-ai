@@ -5,6 +5,13 @@ import SEO from '../components/SEO';
 
 export const BlogList: React.FC = () => {
   const [imageError, setImageError] = useState<Record<string, boolean>>({});
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  const categories = ['All', ...Array.from(new Set(blogPosts.map(post => post.category)))];
+
+  const filteredPosts = activeCategory === 'All' 
+    ? blogPosts 
+    : blogPosts.filter(post => post.category === activeCategory);
 
   const handleImageError = (id: string) => {
     setImageError(prev => ({ ...prev, [id]: true }));
@@ -21,7 +28,7 @@ export const BlogList: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           
           {/* Header */}
-          <div className="text-center mb-16 animate-fade-in-up">
+          <div className="text-center mb-10 animate-fade-in-up">
             <span className="text-primary font-bold text-sm uppercase tracking-widest mb-2 block">Resource Center</span>
             <h1 className="text-4xl md:text-5xl font-extrabold text-text-main-light dark:text-text-main-dark mb-6 tracking-tight">
               Master Your Medical Bills
@@ -31,9 +38,26 @@ export const BlogList: React.FC = () => {
             </p>
           </div>
 
+          {/* Category Filter */}
+          <div className="flex flex-wrap justify-center gap-2 mb-12 animate-fade-in-up">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-bold transition-colors shadow-sm ${
+                  activeCategory === category 
+                    ? 'bg-primary text-white border border-primary' 
+                    : 'bg-white dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark border border-border-light dark:border-border-dark hover:border-primary/50 hover:text-primary'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
           {/* Featured / Grid */}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {blogPosts.map((post, index) => (
+            {filteredPosts.map((post, index) => (
               <Link 
                 key={post.id} 
                 to={`/blog/${post.id}`} 
