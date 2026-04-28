@@ -23,6 +23,7 @@ const HospitalGuide = React.lazy(() => import('./pages/HospitalGuide'));
 const HospitalDirectory = React.lazy(() => import('./pages/HospitalDirectory'));
 const ContactUs = React.lazy(() => import('./pages/ContactUs'));
 const AboutUs = React.lazy(() => import('./pages/AboutUs'));
+const Disclaimer = React.lazy(() => import('./pages/Disclaimer'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 // Loading Fallback Component
@@ -68,7 +69,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex gap-8 items-center">
+          <div className="hidden md:flex gap-6 items-center">
               <button onClick={() => handleScrollToSection('how-it-works')} className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark bg-transparent border-none cursor-pointer">
                 How it Works
               </button>
@@ -77,6 +78,15 @@ const Navbar = () => {
               </Link>
               <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
                 About Us
+              </Link>
+              <Link to="/contact-us" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                Contact
+              </Link>
+              <Link to="/privacy-policy" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                Privacy
+              </Link>
+              <Link to="/disclaimer" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                Disclaimer
               </Link>
           </div>
 
@@ -212,6 +222,7 @@ const App: React.FC = () => {
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/disclaimer" element={<Disclaimer />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
@@ -245,8 +256,11 @@ const App: React.FC = () => {
 
                 {/* Legal Disclaimer for YMYL */}
                 <div className="mt-8 border-t border-border-light dark:border-border-dark pt-6">
+                     <p className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed text-center max-w-4xl mx-auto mb-3 font-semibold">
+                        MEDICAL DISCLAIMER: The information provided on this site cannot replace professional medical diagnosis, treatment, or advice.
+                     </p>
                      <p className="text-[10px] text-text-secondary-light dark:text-text-secondary-dark leading-relaxed text-center max-w-4xl mx-auto">
-                        <strong>DISCLAIMER:</strong> AdvocaMed.ai is an automated analysis tool designed for informational and educational purposes only. We are not a law firm, medical provider, or insurance entity. The "potential savings," "errors," and "charity care eligibility" detected by our AI are estimates based on national datasets (CMS) and public hospital policies. They do not constitute legal or medical advice. Results may vary based on your specific insurance plan and state laws. Always verify CPT codes and billing details with a certified professional or your healthcare provider before taking financial action.
+                        AdvocaMed.ai is an automated analysis tool designed for informational and educational purposes only. We are not a law firm, medical provider, or insurance entity. The "potential savings," "errors," and "charity care eligibility" detected by our AI are estimates based on national datasets (CMS) and public hospital policies. They do not constitute legal or medical advice. Results may vary based on your specific insurance plan and state laws. Always verify CPT codes and billing details with a certified professional or your healthcare provider before taking financial action. By using this site, you agree to our <Link to="/disclaimer" className="underline hover:text-primary">Medical & Legal Disclaimer</Link>.
                      </p>
                 </div>
             </div>
