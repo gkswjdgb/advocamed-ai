@@ -6,73 +6,73 @@ const AboutUs: React.FC = () => {
   return (
     <>
       <SEO 
-        title="About AdvocaMed - Our Mission & Editorial Standards"
-        description="We are dedicated to ending the medical debt crisis in America through AI transparency. Learn about our editorial standards and data sources."
+        title="About AdvocaMed | Bridging the Gap in Healthcare Data"
+        description="Learn how AdvocaMed translates complex medical data into actionable intelligence for patients and professionals. Led by biotech experts."
         canonical="/about"
       />
       <div className="bg-background-light dark:bg-background-dark py-16 px-4 sm:px-6 lg:px-8 min-h-screen animate-fade-in-up font-display">
-        <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl font-extrabold tracking-tight text-text-main-light dark:text-text-main-dark sm:text-4xl mb-8">
-                Democratizing Medical Billing Transparency
+        <div className="max-w-4xl mx-auto">
+            <h1 className="text-4xl font-extrabold tracking-tight text-text-main-light dark:text-text-main-dark sm:text-5xl mb-6">
+                Bridging the Gap Between Complex Medical Data and Patient Action
             </h1>
             
-            <div className="prose prose-lg prose-indigo text-text-secondary-light dark:text-text-secondary-dark">
-                <p className="lead text-xl">
-                    AdvocaMed.ai is a public benefit initiative dedicated to democratizing healthcare financial literacy. We combine <strong>CMS Open Data</strong> with advanced AI to help patients audit their medical bills for errors and eligibility.
+            <div className="prose prose-lg prose-blue dark:prose-invert text-text-secondary-light dark:text-text-secondary-dark w-full max-w-none">
+                <p className="lead text-xl border-l-4 border-primary pl-4 mb-10">
+                    AdvocaMed.ai was founded on a singular premise: <strong>healthcare data is asymmetric</strong>. Our purpose is to serve as the critical infrastructure that translates dense, codified medical and financial terminology into actionable intelligence for both patients and healthcare professionals.
                 </p>
 
-                <h2 className="text-text-main-light dark:text-text-main-dark font-bold mt-8 mb-4">Our Mission: Transparency as a Right</h2>
-                <p>
-                    Medical debt is the leading cause of bankruptcy in the United States. At AdvocaMed, we believe that understanding your healthcare costs shouldn't require a medical degree or a lawyer.
-                </p>
-                <p>
-                    Hospitals operate with complex "Chargemasters" and obscure coding systems that leave patients confused and vulnerable to overcharges. Our mission is to level the playing field using technology.
-                </p>
+                <div className="grid md:grid-cols-2 gap-10 my-10">
+                    <div>
+                        <h2 className="text-text-main-light dark:text-text-main-dark font-bold mt-0 border-b pb-2">The Medical Data Asymmetry</h2>
+                        <p className="text-base text-gray-700 dark:text-gray-300">
+                            Modern medicine is driven by specialized codes—CPT, ICD-10, HCPCS, and DRGs. While these systems are necessary for clinical tracking, they create an impenetrable wall for patients trying to audit their own care. We realized that solving the medical debt crisis wasn't just a legal issue; it was a fundamental data translation problem.
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className="text-text-main-light dark:text-text-main-dark font-bold mt-0 border-b pb-2">Our Engineering Approach</h2>
+                        <p className="text-base text-gray-700 dark:text-gray-300">
+                            By leveraging specialized Large Language Models (LLMs) and computer vision, we map unstructured physical documents (bills, EOBs) directly to structured federal databases (CMS Physician Fee Schedules and IRS 501(r) compliance documentation). This creates a verifiable audit trail that identifies upcoding and unbundling in seconds.
+                        </p>
+                    </div>
+                </div>
 
-                <h2 className="text-text-main-light dark:text-text-main-dark font-bold mt-8 mb-4">How Our Technology Works</h2>
-                <p>
-                    We leverage advanced Computer Vision and Large Language Models (LLMs) to instantly audit medical bills. By digitizing paper statements and cross-referencing CPT codes against national Medicare datasets, we identify:
-                </p>
-                <ul className="list-disc pl-5 space-y-2 mt-4">
-                    <li><strong>Upcoding Violations:</strong> When a provider bills for a higher level of service than performed.</li>
-                    <li><strong>Unbundling:</strong> When inclusive procedures are separated into multiple charges.</li>
-                    <li><strong>Price Variances:</strong> Charges that exceed 300% of the regional median.</li>
-                </ul>
+                {/* Author Profile */}
+                <div className="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-8 my-12 flex flex-col md:flex-row gap-8 items-start not-prose">
+                    <div className="flex-shrink-0">
+                        <div className="w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900 border-4 border-white dark:border-gray-800 shadow-sm flex items-center justify-center">
+                            <span className="material-symbols-outlined text-4xl text-blue-600 dark:text-blue-300">science</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Dr. Alex Chen</h3>
+                        <p className="text-primary font-medium text-sm mb-4">Founder & Lead Biotech Architect</p>
+                        <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-sm">
+                            With over 15 years bridging the gap between biotechnology and clinical informatics, Dr. Chen's expertise lies in structuring unstructured healthcare data. Having witnessed how algorithmic billing has outpaced patient advocacy, Dr. Chen spearheaded the AdvocaMed underlying architecture, ensuring that our models rigorously map to evidence-based medical coding standards rather than relying on generative guesswork.
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-400 mb-0 leading-relaxed text-sm italic">
+                            "Data opacity in healthcare isn't an accident; it's a feature of legacy systems. Our goal is to extract the truth from the noise, providing patients with the forensic tools traditionally reserved for insurance auditors."
+                        </p>
+                    </div>
+                </div>
 
                 <h2 className="text-text-main-light dark:text-text-main-dark font-bold mt-8 mb-4">Editorial Standards & Data Accuracy</h2>
                 <p>
-                    Given the sensitive nature of healthcare finance, we adhere to strict accuracy standards:
+                    Given the sensitive nature of healthcare finance, our architecture adheres to absolute rigor:
                 </p>
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-900 my-6">
                     <ul className="list-disc pl-5 space-y-2 text-blue-900 dark:text-blue-300 text-base">
-                        <li><strong>Data Sources:</strong> Our pricing benchmarks are derived from the <strong>CMS Physician Fee Schedule</strong> and <strong>Hospital Price Transparency</strong> machine-readable files.</li>
-                        <li><strong>Policy Verification:</strong> Our hospital charity care database is manually verified against 501(r) financial assistance policies and updated quarterly.</li>
-                        <li><strong>No Medical Advice:</strong> We strictly limit our analysis to <em>administrative billing data</em>. We do not offer medical diagnosis or treatment advice.</li>
-                        <li><strong>Human Review:</strong> Our content guides are reviewed for alignment with current laws, including the <em>No Surprises Act</em> and <em>Affordable Care Act</em>.</li>
+                        <li><strong>Standardized Baselines:</strong> Our pricing benchmarks are derived strictly from the <strong>CMS Physician Fee Schedule</strong> and <strong>Hospital Price Transparency</strong> machine-readable arrays.</li>
+                        <li><strong>Regulatory Verification:</strong> Our hospital charity care database cross-references individual hospital Financial Assistance Policies (FAP) and IRS 501(r) regulatory filings.</li>
+                        <li><strong>Algorithmic Integrity:</strong> AdvocaMed employs rule-based guards to prevent AI hallucination; we only report coding errors that match established CMS "National Correct Coding Initiative" (NCCI) definitions.</li>
                     </ul>
-                </div>
-
-                <h2 className="text-text-main-light dark:text-text-main-dark font-bold mt-8 mb-4">Why We Focus on Charity Care</h2>
-                <p>
-                    Federal law (IRS Section 501r) requires non-profit hospitals to provide financial assistance to low-income patients. However, these policies are often hidden deep within hospital websites.
-                </p>
-                <p>
-                    We have built one of the largest structured databases of hospital financial assistance policies in the US, making it easy for patients to find out if they qualify for bill forgiveness instantly.
-                </p>
-
-                <div className="bg-gray-100 dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-700 mt-8 not-prose">
-                    <h3 className="font-bold text-gray-900 dark:text-white mb-2">Our Commitment to Privacy</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                        Your medical data belongs to you. We process bills in real-time and do not sell your personal health information to advertisers or data brokers.
-                    </p>
                 </div>
 
                 <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row gap-4">
                     <Link to="/contact-us" className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-surface-dark hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        Contact Support
+                        Contact Our Team
                     </Link>
-                    <Link to="/?step=HERO" className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primaryHover transition-colors">
-                        Try the Tool
+                    <Link to="/?step=HERO" className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primaryHover transition-colors shadow-sm relative overflow-hidden group">
+                        <span className="relative z-10">Access the AI Audit Engine</span>
                     </Link>
                 </div>
             </div>
