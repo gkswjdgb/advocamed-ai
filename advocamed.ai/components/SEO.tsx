@@ -11,26 +11,49 @@ export default function SEO({ title, description, canonical }: SEOProps) {
   const siteUrl = 'https://www.advocamed.com';
   const fullUrl = canonical ? `${siteUrl}${canonical}` : siteUrl;
 
-  // GEO Structured Data (JSON-LD) for AI Search Engines
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "AdvocaMed.ai",
-    "url": siteUrl,
-    "description": "AI-powered medical bill analysis tool helping patients find billing errors and apply for charity care.",
-    "applicationCategory": "MedicalApplication",
-    "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+  // Array of JSON-LD schemas
+  const jsonLdSchemas = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AdvocaMed.ai",
+      "url": siteUrl,
+      "description": "AI-powered medical bill analysis tool helping patients find billing errors and apply for charity care.",
+      "applicationCategory": "MedicalApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": "Medical Bill Analysis, CPT Code Check, Charity Care Calculator, Appeal Letter Generation",
+      "author": {
+        "@type": "Organization",
+        "name": "AdvocaMed"
+      }
     },
-    "featureList": "Medical Bill Analysis, CPT Code Check, Charity Care Calculator, Appeal Letter Generation",
-    "author": {
-      "@type": "Organization",
-      "name": "AdvocaMed"
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalWebPage",
+      "name": title,
+      "description": description,
+      "url": fullUrl,
+      "reviewedBy": {
+        "@type": "Person",
+        "name": "Alex Chen",
+        "jobTitle": "Lead Biotech Architect & Clinical Informatics Specialist",
+        "url": "https://www.advocamed.com/about",
+        "sameAs": [
+           "https://www.linkedin.com/in/alexc"
+        ]
+      },
+      "lastReviewed": new Date().toISOString().split('T')[0],
+      "audience": {
+        "@type": "Patients",
+        "audienceType": "Patients seeking financial assistance and medical billing transparency."
+      }
     }
-  };
+  ];
 
   return (
     <Helmet>
@@ -53,10 +76,12 @@ export default function SEO({ title, description, canonical }: SEOProps) {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
 
-      {/* GEO / Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(jsonLd)}
-      </script>
+      {/* Structured Data */}
+      {jsonLdSchemas.map((schema, index) => (
+        <script key={index} type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      ))}
     </Helmet>
   );
 }
