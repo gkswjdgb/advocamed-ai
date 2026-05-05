@@ -229,7 +229,7 @@ const App: React.FC = () => {
           </main>
 
           {/* Footer */}
-          <footer className="bg-background-light dark:bg-background-dark py-12 border-t border-border-light dark:border-border-dark mt-auto">
+          <footer className="bg-background-light dark:bg-background-dark py-12 pb-20 border-t border-border-light dark:border-border-dark mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8">
@@ -267,6 +267,15 @@ const App: React.FC = () => {
           </footer>
 
           <CookieBanner />
+
+          {/* Sticky Medical Disclaimer for YMYL */}
+          <div className="fixed bottom-0 left-0 right-0 z-40 bg-gray-900 border-t border-gray-800 text-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+             <div className="max-w-7xl mx-auto px-4 py-2 sm:px-6 lg:px-8 flex items-center justify-center text-center">
+                 <p className="text-[10px] sm:text-xs text-gray-300 font-medium">
+                    <span className="font-bold text-red-400">MEDICAL & FINANCIAL DISCLAIMER:</span> Advocamed.com is an independent information provider and is not affiliated with the hospitals mentioned. Information is for educational purposes and cannot replace professional medical diagnosis, treatment, or advice. <Link to="/disclaimer" className="text-blue-400 hover:text-blue-300 underline whitespace-nowrap">Learn more</Link>.
+                 </p>
+             </div>
+          </div>
         </div>
       </BrowserRouter>
     </HelmetProvider>
