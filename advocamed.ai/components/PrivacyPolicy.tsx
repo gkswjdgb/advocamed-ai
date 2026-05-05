@@ -40,13 +40,13 @@ export default function PrivacyPolicy() {
 
           <hr className="my-8 border-gray-200" />
 
-          <h2 className="text-xl font-bold mt-8 mb-4">4. Compliance with US State Privacy Laws</h2>
+          <h2 className="text-xl font-bold mt-8 mb-4">4. GDPR & US State Privacy Laws Compliance</h2>
           <p>
-            In accordance with recent legislative updates (2025-2026), we recognize and support the privacy rights of residents in the following states:
+            In accordance with the General Data Protection Regulation (GDPR) for our EU/UK users, and recent legislative updates (2025-2026) for US state residents (CCPA/CPRA, CPA, VCDPA, etc.), we recognize and support your right to privacy, access, correction, and deletion of personal data.
           </p>
 
           <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 my-4 text-sm">
-            <h4 className="font-bold text-gray-900 mb-2">Effective Dates & Provisions:</h4>
+            <h4 className="font-bold text-gray-900 mb-2">Your Rights (GDPR & US State Laws):</h4>
             <ul className="list-disc pl-5 space-y-2">
                 <li><strong>Delaware & Oregon (Effective Nov 17, 2025):</strong> We honor Global Privacy Control (GPC) signals. If a GPC signal is detected, we engage Restricted Data Processing (RDP) mode automatically to limit data use.</li>
                 <li><strong>Tennessee & Minnesota (Effective July 1, 2025):</strong> We comply with the Consumer Data Protection Acts of these states.</li>
