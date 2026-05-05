@@ -70,6 +70,8 @@ export interface Hospital {
   financial_aid_url?: string;
   application_url?: string; // Direct link to PDF or Form
   policy_note?: string; 
+  phone?: string;
+  email?: string;
 }
 
 export enum AppStep {
