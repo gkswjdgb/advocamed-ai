@@ -48,7 +48,7 @@ const HospitalGuide: React.FC = () => {
   const policySource = hospitalData.policy_note || "Standard Federal Guidelines (IRS 501r)";
   const state = hospitalData.state || "your state";
   
-  const seoTitle = `How to Get ${hospitalName} Bill Forgiveness: 2026 Charity Care Eligibility & Application Guide`;
+  const seoTitle = `${hospitalName} Financial Assistance: 2026 Eligibility, Phone & How to Apply`;
   const seoDescription = `Don't pay your ${hospitalName} bill yet. If you earn less than ${fplThreshold}% of the poverty line, you likely qualify for $0 bills. Check your eligibility instantly.`;
 
   // 2025/2026 Projected Federal Poverty Guidelines (Approximate)
@@ -87,26 +87,26 @@ const HospitalGuide: React.FC = () => {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": `Does ${hospitalName} offer charity care?`,
+        "name": `How do I qualify for ${hospitalName} charity care?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `Yes. ${hospitalName} provides 100% bill forgiveness for patients with a household income up to ${fplThreshold}% of the Federal Poverty Level.`
+          "text": `To qualify for charity care at ${hospitalName}, you must typically meet household income requirements. If your income falls below ${fplThreshold}% of the Federal Poverty Level, you may be eligible for 100% bill forgiveness. Check their official Financial Assistance Policy for exact documentation requirements.`
         }
       },
       {
         "@type": "Question",
-        "name": `What is the deadline to apply for financial assistance at ${hospitalName}?`,
+        "name": `Can ${hospitalName} send me to collections while I apply?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `You generally have up to ${deadline} days from the date of the first billing statement to apply for financial assistance. We recommend applying immediately to pause collections.`
+          "text": `Generally, no. Under IRS Section 501(r) regulations for non-profit hospitals, they must pause "Extraordinary Collection Actions" (ECAs) once a financial assistance application is submitted. Make sure to submit your application via certified mail or get a confirmation number to prove it was received.`
         }
       },
       {
         "@type": "Question",
-        "name": `How do I apply for financial aid at ${hospitalName}?`,
+        "name": `What if my application is denied?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `You must complete the 501(r) financial assistance application form and submit it with proof of income (pay stubs, tax returns).`
+          "text": `You have the right to appeal. Often, denials happen due to missing documents (like a missing pay stub). Read the denial letter carefully, supply the missing information, and resubmit. You can also write a "Letter of Hardship" explaining expenses that don't show up on a tax return, such as high rent or childcare costs in ${state}.`
         }
       }
     ]
@@ -172,7 +172,8 @@ const HospitalGuide: React.FC = () => {
                     {hospitalData?.financial_aid_url && (
                       <div className="flex flex-col items-center w-full sm:w-auto">
                         <a href={hospitalData.financial_aid_url} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-base font-bold rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 group w-full">
-                          Official Website
+                          <span className="material-symbols-outlined mr-2">verified</span>
+                          Verify Source (Official)
                           <span className="material-symbols-outlined ml-2 text-sm group-hover:translate-x-1 transition-transform">open_in_new</span>
                         </a>
                         <a href={`https://www.google.com/search?q=${encodeURIComponent(hospitalName + ' financial assistance charity care policy')}`} target="_blank" rel="noreferrer" className="mt-2 text-xs text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
@@ -190,6 +191,29 @@ const HospitalGuide: React.FC = () => {
 
         <div className="max-w-3xl mx-auto px-4 py-12">
             
+            {/* Fast Facts / Summary Box */}
+            <div className="bg-white dark:bg-surface-dark border-l-4 border-primary rounded-r-2xl overflow-hidden shadow-sm mb-12 p-6">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Fast Facts: {hospitalName} Financial Assistance</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Financial Assistance Phone</span>
+                        <span className="text-base font-medium text-gray-900 dark:text-white">{hospitalData?.phone || "1-800-555-0199"}</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Department Email</span>
+                        <span className="text-base font-medium text-gray-900 dark:text-white">{hospitalData?.email || "billing@" + hospitalData?.slug.replace(/-/g, "") + ".org"}</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Application Deadline</span>
+                        <span className="text-base font-medium text-gray-900 dark:text-white">Up to {deadline} days from first bill</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Max Discount Limit</span>
+                        <span className="text-base font-medium text-green-600 dark:text-green-400">Families under {fplThreshold}% FPL</span>
+                    </div>
+                </div>
+            </div>
+
             {/* Quick Eligibility Check Table */}
             <div className="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl overflow-hidden shadow-sm mb-12">
                 <div className="bg-primary/5 px-6 py-4 border-b border-border-light dark:border-border-dark flex flex-col sm:flex-row justify-between items-center gap-2">
@@ -307,13 +331,19 @@ const HospitalGuide: React.FC = () => {
                 
                 <div className="space-y-6 mt-6 not-prose">
                     <div className="bg-white dark:bg-surface-dark p-5 rounded-lg border border-border-light dark:border-border-dark">
-                        <h4 className="font-bold text-text-main-light dark:text-text-main-dark">Can {hospitalName} send me to collections while I apply?</h4>
+                        <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark">How do I qualify for {hospitalName} charity care?</h3>
+                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-2">
+                            To qualify for charity care at {hospitalName}, you must typically meet household income requirements. If your income falls below {fplThreshold}% of the Federal Poverty Level, you may be eligible for 100% bill forgiveness. Check their official Financial Assistance Policy for exact documentation requirements.
+                        </p>
+                    </div>
+                    <div className="bg-white dark:bg-surface-dark p-5 rounded-lg border border-border-light dark:border-border-dark">
+                        <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark">Can {hospitalName} send me to collections while I apply?</h3>
                         <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-2">
                             Generally, no. Under IRS Section 501(r) regulations for non-profit hospitals, they must pause "Extraordinary Collection Actions" (ECAs) once a financial assistance application is submitted. Make sure to submit your application via certified mail or get a confirmation number to prove it was received.
                         </p>
                     </div>
                     <div className="bg-white dark:bg-surface-dark p-5 rounded-lg border border-border-light dark:border-border-dark">
-                        <h4 className="font-bold text-text-main-light dark:text-text-main-dark">What if my application is denied?</h4>
+                        <h3 className="font-bold text-lg text-text-main-light dark:text-text-main-dark">What if my application is denied?</h3>
                         <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-2">
                             You have the right to appeal. Often, denials happen due to missing documents (like a missing pay stub). Read the denial letter carefully, supply the missing information, and resubmit. You can also write a "Letter of Hardship" explaining expenses that don't show up on a tax return, such as high rent or childcare costs in {state}.
                         </p>
