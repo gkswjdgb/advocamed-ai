@@ -48,7 +48,7 @@ const HospitalGuide: React.FC = () => {
   const policySource = hospitalData.policy_note || "Standard Federal Guidelines (IRS 501r)";
   const state = hospitalData.state || "your state";
   
-  const seoTitle = `${hospitalName} Financial Assistance: 2026 Eligibility, Phone & How to Apply`;
+  const seoTitle = `${hospitalName} Financial Assistance 2026: Apply & Save on Bills.`;
   const seoDescription = `Don't pay your ${hospitalName} bill yet. If you earn less than ${fplThreshold}% of the poverty line, you likely qualify for $0 bills. Check your eligibility instantly.`;
 
   // 2025/2026 Projected Federal Poverty Guidelines (Approximate)
@@ -91,6 +91,14 @@ const HospitalGuide: React.FC = () => {
         "acceptedAnswer": {
           "@type": "Answer",
           "text": `To qualify for charity care at ${hospitalName}, you must typically meet household income requirements. If your income falls below ${fplThreshold}% of the Federal Poverty Level, you may be eligible for 100% bill forgiveness. Check their official Financial Assistance Policy for exact documentation requirements.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `What is the phone number for ${hospitalName} billing?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `You can contact the ${hospitalName} financial assistance and billing department at ${hospitalData?.phone || "1-800-555-0199"}.`
         }
       },
       {
