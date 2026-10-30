@@ -12,17 +12,85 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
     
-    <!-- Favicon -->
+    <!-- Favicon & Manifest -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="text/plain" title="LLMs Knowledge Base" href="/llms.txt" />
 
-    <meta name="description" content="AdvocaMed.ai: Free AI medical bill advocate. Detect billing errors, generate appeal letters, and find charity care eligibility under IRS 501(r)." />
-    <meta name="keywords" content="medical bill dispute, hospital bill error, charity care, medical coding errors, AI patient advocate" />
-    
-    <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_CODE_HERE" />
-    
-    <!-- Google AdSense Verification -->
+    <title>AdvocaMed - Hospital Charity Care & AI Medical Bill Advocate</title>
+    <meta name="description" content="Audit hospital bills for CPT coding errors, generate dispute letters, and check 2026 IRS 501(r) Charity Care eligibility at major US hospitals including NYP, Penn Medicine & Emory." />
+    <meta name="keywords" content="hospital charity care 2026, NYP financial assistance, Penn Medicine charity care, Emory charity care, medical bill dispute, CPT coding errors, IRS 501r financial assistance" />
+    <meta name="author" content="Dr. Alex Chen, AdvocaMed Editorial Team" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <!-- OpenGraph Social Cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AdvocaMed" />
+    <meta property="og:title" content="AdvocaMed - Hospital Charity Care & AI Medical Bill Advocate" />
+    <meta property="og:description" content="Audit hospital bills for CPT coding errors, generate dispute letters, and check 2026 IRS 501(r) Charity Care eligibility at major US hospitals." />
+    <meta property="og:url" content="https://www.advocamed.com/" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AdvocaMed - Hospital Charity Care & AI Medical Bill Advocate" />
+    <meta name="twitter:description" content="Audit hospital bills for CPT coding errors, generate dispute letters, and check 2026 IRS 501(r) Charity Care eligibility at major US hospitals." />
+
+    <!-- Google AdSense Verification & Direct Crawler Script (Required in <head> without setTimeout delay for AdSense Review) -->
     <meta name="google-adsense-account" content="ca-pub-9757952393788382">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382" crossorigin="anonymous"></script>
+
+    <!-- Google Analytics (Async) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NLMH7ERZZ3');
+    </script>
+
+    <!-- Static Schema.org Structured Data for Search & GEO Crawlers -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.advocamed.com/#organization",
+          "name": "AdvocaMed",
+          "url": "https://www.advocamed.com",
+          "logo": "https://www.advocamed.com/favicon.svg",
+          "description": "Independent patient advocacy and healthcare billing transparency platform providing CPT code auditing and IRS Section 501(r) hospital charity care guides.",
+          "founder": {
+            "@type": "Person",
+            "name": "Dr. Alex Chen",
+            "jobTitle": "Lead Biotech Architect & Clinical Informatics Specialist",
+            "url": "https://www.advocamed.com/about"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "support@advocamed.com",
+            "url": "https://www.advocamed.com/contact-us",
+            "areaServed": "US",
+            "availableLanguage": "English"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.advocamed.com/#website",
+          "url": "https://www.advocamed.com",
+          "name": "AdvocaMed",
+          "publisher": {
+            "@id": "https://www.advocamed.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.advocamed.com/hospitals?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
 
     <!-- PWA & Mobile Optimization -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -30,13 +98,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#1152d4">
 
-    <!-- Fonts: Added display=swap to prevent render blocking (LCP improvement) -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Noto+Sans:wght@300..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-    <title>AdvocaMed.ai - AI Medical Bill Advocate & Dispute Tool</title>
     
-    <!-- Tailwind CDN (Production Note: For max speed, a build step is recommended, but optimized here for current setup) -->
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
       tailwind.config = {
@@ -81,32 +147,6 @@
       img { max-width: 100%; height: auto; }
     </style>
 
-    <!-- Optimized Script Loader for Google Tools -->
-    <script>
-      // Defer loading of non-critical analytics to improve TBT (Total Blocking Time)
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-            // 1. Google Analytics
-            const gaScript = document.createElement('script');
-            gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-NLMH7ERZZ3';
-            gaScript.async = true;
-            document.head.appendChild(gaScript);
-
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-NLMH7ERZZ3');
-
-            // 2. Google AdSense (Lazy load)
-            const adsScript = document.createElement('script');
-            adsScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382';
-            adsScript.async = true;
-            adsScript.crossOrigin = "anonymous";
-            document.head.appendChild(adsScript);
-        }, 3000); // Wait 3 seconds after load to ensure LCP is finished
-      });
-    </script>
-
 <script type="importmap">
 {
   "imports": {
@@ -127,7 +167,35 @@
 </script>
   </head>
   <body class="bg-background-light dark:bg-background-dark font-display text-text-main-light dark:text-text-main-dark flex flex-col min-h-screen transition-colors duration-200">
-    <div id="root"></div>
+    <div id="root">
+      <!-- Semantic Static Pre-Render Content for Search, GEO & AdSense Crawlers -->
+      <header class="max-w-5xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold">AdvocaMed — 2026 US Hospital Charity Care Directory &amp; AI Medical Bill Audit</h1>
+        <p class="mt-2 text-gray-600">Audit itemized hospital bills (CPT/HCPCS codes) against CMS Medicare Fee Schedules and verify IRS Section 501(r) Financial Assistance eligibility across major US hospitals.</p>
+        <nav class="mt-4 flex gap-4 text-sm font-medium text-blue-700">
+          <a href="/">Home</a>
+          <a href="/hospitals">Hospital Charity Care Directory</a>
+          <a href="/blog/how-to-apply-charity-care-2026">2026 Charity Care Guide (NYP, Penn Medicine, Emory)</a>
+          <a href="/blog">Patient Advocacy Guides</a>
+          <a href="/about">About &amp; Editorial Policy</a>
+          <a href="/contact-us">Contact Us</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/disclaimer">Medical &amp; Financial Disclaimer</a>
+        </nav>
+      </header>
+      <main class="max-w-5xl mx-auto px-4 py-6">
+        <section>
+          <h2 class="text-xl font-bold mb-2">2026 Quick Reference: Top Hospital Financial Assistance Contacts</h2>
+          <p class="text-sm text-gray-700 mb-4">Under IRS Section 501(r), non-profit US hospitals must provide Financial Assistance Programs (Charity Care) and allow at least 240 days from the first billing statement to apply.</p>
+          <ul>
+            <li><strong>New York-Presbyterian (NYP)</strong> — NYP Financial Assistance: (866) 461-2779 (Up to 500% FPL)</li>
+            <li><strong>Penn Medicine</strong> — Charity Care Program: (215) 893-2346 (Up to 300% FPL)</li>
+            <li><strong>Emory Healthcare</strong> — Emory Charity Care: (404) 686-7041 (Up to 250% FPL)</li>
+            <li><strong>Duke Health</strong> — Financial Assistance: (919) 620-4555 (Up to 400% FPL)</li>
+          </ul>
+        </section>
+      </main>
+    </div>
     <script type="module" src="./index.tsx"></script>
   </body>
 </html>
