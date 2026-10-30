@@ -46,8 +46,16 @@ const BlogPost: React.FC = () => {
     "description": post.excerpt,
     "image": post.imageUrl || "https://www.advocamed.com/og-image.png",
     "author": {
-      "@type": "Organization",
-      "name": "AdvocaMed AI Team"
+      "@type": "Person",
+      "name": "Dr. Alex Chen",
+      "jobTitle": "Lead Biotech Architect & Clinical Informatics Specialist",
+      "url": "https://www.advocamed.com/about"
+    },
+    "reviewedBy": {
+      "@type": "Person",
+      "name": "Dr. Alex Chen",
+      "jobTitle": "Lead Biotech Architect & Clinical Informatics Specialist",
+      "url": "https://www.advocamed.com/about"
     },
     "publisher": {
       "@type": "Organization",
@@ -58,10 +66,42 @@ const BlogPost: React.FC = () => {
       }
     },
     "datePublished": post.date,
+    "dateModified": "2026-05-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://www.advocamed.com/blog/${post.id}`
     }
+  };
+
+  const charityCareFaqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I qualify for Penn Medicine Charity Care in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Penn Medicine provides 100% charity care bill waivers for eligible patients with household incomes up to 300% of the Federal Poverty Level (FPL). Patients already enrolled in SNAP or Medicaid may also qualify via Presumptive Eligibility by calling (215) 893-2346."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the phone number for NYP billing and financial assistance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can contact the New York-Presbyterian (NYP) Financial Assistance and billing department at (866) 461-2779. Households earning up to 500% of the Federal Poverty Level (FPL) may qualify for financial assistance discounts."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the IRS 240-Day Rule for hospital charity care?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Under federal law (IRS Section 501(r)), non-profit hospitals must give patients at least 240 days from the date of the first post-discharge billing statement to apply for financial assistance and must suspend collection agency actions while an application is under review."
+        }
+      }
+    ]
   };
 
   return (
@@ -74,6 +114,9 @@ const BlogPost: React.FC = () => {
       <Helmet>
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(charityCareFaqSchema)}
         </script>
       </Helmet>
       
@@ -120,7 +163,12 @@ const BlogPost: React.FC = () => {
                 </span>
              </div>
              <h1 className="text-3xl md:text-4xl font-extrabold text-text-main-light dark:text-text-main-dark mb-4 leading-tight">{post.title}</h1>
-             <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
+             <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-500">
+                <span className="inline-flex items-center gap-1 font-medium text-gray-700 dark:text-gray-300">
+                  <span className="material-symbols-outlined text-base text-primary">verified_user</span>
+                  Reviewed by <Link to="/about" className="text-primary hover:underline">Dr. Alex Chen</Link>
+                </span>
+                <span>•</span>
                 <time>{post.date}</time>
                 <span>•</span>
                 <span>{post.readingTime}</span>
