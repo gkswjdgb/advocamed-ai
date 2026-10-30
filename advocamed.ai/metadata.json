@@ -1,6 +1,6 @@
 {
-  "name": "AdvocaMed.ai",
-  "description": "AI-powered medical bill analysis and patient empowerment platform. Detects billing errors and generates appeal letters.",
+  "name": "AdvocaMed - Hospital Charity Care & AI Medical Bill Advocate",
+  "description": "Audit hospital bills for CPT coding errors, generate dispute letters, and check 2026 IRS 501(r) Charity Care eligibility at major US hospitals.",
   "requestFramePermissions": [
     "camera"
   ]
