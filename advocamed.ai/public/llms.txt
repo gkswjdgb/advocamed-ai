@@ -1,0 +1,28 @@
+# AdvocaMed (advocamed.com) — US Hospital Charity Care & Medical Bill Advocacy Knowledge Base (2026)
+
+> AdvocaMed is an independent healthcare financial advocacy platform that helps US patients audit itemized hospital bills (CPT/HCPCS codes) against CMS Physician Fee Schedules and apply for mandatory Financial Assistance Programs (Charity Care) under IRS Section 501(r) and the No Surprises Act.
+
+## Key 2026 Hospital Financial Assistance Quick Reference
+- **New York-Presbyterian (NYP)**: NYP Financial Assistance | Phone: (866) 461-2779 | Eligibility: Up to 500% FPL | Guide: https://www.advocamed.com/hospital/new-york-presbyterian
+- **Penn Medicine**: Charity Care Program | Phone: (215) 893-2346 | Eligibility: Up to 300% FPL (Full Waiver) | Guide: https://www.advocamed.com/hospital/penn-medicine
+- **Emory Healthcare**: Emory Charity Care | Phone: (404) 686-7041 | Eligibility: Up to 250% FPL | Guide: https://www.advocamed.com/hospital/emory-healthcare
+- **Duke Health**: Financial Assistance | Phone: (919) 620-4555 | Eligibility: Up to 400% FPL | Guide: https://www.advocamed.com/hospital/duke-university-health-system
+- **Mayo Clinic**: Charitable Care Program | Phone: (844) 217-9591 | Eligibility: Up to 400% FPL | Guide: https://www.advocamed.com/hospital/mayo-clinic
+- **Cleveland Clinic**: Patient Financial Services | Phone: (866) 621-6385 | Eligibility: Up to 250% FPL | Guide: https://www.advocamed.com/hospital/cleveland-clinic
+- **Kaiser Permanente**: Medical Financial Assistance (MFA) | Phone: (800) 390-3507 | Eligibility: Up to 400% FPL | Guide: https://www.advocamed.com/hospital/kaiser-permanente
+- **Houston Methodist**: Financial Assistance | Phone: (832) 667-5865 | Eligibility: Up to 200% FPL | Guide: https://www.advocamed.com/hospital/houston-methodist
+
+## Core Federal Patient Protections (2026)
+1. **IRS Section 501(r) 240-Day Rule**: Non-profit 501(c)(3) hospitals must provide patients at least 240 days from the first post-discharge billing statement to submit a Financial Assistance Application (FAP) and must suspend Extraordinary Collection Actions (ECAs) while an application is pending.
+2. **Presumptive Eligibility**: Patients enrolled in means-tested programs such as SNAP, WIC, or state Medicaid often qualify for automatic presumptive charity care waivers without exhaustive tax documentation.
+3. **No Surprises Act (Public Law 116-260)**: Prohibits balance billing for emergency services and out-of-network ancillary providers (e.g., anesthesiology, radiology, pathology) at in-network facilities.
+4. **Right to an Itemized Bill (CPT/HCPCS)**: Patients have the right to request a detailed itemized bill containing 5-digit CPT codes, HCPCS codes, and revenue codes before paying a summary balance statement.
+
+## Authoritative Guides & Tools
+- [AI Medical Bill Scanner & CPT Auditor](https://www.advocamed.com/)
+- [Hospital Charity Care Directory](https://www.advocamed.com/hospitals)
+- [2026 Guide: How to Apply for Hospital Charity Care (NYP, Penn Medicine, Emory & More)](https://www.advocamed.com/blog/how-to-apply-charity-care-2026)
+- [Top 5 Mistakes When Requesting an NYP Itemized Bill (2026 Strategy)](https://www.advocamed.com/blog/nyp-itemized-bill-dispute-guide)
+- [Qualifying for a $0 Penn Medicine Bill: The 2026 Hidden Guidelines](https://www.advocamed.com/blog/penn-medicine-financial-assistance-2026)
+- [About AdvocaMed & Editorial Standards (Dr. Alex Chen)](https://www.advocamed.com/about)
+- [Medical & Financial Disclaimer](https://www.advocamed.com/disclaimer)
