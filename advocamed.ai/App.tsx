@@ -37,8 +37,10 @@ const PageLoader = () => (
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleScrollToSection = (sectionId: string) => {
+    setMobileMenuOpen(false);
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
@@ -52,6 +54,7 @@ const Navbar = () => {
   };
 
   const handleReset = () => {
+    setMobileMenuOpen(false);
     navigate('/?step=HERO');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -61,7 +64,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-3">
+          <Link to="/" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-3">
               <div className="w-8 h-8 text-primary flex items-center justify-center bg-primary/10 rounded-lg">
                   <span className="material-symbols-outlined text-2xl">health_and_safety</span>
               </div>
@@ -69,36 +72,70 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex gap-6 items-center">
+          <div className="hidden lg:flex gap-5 items-center">
+              <Link to="/hospitals" className="text-sm font-semibold hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                Hospital Directory
+              </Link>
+              <Link to="/blog/how-to-apply-charity-care-2026" className="text-sm font-semibold text-primary hover:text-primary-hover transition-colors">
+                2026 Charity Care Guide
+              </Link>
+              <Link to="/blog" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
+                Articles &amp; News
+              </Link>
               <button onClick={() => handleScrollToSection('how-it-works')} className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark bg-transparent border-none cursor-pointer">
                 How it Works
               </button>
-              <Link to="/blog" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
-                Latest News
-              </Link>
               <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
-                About Us
+                About &amp; Editorial
               </Link>
               <Link to="/contact-us" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
                 Contact
               </Link>
-              <Link to="/privacy-policy" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
-                Privacy
-              </Link>
-              <Link to="/disclaimer" className="text-sm font-medium hover:text-primary transition-colors text-text-main-light dark:text-text-main-dark">
-                Disclaimer
-              </Link>
           </div>
 
-          {/* CTA */}
-          <div className="flex items-center gap-4">
+          {/* CTA & Mobile Menu Toggle */}
+          <div className="flex items-center gap-3">
                <button onClick={handleReset} className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
                   <span className="material-symbols-outlined text-lg">upload_file</span>
-                  <span className="hidden sm:inline">Start My Free Medical Bill Audit</span>
+                  <span className="hidden sm:inline">Audit My Bill Free</span>
                   <span className="sm:hidden">Audit Bill</span>
+               </button>
+               <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="lg:hidden p-2 rounded-lg text-text-main-light dark:text-text-main-dark hover:bg-gray-100 dark:hover:bg-gray-800"
+                  aria-label="Toggle Menu"
+               >
+                  <span className="material-symbols-outlined text-2xl">{mobileMenuOpen ? 'close' : 'menu'}</span>
                </button>
           </div>
         </div>
+
+        {/* Mobile Nav Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-border-light dark:border-border-dark flex flex-col gap-3">
+            <Link to="/hospitals" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-sm font-bold text-text-main-light dark:text-text-main-dark hover:text-primary">
+              Hospital Charity Care Directory
+            </Link>
+            <Link to="/blog/how-to-apply-charity-care-2026" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-sm font-bold text-primary">
+              2026 Charity Care Guide (NYP, Penn, Emory)
+            </Link>
+            <Link to="/blog" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-sm font-medium text-text-main-light dark:text-text-main-dark hover:text-primary">
+              All Patient Advocacy Articles
+            </Link>
+            <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-sm font-medium text-text-main-light dark:text-text-main-dark hover:text-primary">
+              About Us &amp; Editorial Policy
+            </Link>
+            <Link to="/contact-us" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-sm font-medium text-text-main-light dark:text-text-main-dark hover:text-primary">
+              Contact &amp; Support
+            </Link>
+            <Link to="/privacy-policy" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:text-primary">
+              Privacy Policy
+            </Link>
+            <Link to="/disclaimer" onClick={() => setMobileMenuOpen(false)} className="px-2 py-1.5 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:text-primary">
+              Medical &amp; Financial Disclaimer
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );
