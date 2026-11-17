@@ -391,9 +391,14 @@ export const Hero: React.FC<HeroProps> = ({ onAnalysisComplete, onLoading, onDem
                     </button>
                   </p>
 
-                  <div className="mt-5 pt-4 border-t border-border-light dark:border-border-dark w-full flex items-center justify-center gap-2 text-xs text-emerald-700 dark:text-emerald-400 font-semibold">
-                    <span className="material-symbols-outlined text-sm">memory</span>
-                    <span>RAM-Only Processing • 0 Bytes Stored on Server • No Account Needed</span>
+                  <div className="mt-5 pt-4 border-t border-border-light dark:border-border-dark w-full flex flex-col items-center justify-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 font-semibold">
+                    <div className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm">lock</span>
+                      <span>Your bill is encrypted (TLS 1.3) and permanently deleted immediately after analysis.</span>
+                    </div>
+                    <span className="text-[11px] text-text-secondary-light dark:text-text-secondary-dark font-normal">
+                      We never store or sell your personal health data • 0 Bytes Saved on Server • No Account Needed
+                    </span>
                   </div>
                 </div>
               ) : (
