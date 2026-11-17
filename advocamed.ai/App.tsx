@@ -277,8 +277,14 @@ const App: React.FC = () => {
                         <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">© {currentYear} AdvocaMed. All rights reserved.</p>
                     </div>
                     <div className="flex flex-wrap justify-center gap-6">
+                        <Link to="/hospitals" className="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">Hospital Directory</Link>
+                        <Link to="/about" className="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">Editorial &amp; Data Methodology</Link>
                         <Link to="/privacy-policy" className="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">Privacy Policy</Link>
-                        <Link to="/terms" className="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">Terms of Service</Link>
+                        <Link to="/privacy-policy" className="text-sm font-semibold text-primary hover:underline transition-colors flex items-center gap-1">
+                          <span className="material-symbols-outlined text-xs">privacy_tip</span>
+                          Your Privacy Choices (Do Not Sell/Share My Info)
+                        </Link>
+                        <Link to="/terms" className="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">Terms of Use</Link>
                         <Link to="/contact-us" className="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">Support</Link>
                     </div>
                 </div>
@@ -287,17 +293,17 @@ const App: React.FC = () => {
                 <div className="mt-8 text-center">
                     <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-sm">verified</span>
-                        Data Powered by CMS.gov & IRS 501(r) Guidelines.
+                        Primary Sources: CMS Physician Fee Schedule, HHS Federal Poverty Guidelines &amp; IRS Form 990 Schedule H (Section 501(r)).
                     </p>
                 </div>
 
                 {/* Legal Disclaimer for YMYL */}
                 <div className="mt-8 border-t border-border-light dark:border-border-dark pt-6">
                      <p className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed text-center max-w-4xl mx-auto mb-3 font-semibold">
-                        MEDICAL DISCLAIMER: The information provided on this site cannot replace professional medical diagnosis, treatment, or advice.
+                        AdvocaMed is an independent educational resource and billing analysis tool. We are not a law firm, licensed financial advisor, or healthcare provider, and nothing on this site constitutes legal, financial, or medical advice.
                      </p>
                      <p className="text-[10px] text-text-secondary-light dark:text-text-secondary-dark leading-relaxed text-center max-w-4xl mx-auto">
-                        AdvocaMed.ai is an automated analysis tool designed for informational and educational purposes only. We are not a law firm, medical provider, or insurance entity. The "potential savings," "errors," and "charity care eligibility" detected by our AI are estimates based on national datasets (CMS) and public hospital policies. They do not constitute legal or medical advice. Results may vary based on your specific insurance plan and state laws. Always verify CPT codes and billing details with a certified professional or your healthcare provider before taking financial action. By using this site, you agree to our <Link to="/disclaimer" className="underline hover:text-primary">Medical & Legal Disclaimer</Link>.
+                        AdvocaMed.com is not affiliated with any hospital system mentioned. The &ldquo;potential savings,&rdquo; &ldquo;errors,&rdquo; and &ldquo;charity care eligibility&rdquo; detected by our tools are educational estimates based on national CMS datasets and public hospital IRS Section 501(r) policies. Results may vary based on your specific health insurance plan and state laws. Always verify CPT codes and financial assistance eligibility directly with your healthcare provider&apos;s billing department. By using this site, you agree to our <Link to="/disclaimer" className="underline hover:text-primary">Medical &amp; Legal Disclaimer</Link>.
                      </p>
                 </div>
             </div>
@@ -309,7 +315,7 @@ const App: React.FC = () => {
           <div className="fixed bottom-0 left-0 right-0 z-40 bg-gray-900 border-t border-gray-800 text-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
              <div className="max-w-7xl mx-auto px-4 py-2 sm:px-6 lg:px-8 flex items-center justify-center text-center">
                  <p className="text-[10px] sm:text-xs text-gray-300 font-medium">
-                    <span className="font-bold text-red-400">MEDICAL & FINANCIAL DISCLAIMER:</span> Advocamed.com is an independent information provider and is not affiliated with the hospitals mentioned. Information is for educational purposes and cannot replace professional medical diagnosis, treatment, or advice. <Link to="/disclaimer" className="text-blue-400 hover:text-blue-300 underline whitespace-nowrap">Learn more</Link>.
+                    <span className="font-bold text-amber-400">INDEPENDENT EDUCATIONAL RESOURCE:</span> AdvocaMed.com is not a law firm, financial advisor, or healthcare provider, and is not affiliated with the hospitals mentioned. Nothing on this site constitutes legal, financial, or medical advice. <Link to="/disclaimer" className="text-blue-400 hover:text-blue-300 underline whitespace-nowrap">Full Disclaimer</Link>.
                  </p>
              </div>
           </div>
