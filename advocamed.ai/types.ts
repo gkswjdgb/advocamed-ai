@@ -31,7 +31,7 @@ export interface AnalysisResult {
   items: BillItem[];
   summary: string;
   confidenceScore?: number;
-  analysisDate: string;
+  analysisDate?: string;
   charityAnalysis?: CharityAnalysis;
   noSurprisesAnalysis?: NoSurprisesAnalysis;
   userFinancials?: UserFinancials;
@@ -54,18 +54,23 @@ export interface BlogPost {
   date: string;
   readingTime: string;
   category: string;
-  imageUrl?: string; // New field for blog images
+  imageUrl?: string;
 }
 
-// pSEO Data Interface
+// Deep-Dive pSEO Hospital Data Interface
 export interface Hospital {
   id: string;
   slug: string;
   name: string;
+  acronym?: string; // e.g., "EHC" for Emory Healthcare, "NYP", "MGB", "JHM"
   city: string;
   state: string;
-  fpl_limit: number; 
+  fpl_limit: number; // 100% Free Care FPL limit
+  partial_fpl_limit?: number; // Sliding-scale / Partial discount FPL limit
   deadline_days: number;
+  physician_fees_covered?: string; // Whether emergency/employed physician groups are covered under the FAP
+  affiliated_hospitals?: string[]; // Sub-hospitals covered by this Health System's FAP
+  guest_pay_portal?: string; // e.g., "MyChart Guest Pay", "PatientPortal Pay"
   policy_summary?: string;
   financial_aid_url?: string;
   application_url?: string; // Direct link to PDF or Form
