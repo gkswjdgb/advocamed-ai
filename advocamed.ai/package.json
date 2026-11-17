@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "node scripts/generate-sitemap.js && vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --port=3000 --host=0.0.0.0",
     "sitemap": "node scripts/generate-sitemap.js",
     "fetch-hospitals": "node scripts/fetch-real-data.js"
   },
